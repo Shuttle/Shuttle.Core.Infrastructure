@@ -58,7 +58,7 @@ namespace Shuttle.Core.Infrastructure
 		}
 
 		/// <summary>
-		///   Creates an array of bytes from the given stream.  The stream position is reset once the operation has completed.
+		/// Creates an array of bytes from the given stream.  The stream position is reset once the operation has completed.
 		/// </summary>
 		/// <param name = "stream">Input stream</param>
 		/// <returns>An array of bytes</returns>
@@ -87,50 +87,6 @@ namespace Shuttle.Core.Infrastructure
 				stream.Position = originalPosition;
 			}
 		}
-
-#if NET35FULL
-		public static void CopyTo(this Stream input, Stream output)
-		{
-			Guard.AgainstNull(input, "input");
-			Guard.AgainstNull(output, "output");
-
-			var originalPosition = input.Position;
-
-			try
-			{
-				try
-				{
-					input.Seek(0, SeekOrigin.Begin);
-				}
-				catch (Exception ex)
-				{
-					throw new InvalidOperationException(
-						string.Format(InfrastructureResources.StreamCannotSeek, "StreamExtensions.CopyTo"), ex);
-				}
-
-				var buffer = new byte[32768];
-
-				while (true)
-				{
-					var read = input.Read(buffer, 0, buffer.Length);
-
-					if (read <= 0)
-					{
-						input.Position = 0;
-						output.Position = 0;
-
-						return;
-					}
-
-					output.Write(buffer, 0, read);
-				}
-			}
-			finally
-			{
-				input.Seek(originalPosition, SeekOrigin.Begin);
-			}
-		}
-#endif
 
 		public static Stream Copy(this Stream stream)
 		{
