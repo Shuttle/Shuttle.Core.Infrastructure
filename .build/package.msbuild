@@ -50,7 +50,7 @@
 
 		<Exec Command="$(NuGetExecutablePath) pack $(DeploymentFolder)\nuget\package.nuspec -OutputDirectory $(DeploymentFolder)\nuget -NoPackageAnalysis" />
 		<Exec Command="$(NuGetExecutablePath) push $(DeploymentFolder)\nuget\$(PackageName).$(SemanticVersion).nupkg" Condition="$(Operation) != 'pack-only'" />
-		<Exec Command="git commit -m '- v$(SemanticVersion)'" />
+		<Exec Command="git commit -a -m &quot;- v$(SemanticVersion)&quot;" />
 		<Exec Command="git push" />
 	</Target>
 </Project>
