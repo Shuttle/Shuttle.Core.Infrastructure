@@ -160,15 +160,6 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not execute pipeline &apos;{0}&apos;.  Exception: {1}.
-        /// </summary>
-        public static string PipelineExecutionException {
-            get {
-                return ResourceManager.GetString("PipelineExecutionException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Pipeline stage &apos;{0}&apos; has no event of type &apos;{1}&apos;..
         /// </summary>
         public static string PipelineStageEventNotRegistered {
