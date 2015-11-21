@@ -14,10 +14,10 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Shuttle.Core.Infrastructure for .NET Framework 4.5.1")]
 #endif
 
-[assembly: AssemblyVersion("4.0.2.0")]
+[assembly: AssemblyVersion("4.0.3.0")]
 [assembly: AssemblyCopyright("Copyright © Eben Roux 2010-2015")]
 [assembly: AssemblyProduct("Shuttle.Core")]
 [assembly: AssemblyCompany("Shuttle")]
 [assembly: AssemblyConfiguration("Release")]
-[assembly: AssemblyInformationalVersion("4.0.2")]
+[assembly: AssemblyInformationalVersion("4.0.3")]
 [assembly: ComVisible(false)]
