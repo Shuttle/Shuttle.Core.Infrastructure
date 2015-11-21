@@ -2,7 +2,7 @@ using System.Threading;
 
 namespace Shuttle.Core.Infrastructure
 {
-    internal class ProcessorThread : IThreadState
+    public class ProcessorThread : IThreadState
     {
         private readonly ILog _log;
         private readonly string _name;
