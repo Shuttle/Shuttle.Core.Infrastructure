@@ -3,115 +3,116 @@ using System.Threading;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class ConsoleLog : AbstractLog
-	{
-		private Type logtype;
+    public class ConsoleLog : AbstractLog
+    {
+        private readonly Type logtype;
 
-		public ConsoleLog(Type type)
-		{
-			Guard.AgainstNull(type, "type");
+        public ConsoleLog(Type type)
+        {
+            Guard.AgainstNull(type, "type");
 
-			logtype = type;
-		}
+            logtype = type;
+        }
 
-		public override void Verbose(string message)
-		{
-			if (!IsVerboseEnabled)
-			{
-				return;
-			}
+        public new LogLevel LogLevel
+        {
+            get { return base.LogLevel; }
+            set { base.LogLevel = value; }
+        }
 
-			WriteLog(ConsoleColor.DarkGray, "VERBOSE", message);
-		}
+        public override void Verbose(string message)
+        {
+            if (!IsVerboseEnabled)
+            {
+                return;
+            }
 
-		private void WriteLog(ConsoleColor color, string level, string message)
-		{
-			ColoredConsole.WriteLine(color, "{0} [{1}] {2} {3} - {4}", now(), Thread.CurrentThread.ManagedThreadId, string.Format("{0, -7}", level), logtype.FullName, message);
-		}
+            WriteLog(ConsoleColor.DarkGray, "VERBOSE", message);
+        }
 
-		public override void Trace(string message)
-		{
-			if (!IsTraceEnabled)
-			{
-				return;
-			}
+        private void WriteLog(ConsoleColor color, string level, string message)
+        {
+            ColoredConsole.WriteLine(color, "{0} [{1}] {2} {3} - {4}", now(), Thread.CurrentThread.ManagedThreadId,
+                string.Format("{0, -7}", level), logtype.FullName, message);
+        }
 
-			WriteLog(ConsoleColor.Gray, "TRACE", message);
-		}
+        public override void Trace(string message)
+        {
+            if (!IsTraceEnabled)
+            {
+                return;
+            }
 
-		public override void Debug(string message)
-		{
-			if (!IsDebugEnabled)
-			{
-				return;
-			}
+            WriteLog(ConsoleColor.Gray, "TRACE", message);
+        }
 
-			WriteLog(ConsoleColor.Magenta, "DEBUG", message);
-		}
+        public override void Debug(string message)
+        {
+            if (!IsDebugEnabled)
+            {
+                return;
+            }
 
-		private static string now()
-		{
-			return DateTime.Now.ToString("yyyy/mm/dd HH:mm:ss.fff");
-		}
+            WriteLog(ConsoleColor.Magenta, "DEBUG", message);
+        }
 
-		public override void Warning(string message)
-		{
-			if (!IsWarningEnabled)
-			{
-				return;
-			}
+        private static string now()
+        {
+            return DateTime.Now.ToString("yyyy/mm/dd HH:mm:ss.fff");
+        }
 
-			WriteLog(ConsoleColor.Yellow, "WARNING", message);
-		}
+        public override void Warning(string message)
+        {
+            if (!IsWarningEnabled)
+            {
+                return;
+            }
 
-		public override void Information(string message)
-		{
-			if (!IsInformationEnabled)
-			{
-				return;
-			}
+            WriteLog(ConsoleColor.Yellow, "WARNING", message);
+        }
 
-			WriteLog(ConsoleColor.White, "INFO", message);
-		}
+        public override void Information(string message)
+        {
+            if (!IsInformationEnabled)
+            {
+                return;
+            }
 
-		public override void Error(string message)
-		{
-			if (!IsErrorEnabled)
-			{
-				return;
-			}
+            WriteLog(ConsoleColor.White, "INFO", message);
+        }
 
-			WriteLog(ConsoleColor.Red, "ERROR", message);
-		}
+        public override void Error(string message)
+        {
+            if (!IsErrorEnabled)
+            {
+                return;
+            }
 
-		public override void Fatal(string message)
-		{
-			if (!IsFatalEnabled)
-			{
-				return;
-			}
+            WriteLog(ConsoleColor.Red, "ERROR", message);
+        }
 
-			WriteLog(ConsoleColor.DarkRed, "FATAL", message);
-		}
+        public override void Fatal(string message)
+        {
+            if (!IsFatalEnabled)
+            {
+                return;
+            }
 
-		public new LogLevel LogLevel
-		{
-			get { return base.LogLevel; }
-			set { base.LogLevel = value; }
-		}
+            WriteLog(ConsoleColor.DarkRed, "FATAL", message);
+        }
 
-		public override ILog For(Type type)
-		{
-			Guard.AgainstNull(type, "type");
+        public override ILog For(Type type)
+        {
+            Guard.AgainstNull(type, "type");
 
-			return new ConsoleLog(type) { LogLevel = LogLevel };
-		}
+            return new ConsoleLog(type) {LogLevel = LogLevel};
+        }
 
-		public override ILog For(object instance)
-		{
-			Guard.AgainstNull(instance, "instance");
+        public override ILog For(object instance)
+        {
+            Guard.AgainstNull(instance, "instance");
 
-			return For(instance.GetType());
-		}
-	}
+            return For(instance.GetType());
+        }
+    }
 }

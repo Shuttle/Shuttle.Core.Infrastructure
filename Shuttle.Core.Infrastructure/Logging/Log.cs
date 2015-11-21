@@ -2,253 +2,253 @@ using System;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public static class Log
-	{
-		private static ILog _log;
+    public static class Log
+    {
+        private static ILog _log;
 
-		public static void Assign(ILog instance)
-		{
-			Guard.AgainstNull(instance, "instance");
+        public static bool IsVerboseEnabled
+        {
+            get { return GuardedLog().IsVerboseEnabled; }
+        }
 
-			_log = instance;
-		}
+        public static bool IsTraceEnabled
+        {
+            get { return GuardedLog().IsTraceEnabled; }
+        }
 
-		public static TransientLog AssignTransient(ILog instance)
-		{
-			try
-			{
-				return new TransientLog(_log ?? NullLog.Instance);
-			}
-			finally
-			{
-				Assign(instance);
-			}
-		}
+        public static bool IsDebugEnabled
+        {
+            get { return GuardedLog().IsDebugEnabled; }
+        }
 
-		public static void AtLevel(LogLevel level, string message)
-		{
-			GuardedLog().AtLevel(level, message);
-		}
+        public static bool IsInformationEnabled
+        {
+            get { return GuardedLog().IsInformationEnabled; }
+        }
 
-		public static void Verbose(string message)
-		{
-			GuardedLog().Verbose(message);
-		}
+        public static bool IsWarningEnabled
+        {
+            get { return GuardedLog().IsWarningEnabled; }
+        }
 
-		public static void Trace(string message)
-		{
-			GuardedLog().Trace(message);
-		}
+        public static bool IsErrorEnabled
+        {
+            get { return GuardedLog().IsErrorEnabled; }
+        }
 
-		public static void Debug(string message)
-		{
-			GuardedLog().Debug(message);
-		}
+        public static bool IsFatalEnabled
+        {
+            get { return GuardedLog().IsFatalEnabled; }
+        }
 
-		public static void Information(string message)
-		{
-			GuardedLog().Information(message);
-		}
+        public static void Assign(ILog instance)
+        {
+            Guard.AgainstNull(instance, "instance");
 
-		public static void Warning(string message)
-		{
-			GuardedLog().Warning(message);
-		}
+            _log = instance;
+        }
 
-		public static void Error(string message)
-		{
-			GuardedLog().Error(message);
-		}
+        public static TransientLog AssignTransient(ILog instance)
+        {
+            try
+            {
+                return new TransientLog(_log ?? NullLog.Instance);
+            }
+            finally
+            {
+                Assign(instance);
+            }
+        }
 
-		public static void Fatal(string message)
-		{
-			GuardedLog().Fatal(message);
-		}
+        public static void AtLevel(LogLevel level, string message)
+        {
+            GuardedLog().AtLevel(level, message);
+        }
 
-		public static void Verbose(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+        public static void Verbose(string message)
+        {
+            GuardedLog().Verbose(message);
+        }
 
-			Trace(message);
-		}
+        public static void Trace(string message)
+        {
+            GuardedLog().Trace(message);
+        }
 
-		public static void Trace(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+        public static void Debug(string message)
+        {
+            GuardedLog().Debug(message);
+        }
 
-			Trace(message);
-		}
+        public static void Information(string message)
+        {
+            GuardedLog().Information(message);
+        }
 
-		public static void Debug(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+        public static void Warning(string message)
+        {
+            GuardedLog().Warning(message);
+        }
 
-			Debug(message);
-		}
+        public static void Error(string message)
+        {
+            GuardedLog().Error(message);
+        }
 
-		public static void Information(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+        public static void Fatal(string message)
+        {
+            GuardedLog().Fatal(message);
+        }
 
-			Information(message);
-		}
+        public static void Verbose(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Warning(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+            Trace(message);
+        }
 
-			Warning(message);
-		}
+        public static void Trace(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Error(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+            Trace(message);
+        }
 
-			Error(message);
-		}
+        public static void Debug(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Fatal(bool condition, string message)
-		{
-			if (!condition)
-			{
-				return;
-			}
+            Debug(message);
+        }
 
-			Fatal(message);
-		}
+        public static void Information(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Verbose(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Information(message);
+        }
 
-			Verbose(condition(), message);
-		}
+        public static void Warning(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Trace(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Warning(message);
+        }
 
-			Trace(condition(), message);
-		}
+        public static void Error(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Debug(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Error(message);
+        }
 
-			Debug(condition(), message);
-		}
+        public static void Fatal(bool condition, string message)
+        {
+            if (!condition)
+            {
+                return;
+            }
 
-		public static void Information(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Fatal(message);
+        }
 
-			Information(condition(), message);
-		}
+        public static void Verbose(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static void Warning(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Verbose(condition(), message);
+        }
 
-			Warning(condition(), message);
-		}
+        public static void Trace(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static void Error(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Trace(condition(), message);
+        }
 
-			Error(condition(), message);
-		}
+        public static void Debug(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static void Fatal(Func<bool> condition, string message)
-		{
-			Guard.AgainstNull(condition, "condition");
+            Debug(condition(), message);
+        }
 
-			Fatal(condition(), message);
-		}
+        public static void Information(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static ILog For(Type type)
-		{
-			return GuardedLog().For(type);
-		}
+            Information(condition(), message);
+        }
 
-		public static bool IsVerboseEnabled
-		{
-			get { return GuardedLog().IsVerboseEnabled; }
-		}
+        public static void Warning(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static bool IsTraceEnabled
-		{
-			get { return GuardedLog().IsTraceEnabled; }
-		}
+            Warning(condition(), message);
+        }
 
-		public static bool IsDebugEnabled
-		{
-			get { return GuardedLog().IsDebugEnabled; }
-		}
+        public static void Error(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static bool IsInformationEnabled
-		{
-			get { return GuardedLog().IsInformationEnabled; }
-		}
+            Error(condition(), message);
+        }
 
-		public static bool IsWarningEnabled
-		{
-			get { return GuardedLog().IsWarningEnabled; }
-		}
+        public static void Fatal(Func<bool> condition, string message)
+        {
+            Guard.AgainstNull(condition, "condition");
 
-		public static bool IsErrorEnabled
-		{
-			get { return GuardedLog().IsErrorEnabled; }
-		}
+            Fatal(condition(), message);
+        }
 
-		public static bool IsFatalEnabled
-		{
-			get { return GuardedLog().IsFatalEnabled; }
-		}
+        public static ILog For(Type type)
+        {
+            return GuardedLog().For(type);
+        }
 
-		public static ILog For(object instance)
-		{
-			return GuardedLog().For(instance);
-		}
+        public static ILog For(object instance)
+        {
+            return GuardedLog().For(instance);
+        }
 
-		private static ILog GuardedLog()
-		{
-			return _log ?? NullLog.Instance;
-		}
-	}
+        private static ILog GuardedLog()
+        {
+            return _log ?? NullLog.Instance;
+        }
+    }
 
-	public class TransientLog : IDisposable
-	{
-		private readonly ILog _previousLog;
-
-
-		public TransientLog(ILog previousLog)
-		{
-			_previousLog = previousLog;
-		}
+    public class TransientLog : IDisposable
+    {
+        private readonly ILog _previousLog;
 
 
-		public void Dispose()
-		{
-			Log.Assign(_previousLog);
-		}
-	}
+        public TransientLog(ILog previousLog)
+        {
+            _previousLog = previousLog;
+        }
+
+
+        public void Dispose()
+        {
+            Log.Assign(_previousLog);
+        }
+    }
 }

@@ -14,11 +14,11 @@ namespace Shuttle.Core.Infrastructure
         {
         }
 
-    	public void Verbose(string message)
-    	{
-    	}
+        public void Verbose(string message)
+        {
+        }
 
-    	public void Trace(string message)
+        public void Trace(string message)
         {
         }
 
@@ -42,68 +42,65 @@ namespace Shuttle.Core.Infrastructure
         {
         }
 
-    	public void Verbose(bool condition, string message)
-    	{
-    	}
-
-    	public void Trace(bool condition, string message)
-    	{
-    	}
-
-    	public void Debug(bool condition, string message)
-    	{
-    	}
-
-    	public void Information(bool condition, string message)
-    	{
-    	}
-
-    	public void Warning(bool condition, string message)
-    	{
-    	}
-
-    	public void Error(bool condition, string message)
-    	{
-    	}
-
-    	public void Fatal(bool condition, string message)
-    	{
-    	}
-
-    	public void Verbose(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Trace(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Debug(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Information(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Warning(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Error(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public void Fatal(Func<bool> condition, string message)
-    	{
-    	}
-
-    	public LogLevel LogLevel
+        public void Verbose(bool condition, string message)
         {
-            get
-            {
-                return LogLevel.Off;
-            }
+        }
+
+        public void Trace(bool condition, string message)
+        {
+        }
+
+        public void Debug(bool condition, string message)
+        {
+        }
+
+        public void Information(bool condition, string message)
+        {
+        }
+
+        public void Warning(bool condition, string message)
+        {
+        }
+
+        public void Error(bool condition, string message)
+        {
+        }
+
+        public void Fatal(bool condition, string message)
+        {
+        }
+
+        public void Verbose(Func<bool> condition, string message)
+        {
+        }
+
+        public void Trace(Func<bool> condition, string message)
+        {
+        }
+
+        public void Debug(Func<bool> condition, string message)
+        {
+        }
+
+        public void Information(Func<bool> condition, string message)
+        {
+        }
+
+        public void Warning(Func<bool> condition, string message)
+        {
+        }
+
+        public void Error(Func<bool> condition, string message)
+        {
+        }
+
+        public void Fatal(Func<bool> condition, string message)
+        {
+        }
+
+        public LogLevel LogLevel
+        {
+            get { return LogLevel.Off; }
         }
 
         public bool IsEnabled(LogLevel level)
@@ -112,56 +109,38 @@ namespace Shuttle.Core.Infrastructure
         }
 
         public bool IsVerboseEnabled
-    	{
-    		get { return false; }
-    	}
-
-    	public bool IsTraceEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
+        }
+
+        public bool IsTraceEnabled
+        {
+            get { return false; }
         }
 
         public bool IsDebugEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsInformationEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsWarningEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsErrorEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public bool IsFatalEnabled
         {
-            get
-            {
-                return false;
-            }
+            get { return false; }
         }
 
         public ILog For(Type type)

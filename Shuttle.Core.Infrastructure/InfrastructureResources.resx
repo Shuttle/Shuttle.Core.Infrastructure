@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="ConfigurationItemEmptyUsingDefault" xml:space="preserve">
     <value>Configuration item '{0}' is specified but empty.  Using the specified default '{1}'.</value>
@@ -133,7 +133,7 @@
     <comment>{0} = string name</comment>
   </data>
   <data name="TraceGetTypesFromAssembly" xml:space="preserve">
-    <value>Retrieving all type from from assembly '{0}'.</value>
+    <value>Retrieving all typew from from assembly '{0}'.</value>
     <comment>{0} = assembly</comment>
   </data>
   <data name="InvalidArgumentException" xml:space="preserve">
@@ -155,5 +155,68 @@
   <data name="StreamCannotSeek" xml:space="preserve">
     <value>[{0}] : Stream position is not 0 but seek is not permitted.</value>
     <comment>{0} = source</comment>
+  </data>
+  <data name="AssemblyLoadException" xml:space="preserve">
+    <value>[GetAssembly] : could not load assembly '{0}' / exception = {1}</value>
+    <comment>{0} = assembly, {1} = exception</comment>
+  </data>
+  <data name="EnteringPipelineStage" xml:space="preserve">
+    <value>Entering pipeline stage '{0}'.</value>
+    <comment>{0} = pipeline stage</comment>
+  </data>
+  <data name="ExecutingPipeline" xml:space="preserve">
+    <value>Executing pipeline '{0}'.</value>
+    <comment>{0} = pipeline full type name</comment>
+  </data>
+  <data name="FirstChanceExceptionHandledByPipeline" xml:space="preserve">
+    <value>First chance exception handled by pipeline: {0}</value>
+    <comment>{0} = exception message</comment>
+  </data>
+  <data name="PipelineExecutionException" xml:space="preserve">
+    <value>Could not execute pipeline '{0}'.  Exception: {1}</value>
+    <comment>{0} = pipeline name, {1} = exception message(s)</comment>
+  </data>
+  <data name="PipelineStageEventNotRegistered" xml:space="preserve">
+    <value>Pipeline stage '{0}' has no event of type '{1}'.</value>
+    <comment>{0} = pipeline stage name, {1} = unknown event type name</comment>
+  </data>
+  <data name="PipelineStageNotFound" xml:space="preserve">
+    <value>There is no pipeline stage with a name of '{0}'.</value>
+    <comment>{0} = unknown stage name</comment>
+  </data>
+  <data name="ProcessorExecuting" xml:space="preserve">
+    <value>[processor thread executing] : managed thread id = {0} / processor type = {1}</value>
+    <comment>{0} = managed thread id, {1} = full type name of processor</comment>
+  </data>
+  <data name="ProcessorThreadActive" xml:space="preserve">
+    <value>[processor thread active] : managed thread id = {0} / processor type = {1}</value>
+    <comment>{0} = managed thread id, {1} = full type name of processor</comment>
+  </data>
+  <data name="ProcessorThreadStarting" xml:space="preserve">
+    <value>[processor thread starting] : managed thread id = {0} / processor type = {1}</value>
+    <comment>{0} = managed thread id, {1} = full type name of processor</comment>
+  </data>
+  <data name="ProcessorThreadStopped" xml:space="preserve">
+    <value>[processor thread stopped] : managed thread id = {0} / processor type = {1}</value>
+    <comment>{0} = managed thread id, {1} = full type name of processor</comment>
+  </data>
+  <data name="ProcessorThreadStopping" xml:space="preserve">
+    <value>[processor thread stopping] : managed thread id = {0} / processor type = {1}</value>
+    <comment>{0} = managed thread id, {1} = full type name of processor</comment>
+  </data>
+  <data name="RaisingPipelineEvent" xml:space="preserve">
+    <value>Raising pipeline event '{0}' in stage '{1}' for observer '{2}'.</value>
+    <comment>{0} = pipeline event name, {1} = pipeline stage name, {2} = observer name</comment>
+  </data>
+  <data name="ThreadCountZeroException" xml:space="preserve">
+    <value>The queue handler configuration requires thread count of at least 1.  The input queue can not be processed.</value>
+  </data>
+  <data name="ThreadPoolStatusChange" xml:space="preserve">
+    <value>Thread pool '{0}' has {1} successfully.</value>
+    <comment>{0} = thread pool name , {1} = new status</comment>
+  </data>
+  <data name="UnhandledPipelineException" xml:space="preserve">
+    <value>Unhandled exception during event '{0}': {1}</value>
+    <comment>{0} = event name, {1} = exception message</comment>
   </data>
 </root>

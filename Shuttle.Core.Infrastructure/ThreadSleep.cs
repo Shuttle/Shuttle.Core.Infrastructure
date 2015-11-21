@@ -4,7 +4,7 @@ namespace Shuttle.Core.Infrastructure
 {
     public static class ThreadSleep
     {
-		public static void While(int ms, IThreadState state)
+        public static void While(int ms, IThreadState state)
         {
             While(ms, state, 5);
         }

@@ -1,7 +1,8 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 
 #if NET40FULL
+
 [assembly: AssemblyTitle("Shuttle.Core.Infrastructure for .NET Framework 4.0")]
 #endif
 
