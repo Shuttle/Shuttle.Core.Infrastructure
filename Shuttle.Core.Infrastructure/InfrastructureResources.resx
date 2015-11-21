@@ -172,10 +172,6 @@
     <value>First chance exception handled by pipeline: {0}</value>
     <comment>{0} = exception message</comment>
   </data>
-  <data name="PipelineExecutionException" xml:space="preserve">
-    <value>Could not execute pipeline '{0}'.  Exception: {1}</value>
-    <comment>{0} = pipeline name, {1} = exception message(s)</comment>
-  </data>
   <data name="PipelineStageEventNotRegistered" xml:space="preserve">
     <value>Pipeline stage '{0}' has no event of type '{1}'.</value>
     <comment>{0} = pipeline stage name, {1} = unknown event type name</comment>
