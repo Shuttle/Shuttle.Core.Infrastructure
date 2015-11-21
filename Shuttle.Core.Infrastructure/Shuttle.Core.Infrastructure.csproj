@@ -91,7 +91,6 @@
     <Compile Include="Threading\IProcessorThreadPool.cs" />
     <Compile Include="Threading\IThreadActivity.cs" />
     <Compile Include="Threading\IThreadActivityConfiguration.cs" />
-    <Compile Include="Threading\IThreadCount.cs" />
     <Compile Include="Threading\ProcessorThread.cs" />
     <Compile Include="Threading\ProcessorThreadPool.cs" />
     <Compile Include="Threading\ThreadActivity.cs" />
