@@ -93,6 +93,7 @@
     <Compile Include="Threading\IThreadActivityConfiguration.cs" />
     <Compile Include="Threading\ProcessorThread.cs" />
     <Compile Include="Threading\ProcessorThreadPool.cs" />
+    <Compile Include="Threading\StringDurationArrayConverter.cs" />
     <Compile Include="Threading\ThreadActivity.cs" />
     <Compile Include="Threading\ThreadCountZeroException.cs" />
     <Compile Include="ThreadSleep.cs" />

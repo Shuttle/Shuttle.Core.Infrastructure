@@ -215,4 +215,8 @@
     <value>Unhandled exception during event '{0}': {1}</value>
     <comment>{0} = event name, {1} = exception message</comment>
   </data>
+  <data name="StringDurationFormatError" xml:space="preserve">
+    <value>String duration contains invalid items '{0}'.</value>
+    <comment>{0} = string containing invalid format</comment>
+  </data>
 </root>

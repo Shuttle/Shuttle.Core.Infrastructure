@@ -250,6 +250,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to String duration contains invalid items &apos;{0}&apos;..
+        /// </summary>
+        public static string StringDurationFormatError {
+            get {
+                return ResourceManager.GetString("StringDurationFormatError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The queue handler configuration requires thread count of at least 1.  The input queue can not be processed..
         /// </summary>
         public static string ThreadCountZeroException {
