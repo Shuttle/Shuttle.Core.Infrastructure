@@ -86,6 +86,7 @@
     <Compile Include="Pipeline\SystemEvents\OnPipelineStarting.cs" />
     <Compile Include="Reflection\IReflectionService.cs" />
     <Compile Include="Reflection\ReflectionService.cs" />
+    <Compile Include="ReusableObjectPool.cs" />
     <Compile Include="Threading\IProcessor.cs" />
     <Compile Include="Threading\IProcessorFactory.cs" />
     <Compile Include="Threading\IProcessorThreadPool.cs" />
