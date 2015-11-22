@@ -8,7 +8,7 @@ namespace Shuttle.Core.Infrastructure
         private readonly string _name;
         private readonly IProcessor _processor;
 
-        private readonly int _threadJoinTimeoutInterval =
+        private static readonly int ThreadJoinTimeoutInterval =
             ConfigurationItem<int>.ReadSetting("ThreadJoinTimeoutInterval", 1000).GetValue();
 
         private volatile bool _active;
@@ -74,7 +74,7 @@ namespace Shuttle.Core.Infrastructure
 
             if (_thread.IsAlive)
             {
-                _thread.Join(_threadJoinTimeoutInterval);
+                _thread.Join(ThreadJoinTimeoutInterval);
             }
         }
 
