@@ -4,51 +4,51 @@ namespace Shuttle.Core.Infrastructure
 {
     public class State<TOwner>
     {
-        private readonly TOwner owner;
-        private readonly Dictionary<string, object> state = new Dictionary<string, object>();
+        private readonly TOwner _owner;
+        private readonly Dictionary<string, object> _state = new Dictionary<string, object>();
 
         public State(TOwner owner)
         {
-            this.owner = owner;
+            _owner = owner;
         }
 
         public void Clear()
         {
-            state.Clear();
+            _state.Clear();
         }
 
         public TOwner Add(object value)
         {
             Guard.AgainstNull(value, "value");
 
-            state.Add(value.GetType().FullName, value);
+            _state.Add(value.GetType().FullName, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Add(string key, object value)
         {
             Guard.AgainstNull(key, "key");
 
-            state.Add(key, value);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Add<TItem>(TItem value)
         {
-            state.Add(typeof (TItem).FullName, value);
+            _state.Add(typeof (TItem).FullName, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Add<TItem>(string key, TItem value)
         {
             Guard.AgainstNull(key, "key");
 
-            state.Add(key, value);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Replace(object value)
@@ -57,40 +57,40 @@ namespace Shuttle.Core.Infrastructure
 
             var key = value.GetType().FullName;
 
-            state.Remove(key);
-            state.Add(key, value);
+            _state.Remove(key);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Replace(string key, object value)
         {
             Guard.AgainstNull(key, "key");
 
-            state.Remove(key);
-            state.Add(key, value);
+            _state.Remove(key);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Replace<TItem>(TItem value)
         {
             var key = typeof (TItem).FullName;
 
-            state.Remove(key);
-            state.Add(key, value);
+            _state.Remove(key);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TOwner Replace<TItem>(string key, TItem value)
         {
             Guard.AgainstNull(key, "key");
 
-            state.Remove(key);
-            state.Add(key, value);
+            _state.Remove(key);
+            _state.Add(key, value);
 
-            return owner;
+            return _owner;
         }
 
         public TItem Get<TItem>()
@@ -107,14 +107,14 @@ namespace Shuttle.Core.Infrastructure
                 return default(TItem);
             }
 
-            return (TItem) state[key];
+            return (TItem) _state[key];
         }
 
         public bool Contains(string key)
         {
             Guard.AgainstNull(key, "key");
 
-            return state.ContainsKey(key);
+            return _state.ContainsKey(key);
         }
     }
 

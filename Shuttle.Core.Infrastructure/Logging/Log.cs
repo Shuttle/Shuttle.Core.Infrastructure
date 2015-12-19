@@ -239,12 +239,10 @@ namespace Shuttle.Core.Infrastructure
     {
         private readonly ILog _previousLog;
 
-
         public TransientLog(ILog previousLog)
         {
             _previousLog = previousLog;
         }
-
 
         public void Dispose()
         {
