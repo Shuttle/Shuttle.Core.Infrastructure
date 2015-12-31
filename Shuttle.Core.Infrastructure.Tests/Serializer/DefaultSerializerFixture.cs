@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using NUnit.Framework;
 
 namespace Shuttle.Core.Infrastructure.Tests
@@ -10,7 +11,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		public void Should_be_able_to_serialize_and_deserialize_a_simple_type()
 		{
 			var original = new SimpleSerializerType();
-			var serializer = new DefaultSerializer();
+			var serializer = new DefaultSerializerRoot();
 
 			var stream = serializer.Serialize(original);
 
@@ -26,26 +27,30 @@ namespace Shuttle.Core.Infrastructure.Tests
 		[Test]
 		public void Should_be_able_to_serialize_and_deserialize_a_complex_type()
 		{
-			var original = new ComplexSerializerType();
-			var serializer = new DefaultSerializer();
+			var complex = new ComplexSerializerType();
+			var serializer = new DefaultSerializerRoot();
 
-			serializer.AddSerializerType(typeof(ComplexSerializerType));
-			serializer.AddSerializerType(typeof(v1.SomeSerializerType));
-			serializer.AddSerializerType(typeof(v1.AnotherSerializerType));
-			serializer.AddSerializerType(typeof(v2.SomeSerializerType));
-			serializer.AddSerializerType(typeof(v2.AnotherSerializerType));
+			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v1.SomeSerializerType));
+			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v1.AnotherSerializerType));
+			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v2.SomeSerializerType));
+			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v2.AnotherSerializerType));
 
-			var stream = serializer.Serialize(original);
-
+			var stream = serializer.Serialize(complex);
 			var xml = new StreamReader(stream).ReadToEnd();
 
-			Assert.IsTrue(xml.Contains(original.Id.ToString()));
+			Assert.IsTrue(xml.Contains(complex.Id.ToString()));
 
 			stream.Position = 0;
 
-			Assert.AreEqual(original.Id, ((ComplexSerializerType) serializer.Deserialize(typeof (ComplexSerializerType), stream)).Id);
+			Assert.AreEqual(complex.Id, ((ComplexSerializerType) serializer.Deserialize(typeof (ComplexSerializerType), stream)).Id);
 
 			Console.WriteLine(xml);
+
+			var some1 = new v1.SomeSerializerType();
+			var some2 = new v2.SomeSerializerType();
+
+			Assert.AreEqual(some1.Id, ((v1.SomeSerializerType)serializer.Deserialize(typeof(v1.SomeSerializerType), serializer.Serialize(some1))).Id);
+			Assert.AreEqual(some2.Id, ((v2.SomeSerializerType)serializer.Deserialize(typeof(v2.SomeSerializerType), serializer.Serialize(some2))).Id);
 		}
 	}
 }

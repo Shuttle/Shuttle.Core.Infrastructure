@@ -99,9 +99,9 @@
     <Compile Include="Reflection\IReflectionService.cs" />
     <Compile Include="Reflection\ReflectionService.cs" />
     <Compile Include="ReusableObjectPool.cs" />
-    <Compile Include="Serialization\DefaultSerializer.cs" />
+    <Compile Include="Serialization\DefaultSerializerRoot.cs" />
     <Compile Include="Serialization\ISerializer.cs" />
-    <Compile Include="Serialization\ISerializerTypes.cs" />
+    <Compile Include="Serialization\ISerializerRootType.cs" />
     <Compile Include="Threading\IProcessor.cs" />
     <Compile Include="Threading\IProcessorFactory.cs" />
     <Compile Include="Threading\IProcessorThreadPool.cs" />

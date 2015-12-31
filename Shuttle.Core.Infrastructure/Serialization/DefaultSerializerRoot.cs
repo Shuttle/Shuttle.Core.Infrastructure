@@ -8,18 +8,17 @@ using System.Xml.Serialization;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class DefaultSerializer : ISerializer, ISerializerTypes
+	public class DefaultSerializerRoot : ISerializer, ISerializerRootType
 	{
 		private static readonly object Padlock = new object();
 		private readonly XmlSerializerNamespaces _namespaces = new XmlSerializerNamespaces();
 
-		private readonly List<Type> _serializerTypes = new List<Type>();
 		private readonly XmlWriterSettings _xmlSettings;
-		private readonly XmlAttributeOverrides _overrides = new XmlAttributeOverrides();
+		private readonly Dictionary<Type, XmlAttributeOverrides> _overrides = new Dictionary<Type, XmlAttributeOverrides>();
 
-		private readonly Dictionary<string, XmlSerializer> _serializers = new Dictionary<string, XmlSerializer>();
+		private readonly Dictionary<Type, XmlSerializer> _serializers = new Dictionary<Type, XmlSerializer>();
 
-		public DefaultSerializer()
+		public DefaultSerializerRoot()
 		{
 			_xmlSettings = new XmlWriterSettings
 			{
@@ -68,30 +67,37 @@ namespace Shuttle.Core.Infrastructure
 			}
 		}
 
-		public void AddSerializerType(Type type)
+		public void AddSerializerType(Type root, Type contained)
 		{
-			Guard.AgainstNull(type, "type");
+			Guard.AgainstNull(root, "type");
+			Guard.AgainstNull(contained, "contained");
 
-			if (HasSerializerType(type))
+			if (HasSerializerType(root, contained))
 			{
 				return;
 			}
 
 			lock (Padlock)
 			{
-				if (HasSerializerType(type))
+				if (HasSerializerType(root, contained))
 				{
 					return;
 				}
 
-				_serializerTypes.Add(type);
-				_overrides.Add(type, new XmlAttributes { XmlRoot = new XmlRootAttribute { Namespace = type.Namespace } });
-
-				foreach (var nested in type.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+				if (!_overrides.ContainsKey(root))
 				{
-					if (!HasSerializerType(nested))
+					_overrides.Add(root, new XmlAttributeOverrides());
+				}
+
+				var overrides = _overrides[root];
+
+				overrides.Add(contained, new XmlAttributes { XmlRoot = new XmlRootAttribute { Namespace = contained.Namespace } });
+
+				foreach (var nested in root.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+				{
+					if (!HasSerializerType(root, nested))
 					{
-						AddSerializerType(nested);
+						AddSerializerType(root, nested);
 					}
 				}
 
@@ -99,15 +105,11 @@ namespace Shuttle.Core.Infrastructure
 			}
 		}
 
-		public bool HasSerializerType(Type type)
+		private bool HasSerializerType(Type root, Type contained)
 		{
 			lock (Padlock)
 			{
-				return
-					_serializerTypes.Find(
-						candidate =>
-							(candidate.AssemblyQualifiedName ?? string.Empty).Equals(type.AssemblyQualifiedName,
-								StringComparison.InvariantCultureIgnoreCase)) != null;
+				return _overrides.ContainsKey(root) && _overrides[root][contained] != null;
 			}
 		}
 
@@ -115,19 +117,17 @@ namespace Shuttle.Core.Infrastructure
 		{
 			lock (Padlock)
 			{
-				var key = type.AssemblyQualifiedName;
-
-				if (string.IsNullOrEmpty(key))
+				if (!_overrides.ContainsKey(type))
 				{
-					throw new ApplicationException();
+					_overrides.Add(type, new XmlAttributeOverrides());
 				}
 
-				if (!_serializers.ContainsKey(key))
+				if (!_serializers.ContainsKey(type))
 				{
-					_serializers.Add(key, new XmlSerializer(type, _overrides, _serializerTypes.ToArray(), null, string.Empty));
+					_serializers.Add(type, new XmlSerializer(type, _overrides[type]));
 				}
 
-				return _serializers[key];
+				return _serializers[type];
 			}
 		}
 	}
