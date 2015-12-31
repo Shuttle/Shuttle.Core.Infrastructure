@@ -36,9 +36,6 @@ namespace Shuttle.Core.Infrastructure
 			Guard.AgainstNull(instance, "instance");
 
 			var messageType = instance.GetType();
-
-			AddSerializerType(messageType);
-
 			var serializer = GetSerializer(messageType);
 
 			var xml = new StringBuilder();
