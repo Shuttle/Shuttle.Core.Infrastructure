@@ -11,7 +11,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		public void Should_be_able_to_serialize_and_deserialize_a_simple_type()
 		{
 			var original = new SimpleSerializerType();
-			var serializer = new DefaultSerializerRoot();
+			var serializer = new DefaultSerializer();
 
 			var stream = serializer.Serialize(original);
 
@@ -28,7 +28,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		public void Should_be_able_to_serialize_and_deserialize_a_complex_type()
 		{
 			var complex = new ComplexSerializerType();
-			var serializer = new DefaultSerializerRoot();
+			var serializer = new DefaultSerializer();
 
 			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v1.SomeSerializerType));
 			serializer.AddSerializerType(typeof(ComplexSerializerType), typeof(v1.AnotherSerializerType));

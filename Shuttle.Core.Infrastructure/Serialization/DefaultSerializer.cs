@@ -8,7 +8,7 @@ using System.Xml.Serialization;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class DefaultSerializerRoot : ISerializer, ISerializerRootType
+	public class DefaultSerializer : ISerializer, ISerializerRootType
 	{
 		private static readonly object Padlock = new object();
 		private readonly XmlSerializerNamespaces _namespaces = new XmlSerializerNamespaces();
@@ -18,7 +18,7 @@ namespace Shuttle.Core.Infrastructure
 
 		private readonly Dictionary<Type, XmlSerializer> _serializers = new Dictionary<Type, XmlSerializer>();
 
-		public DefaultSerializerRoot()
+		public DefaultSerializer()
 		{
 			_xmlSettings = new XmlWriterSettings
 			{
