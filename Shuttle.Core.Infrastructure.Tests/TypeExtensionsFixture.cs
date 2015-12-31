@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Shuttle.Core.Infrastructure.Tests
 {
     [TestFixture]
-    public class TypeExtensionsTest
+    public class TypeExtensionsFixture
     {
         [Test]
         public void Should_be_able_to_determine_if_a_type_is_assignable_to_a_generic()

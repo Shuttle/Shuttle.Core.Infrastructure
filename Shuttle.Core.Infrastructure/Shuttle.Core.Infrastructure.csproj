@@ -99,6 +99,9 @@
     <Compile Include="Reflection\IReflectionService.cs" />
     <Compile Include="Reflection\ReflectionService.cs" />
     <Compile Include="ReusableObjectPool.cs" />
+    <Compile Include="Serialization\DefaultSerializer.cs" />
+    <Compile Include="Serialization\ISerializer.cs" />
+    <Compile Include="Serialization\ISerializerTypes.cs" />
     <Compile Include="Threading\IProcessor.cs" />
     <Compile Include="Threading\IProcessorFactory.cs" />
     <Compile Include="Threading\IProcessorThreadPool.cs" />
@@ -144,6 +147,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Shuttle.Core.Infrastructure.Tests
 {
     [TestFixture]
-    public class ArgumentsTest
+    public class ArgumentsFixture
     {
         [Test]
         public void Should_be_able_to_parse_simple_arguments()

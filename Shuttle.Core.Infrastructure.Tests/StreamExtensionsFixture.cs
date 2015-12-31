@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Shuttle.Core.Infrastructure.Tests
 {
     [TestFixture]
-    public class StreamExtensionsTest
+    public class StreamExtensionsFixture
     {
         [Test]
         public void Should_be_able_to_convert_a_stream_to_an_array_of_bytes()
