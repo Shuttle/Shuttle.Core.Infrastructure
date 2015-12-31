@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shuttle.Core.Infrastructure.Serialization
+namespace Shuttle.Core.Infrastructure
 {
 	public interface ISerializerTypes
 	{

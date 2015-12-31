@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace Shuttle.Core.Infrastructure.Serialization
+namespace Shuttle.Core.Infrastructure
 {
 	public interface ISerializer
 	{

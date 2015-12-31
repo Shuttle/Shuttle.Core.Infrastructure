@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using NUnit.Framework;
-using Shuttle.Core.Infrastructure.Serialization;
 
 namespace Shuttle.Core.Infrastructure.Tests
 {

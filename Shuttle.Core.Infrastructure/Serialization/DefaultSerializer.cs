@@ -6,7 +6,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
-namespace Shuttle.Core.Infrastructure.Serialization
+namespace Shuttle.Core.Infrastructure
 {
 	public class DefaultSerializer : ISerializer, ISerializerTypes
 	{
