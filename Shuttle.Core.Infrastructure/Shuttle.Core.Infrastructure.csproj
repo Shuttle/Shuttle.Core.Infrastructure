@@ -73,7 +73,6 @@
   <ItemGroup>
     <Compile Include="Arguments.cs" />
     <Compile Include="ConfigurationItem.cs" />
-    <Compile Include="Configuration\ShuttleConfigurationSection.cs" />
     <Compile Include="Exceptions\EmptyStringException.cs" />
     <Compile Include="Exceptions\NullValueException.cs" />
     <Compile Include="ColoredConsole.cs" />
