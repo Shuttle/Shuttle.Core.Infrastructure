@@ -72,14 +72,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="ConfigurationItem.cs" />
+    <Compile Include="Configuration\ConfigurationItem.cs" />
+    <Compile Include="Configuration\ConfigurationSection.cs" />
     <Compile Include="Exceptions\EmptyStringException.cs" />
     <Compile Include="Exceptions\NullValueException.cs" />
     <Compile Include="ColoredConsole.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="ISpecification.cs" />
-    <Compile Include="IThreadState.cs" />
+    <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />
     <Compile Include="Pipeline\IPipeline.cs" />
     <Compile Include="Pipeline\IPipelineObserver.cs" />

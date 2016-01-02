@@ -5,16 +5,16 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ConfigurationItem<T>
     {
-        private readonly T item;
+        private readonly T _item;
 
         public ConfigurationItem(T item)
         {
-            this.item = item;
+            _item = item;
         }
 
         public T GetValue()
         {
-            return item;
+            return _item;
         }
 
         public static ConfigurationItem<T> ReadSetting(string key)
