@@ -65,7 +65,6 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
@@ -74,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Arguments.cs" />
     <Compile Include="ConfigurationItem.cs" />
+    <Compile Include="Configuration\ShuttleConfigurationSection.cs" />
     <Compile Include="Exceptions\EmptyStringException.cs" />
     <Compile Include="Exceptions\NullValueException.cs" />
     <Compile Include="ColoredConsole.cs" />
