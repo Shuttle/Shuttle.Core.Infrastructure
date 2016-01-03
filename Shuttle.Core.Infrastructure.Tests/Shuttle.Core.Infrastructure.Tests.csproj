@@ -40,10 +40,13 @@
       <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
+    <Compile Include="Configuration\ConfigurationSectionProviderFixture.cs" />
+    <Compile Include="Configuration\MockSection.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
     <Compile Include="Pipeline\Fixture.cs" />
@@ -71,6 +74,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Configuration\Files\App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

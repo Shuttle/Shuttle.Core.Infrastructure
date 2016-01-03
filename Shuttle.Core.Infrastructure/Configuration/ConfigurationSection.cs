@@ -3,7 +3,7 @@ using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class ConfigurationSection
+	public class ConfigurationSectionProvider
 	{
 		public static T Open<T>(string name) where T : class
 		{
@@ -11,7 +11,7 @@ namespace Shuttle.Core.Infrastructure
 
 			if (section == null)
 			{
-				throw new ConfigurationErrorsException(string.Format(InfrastructureResources.OpenSectionException, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
+				Log.Warning(string.Format(InfrastructureResources.SectionNotFound, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
 			}
 
 			return section;
@@ -24,7 +24,7 @@ namespace Shuttle.Core.Infrastructure
 
 			if (section == null)
 			{
-				throw new ConfigurationErrorsException(string.Format(InfrastructureResources.OpenSectionException, key, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
+				Log.Warning(string.Format(InfrastructureResources.SectionNotFound, key, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
 			}
 
 			return section;
@@ -38,7 +38,7 @@ namespace Shuttle.Core.Infrastructure
 
 			if (section == null)
 			{
-				throw new ConfigurationErrorsException(string.Format(InfrastructureResources.OpenSectionException, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
+				Log.Warning(string.Format(InfrastructureResources.SectionNotFound, name, AppDomain.CurrentDomain.SetupInformation.ConfigurationFile, typeof(T).FullName));
 			}
 
 			return section;
@@ -50,11 +50,11 @@ namespace Shuttle.Core.Infrastructure
 
 			var sectionGroup = configuration.GetSectionGroup(group);
 
-			var section = sectionGroup == null ? configuration.GetSection(name) as T : sectionGroup.Sections[name] as T;
+			var section = (sectionGroup == null || sectionGroup.Sections[name] == null ? configuration.GetSection(name) : sectionGroup.Sections[name]) as T;
 
 			if (section == null)
 			{
-				throw new ConfigurationErrorsException(string.Format(InfrastructureResources.OpenSectionException, string.Format("{0}/{1}", group, name), file, typeof(T).FullName));
+				Log.Warning(string.Format(InfrastructureResources.SectionNotFound, string.Format("{0}/{1}", group, name), file, typeof(T).FullName));
 			}
 
 			return section;

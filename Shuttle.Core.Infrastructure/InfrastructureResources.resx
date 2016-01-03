@@ -219,7 +219,7 @@
     <value>String duration contains invalid items '{0}'.</value>
     <comment>{0} = string containing invalid format</comment>
   </data>
-  <data name="OpenSectionException" xml:space="preserve">
+  <data name="SectionNotFound" xml:space="preserve">
     <value>Could not find a section named '{0}' in configuration file '{1}' that is of type '{2}'.</value>
     <comment>{0} = section name, {1} = configuration file, {2} = the section type</comment>
   </data>

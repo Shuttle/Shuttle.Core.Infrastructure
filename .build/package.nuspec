@@ -11,7 +11,7 @@
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Cross-cutting infrastructure components such as logging, guard, and reflection.</description>
 		<releaseNotes/>
-		<copyright>Copyright (c) 2011-{year}, Eben Roux</copyright>
+		<copyright>Copyright (c) {year}, Eben Roux</copyright>
 		<tags>shuttle shuttle-core</tags>
 	</metadata>
 </package>
