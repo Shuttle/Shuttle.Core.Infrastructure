@@ -1,17 +1,17 @@
 <?xml version="1.0"?>
 <package >
 	<metadata>
-		<id>shuttle-core-infrastructure</id>
+		<id>Shuttle.Core.Infrastructure</id>
 		<version>{semver}</version>
 		<authors>Eben Roux</authors>
 		<owners>Eben Roux</owners>
-		<licenseUrl>https://github.com/shuttle/shuttle-core-infrastructure/raw/master/LICENSE</licenseUrl>
-		<projectUrl>https://github.com/shuttle/shuttle-core-infrastructure</projectUrl>
-		<iconUrl>https://raw.githubusercontent.com/Shuttle/shuttle-core-infrastructure/master/.media/logo.png</iconUrl>
+		<licenseUrl>https://github.com/shuttle/Shuttle.Core.Infrastructure/raw/master/LICENSE</licenseUrl>
+		<projectUrl>https://github.com/shuttle/Shuttle.Core.Infrastructure</projectUrl>
+		<iconUrl>https://raw.githubusercontent.com/Shuttle/Shuttle.Core.Infrastructure/master/.media/logo.png</iconUrl>
 		<requireLicenseAcceptance>false</requireLicenseAcceptance>
 		<description>Cross-cutting infrastructure components such as logging, guard, and reflection.</description>
 		<releaseNotes/>
 		<copyright>Copyright (c) {year}, Eben Roux</copyright>
-		<tags>shuttle shuttle-core</tags>
+		<tags>shuttle shuttle-core shuttle-core-infrastructure</tags>
 	</metadata>
 </package>
