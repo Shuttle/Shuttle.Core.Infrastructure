@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class State<TOwner>
+    public class State<TOwner> : IState<TOwner>
     {
         private readonly TOwner _owner;
         private readonly Dictionary<string, object> _state = new Dictionary<string, object>();

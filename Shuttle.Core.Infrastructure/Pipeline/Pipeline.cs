@@ -5,12 +5,7 @@ using System.Reflection;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public enum PipelineStages
-    {
-        Entry = 0
-    }
-
-    public class Pipeline
+    public class Pipeline : IPipeline
     {
         private readonly string _enteringPipelineStage = InfrastructureResources.EnteringPipelineStage;
 
@@ -24,18 +19,18 @@ namespace Shuttle.Core.Infrastructure
         private readonly OnPipelineException _onPipelineException = new OnPipelineException();
 
         private readonly OnPipelineStarting _onPipelineStarting = new OnPipelineStarting();
-        private readonly string _raisingPipelineEvent = InfrastructureResources.RaisingPipelineEvent;
+        private readonly string _raisingPipelineEvent = InfrastructureResources.VerboseRaisingPipelineEvent;
 
         protected readonly Dictionary<string, List<IObserver>> ObservedEvents =
             new Dictionary<string, List<IObserver>>();
 
         protected readonly List<IObserver> Observers = new List<IObserver>();
-        protected readonly List<PipelineStage> Stages = new List<PipelineStage>();
+        protected readonly List<IPipelineStage> Stages = new List<IPipelineStage>();
 
         public Pipeline()
         {
             Id = Guid.NewGuid();
-            State = new State<Pipeline>(this);
+            State = new State<IPipeline>(this);
             _onAbortPipeline.Reset(this);
             _onPipelineException.Reset(this);
 
@@ -53,11 +48,11 @@ namespace Shuttle.Core.Infrastructure
         public Exception Exception { get; internal set; }
         public bool Aborted { get; internal set; }
         public string StageName { get; private set; }
-        public PipelineEvent Event { get; private set; }
+        public IPipelineEvent Event { get; private set; }
 
-        public State<Pipeline> State { get; private set; }
+        public IState<IPipeline> State { get; private set; }
 
-        public Pipeline RegisterObserver(IObserver observer)
+        public IPipeline RegisterObserver(IObserver observer)
         {
             Observers.Add(observer);
             var observerInterfaces = observer.GetType().GetInterfaces();
@@ -101,13 +96,19 @@ namespace Shuttle.Core.Infrastructure
             ExceptionHandled = false;
             Exception = null;
 
-            _log.Verbose(string.Format(_executingPipeline, GetType().FullName));
+            if (_log.IsVerboseEnabled)
+            {
+                _log.Verbose(string.Format(_executingPipeline, GetType().FullName));
+            }
 
             foreach (var stage in Stages)
             {
                 StageName = stage.Name;
 
-                _log.Verbose(string.Format(_enteringPipelineStage, StageName));
+                if (_log.IsVerboseEnabled)
+                {
+                    _log.Verbose(string.Format(_enteringPipelineStage, StageName));
+                }
 
                 foreach (var @event in stage.Events)
                 {
@@ -142,7 +143,10 @@ namespace Shuttle.Core.Infrastructure
                             throw;
                         }
 
-                        _log.Verbose(string.Format(_firstChanceExceptionHandledByPipeline, ex.Message));
+                        if (_log.IsVerboseEnabled)
+                        {
+                            _log.Verbose(string.Format(_firstChanceExceptionHandledByPipeline, ex.Message));
+                        }
 
                         if (Aborted)
                         {
@@ -162,12 +166,7 @@ namespace Shuttle.Core.Infrastructure
             return result;
         }
 
-        private void RaiseEvent(OnAbortPipeline @event)
-        {
-            RaiseEvent(@event, true);
-        }
-
-        private void RaiseEvent(PipelineEvent @event, bool ignoreAbort = false)
+        private void RaiseEvent(IPipelineEvent @event, bool ignoreAbort = false)
         {
             var observersForEvent = (from e in ObservedEvents
                 where e.Key == @event.GetType().FullName
@@ -180,14 +179,24 @@ namespace Shuttle.Core.Infrastructure
 
             foreach (var observer in observersForEvent)
             {
-                _log.Verbose(string.Format(_raisingPipelineEvent, @event.Name, StageName, observer.GetType().FullName));
+                if (_log.IsVerboseEnabled)
+                {
+                    _log.Verbose(string.Format(_raisingPipelineEvent, @event.Name, StageName,
+                        observer.GetType().FullName));
+                }
 
-                observer.GetType().InvokeMember("Execute",
-                    BindingFlags.FlattenHierarchy | BindingFlags.Instance |
-                    BindingFlags.InvokeMethod | BindingFlags.Public, null,
-                    observer,
-                    new object[] {@event});
-
+                try
+                {
+                    observer.GetType().InvokeMember("Execute",
+                        BindingFlags.FlattenHierarchy | BindingFlags.Instance |
+                        BindingFlags.InvokeMethod | BindingFlags.Public, null,
+                        observer,
+                        new object[] {@event});
+                }
+                catch (Exception ex)
+                {
+                    throw new PipelineException(string.Format(_raisingPipelineEvent, @event.Name, StageName, observer.GetType().FullName), ex);
+                }
                 if (Aborted && !ignoreAbort)
                 {
                     return;
@@ -195,7 +204,7 @@ namespace Shuttle.Core.Infrastructure
             }
         }
 
-        public PipelineStage RegisterStage(string name)
+        public IPipelineStage RegisterStage(string name)
         {
             var stage = new PipelineStage(name);
 
@@ -204,7 +213,7 @@ namespace Shuttle.Core.Infrastructure
             return stage;
         }
 
-        public PipelineStage GetStage(string name)
+        public IPipelineStage GetStage(string name)
         {
             var result = Stages.Find(stage => stage.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
 
@@ -212,11 +221,6 @@ namespace Shuttle.Core.Infrastructure
                 string.Format(InfrastructureResources.PipelineStageNotFound, name));
 
             return result;
-        }
-
-        public PipelineStage GetStage(PipelineStages stage)
-        {
-            return GetStage("__PipelineEntry");
         }
     }
 }

@@ -4,9 +4,9 @@ using System.Collections.ObjectModel;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class PipelineStage
+    public class PipelineStage : IPipelineStage
     {
-        protected readonly List<PipelineEvent> PipelineEvents = new List<PipelineEvent>();
+        protected readonly List<IPipelineEvent> PipelineEvents = new List<IPipelineEvent>();
 
         public PipelineStage(string name)
         {
@@ -15,17 +15,17 @@ namespace Shuttle.Core.Infrastructure
 
         public string Name { get; private set; }
 
-        public IEnumerable<PipelineEvent> Events
+        public IEnumerable<IPipelineEvent> Events
         {
-            get { return new ReadOnlyCollection<PipelineEvent>(PipelineEvents); }
+            get { return new ReadOnlyCollection<IPipelineEvent>(PipelineEvents); }
         }
 
-        public PipelineStage WithEvent<TPipelineEvent>() where TPipelineEvent : PipelineEvent, new()
+        public IPipelineStage WithEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
             return WithEvent(new TPipelineEvent());
         }
 
-        public PipelineStage WithEvent(PipelineEvent pipelineEvent)
+        public IPipelineStage WithEvent(IPipelineEvent pipelineEvent)
         {
             Guard.AgainstNull(pipelineEvent, "pipelineEvent");
 
@@ -34,7 +34,7 @@ namespace Shuttle.Core.Infrastructure
             return this;
         }
 
-        public RegisterEventBefore BeforeEvent<TPipelineEvent>() where TPipelineEvent : PipelineEvent, new()
+        public IRegisterEventBefore BeforeEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
             var eventName = typeof (TPipelineEvent).FullName;
             var pipelineEvent = PipelineEvents.Find(e => e.Name.Equals(eventName));
@@ -48,7 +48,7 @@ namespace Shuttle.Core.Infrastructure
             return new RegisterEventBefore(PipelineEvents, pipelineEvent);
         }
 
-        public RegisterEventAfter AfterEvent<TPipelineEvent>() where TPipelineEvent : PipelineEvent, new()
+        public IRegisterEventAfter AfterEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
             var eventName = typeof (TPipelineEvent).FullName;
             var pipelineEvent = PipelineEvents.Find(e => e.Name.Equals(eventName));

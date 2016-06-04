@@ -223,15 +223,6 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Raising pipeline event &apos;{0}&apos; in stage &apos;{1}&apos; for observer &apos;{2}&apos;..
-        /// </summary>
-        public static string RaisingPipelineEvent {
-            get {
-                return ResourceManager.GetString("RaisingPipelineEvent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Attempt to assign a value to &apos;{0}&apos; but it has already been assigned a value..
         /// </summary>
         public static string ReassignmentException {
@@ -300,6 +291,51 @@ namespace Shuttle.Core.Infrastructure {
         public static string UnhandledPipelineException {
             get {
                 return ResourceManager.GetString("UnhandledPipelineException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Raising pipeline event &apos;{0}&apos; in stage &apos;{1}&apos; for observer &apos;{2}&apos;..
+        /// </summary>
+        public static string VerboseRaisingPipelineEvent {
+            get {
+                return ResourceManager.GetString("VerboseRaisingPipelineEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionScope (&apos;{0}&apos;) using ambient transaction..
+        /// </summary>
+        public static string VerboseTransactionScopeAmbient {
+            get {
+                return ResourceManager.GetString("VerboseTransactionScopeAmbient", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionScope (&apos;{0}&apos;) using ambient transaction has completed..
+        /// </summary>
+        public static string VerboseTransactionScopeAmbientCompleted {
+            get {
+                return ResourceManager.GetString("VerboseTransactionScopeAmbientCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionScope (&apos;{0}&apos;) has completed..
+        /// </summary>
+        public static string VerboseTransactionScopeCompleted {
+            get {
+                return ResourceManager.GetString("VerboseTransactionScopeCompleted", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to TransactionScope (&apos;{0}&apos;) created with isolation level &apos;{1}&apos; and timeout of &apos;{2}&apos;..
+        /// </summary>
+        public static string VerboseTransactionScopeCreated {
+            get {
+                return ResourceManager.GetString("VerboseTransactionScopeCreated", resourceCulture);
             }
         }
     }

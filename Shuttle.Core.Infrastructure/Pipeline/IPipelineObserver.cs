@@ -4,8 +4,8 @@ namespace Shuttle.Core.Infrastructure
     {
     }
 
-    public interface IPipelineObserver<in TPipelineEvent> : IObserver
+    public interface IPipelineObserver<in TPipelineEvent> : IObserver where TPipelineEvent : IPipelineEvent
     {
-        void Execute(TPipelineEvent pipelineEvent1);
+        void Execute(TPipelineEvent pipelineEvent);
     }
 }

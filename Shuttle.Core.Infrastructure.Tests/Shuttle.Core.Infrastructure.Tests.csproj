@@ -46,7 +46,7 @@
     <Compile Include="ArgumentsFixture.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
-    <Compile Include="Pipeline\Fixture.cs" />
+    <Compile Include="Pipeline\PipelineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Serializer\ComplexSerializerType.cs" />
     <Compile Include="Serializer\DefaultSerializerFixture.cs" />

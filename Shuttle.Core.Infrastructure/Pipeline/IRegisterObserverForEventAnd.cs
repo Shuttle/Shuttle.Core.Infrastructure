@@ -1,7 +1,7 @@
 namespace Shuttle.Core.Infrastructure
 {
-    public interface IRegisterObserverForEventAnd
+    public interface IRegisterObserverForEventAndas
     {
-        IRegisterObserverForEventAnd AndEvent(string name);
+        IRegisterObserverForEventAndas AndEvent(string name);
     }
 }

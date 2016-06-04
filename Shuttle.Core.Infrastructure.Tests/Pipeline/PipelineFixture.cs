@@ -4,7 +4,7 @@ using NUnit.Framework;
 namespace Shuttle.Core.Infrastructure.Tests
 {
     [TestFixture]
-    public class Fixture
+    public class PipelineFixture
     {
         [Test]
         public void Should_be_able_to_execute_a_valid_pipeline()

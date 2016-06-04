@@ -2,34 +2,33 @@
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class RegisterEventAfter
+    public class RegisterEventAfter : IRegisterEventAfter
     {
-        private readonly List<PipelineEvent> eventsToExecute;
-        private readonly PipelineEvent pipelineEvent;
-        private readonly PipelineStage pipelineStage;
+        private readonly List<IPipelineEvent> _eventsToExecute;
+        private readonly IPipelineEvent _pipelineEvent;
+        private readonly IPipelineStage _pipelineStage;
 
-        public RegisterEventAfter(PipelineStage pipelineStage, List<PipelineEvent> eventsToExecute,
-            PipelineEvent pipelineEvent)
+        public RegisterEventAfter(IPipelineStage pipelineStage, List<IPipelineEvent> eventsToExecute, IPipelineEvent pipelineEvent)
         {
-            this.pipelineStage = pipelineStage;
-            this.eventsToExecute = eventsToExecute;
-            this.pipelineEvent = pipelineEvent;
+            _pipelineStage = pipelineStage;
+            _eventsToExecute = eventsToExecute;
+            _pipelineEvent = pipelineEvent;
         }
 
-        public PipelineStage Register<TPipelineEvent>() where TPipelineEvent : PipelineEvent, new()
+        public IPipelineStage Register<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
             return Register(new TPipelineEvent());
         }
 
-        public PipelineStage Register(PipelineEvent pipelineEventToRegister)
+        public IPipelineStage Register(IPipelineEvent pipelineEventToRegister)
         {
             Guard.AgainstNull(pipelineEventToRegister, "pipelineEventToRegister");
 
-            var index = eventsToExecute.IndexOf(pipelineEvent);
+            var index = _eventsToExecute.IndexOf(_pipelineEvent);
 
-            eventsToExecute.Insert(index + 1, pipelineEventToRegister);
+            _eventsToExecute.Insert(index + 1, pipelineEventToRegister);
 
-            return pipelineStage;
+            return _pipelineStage;
         }
     }
 }

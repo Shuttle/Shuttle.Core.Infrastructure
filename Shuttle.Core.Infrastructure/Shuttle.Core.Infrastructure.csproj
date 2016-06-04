@@ -67,6 +67,7 @@
     <Reference Include="System.Runtime.Serialization">
       <RequiredTargetFramework>3.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -76,9 +77,15 @@
     <Compile Include="Exceptions\EmptyStringException.cs" />
     <Compile Include="Exceptions\NullValueException.cs" />
     <Compile Include="ColoredConsole.cs" />
+    <Compile Include="Exceptions\PipelineException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
     <Compile Include="ISpecification.cs" />
+    <Compile Include="Pipeline\IPipelineEvent.cs" />
+    <Compile Include="Pipeline\IPipelineStage.cs" />
+    <Compile Include="Pipeline\IRegisterEventAfter.cs" />
+    <Compile Include="Pipeline\IRegisterEventBefore.cs" />
+    <Compile Include="Pipeline\IState.cs" />
     <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />
     <Compile Include="Pipeline\IPipeline.cs" />
@@ -87,7 +94,6 @@
     <Compile Include="Pipeline\IRegisterObserverForEventAnd.cs" />
     <Compile Include="Pipeline\Pipeline.cs" />
     <Compile Include="Pipeline\PipelineEvent.cs" />
-    <Compile Include="Pipeline\PipelineResources.Designer.cs" />
     <Compile Include="Pipeline\PipelineStage.cs" />
     <Compile Include="Pipeline\RegisterEventAfter.cs" />
     <Compile Include="Pipeline\RegisterEventBefore.cs" />
@@ -135,6 +141,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>InfrastructureResources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Transactions\DefaultTransactionScope.cs" />
+    <Compile Include="Transactions\DefaultTransactionScopeFactory.cs" />
+    <Compile Include="Transactions\ITransactionScope.cs" />
+    <Compile Include="Transactions\ITransactionScopeFactory.cs" />
+    <Compile Include="Transactions\NullTransactionScope.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="InfrastructureResources.resx">
@@ -143,6 +154,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
