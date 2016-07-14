@@ -21,11 +21,24 @@ namespace Shuttle.Core.Infrastructure
         private readonly OnPipelineStarting _onPipelineStarting = new OnPipelineStarting();
         private readonly string _raisingPipelineEvent = InfrastructureResources.VerboseRaisingPipelineEvent;
 
-        protected readonly Dictionary<string, List<IObserver>> ObservedEvents =
-            new Dictionary<string, List<IObserver>>();
+        protected readonly Dictionary<string, List<ObserverMethodInfoPair>> ObservedEvents =
+            new Dictionary<string, List<ObserverMethodInfoPair>>();
 
         protected readonly List<IObserver> Observers = new List<IObserver>();
         protected readonly List<IPipelineStage> Stages = new List<IPipelineStage>();
+
+        protected struct ObserverMethodInfoPair
+        {
+            public IObserver Observer { get; private set; }
+
+            public MethodInfo MethodInfo { get; private set; }
+
+            public ObserverMethodInfoPair(IObserver observer, MethodInfo methodInfo)
+            {
+                Observer = observer;
+                MethodInfo = methodInfo;
+            }
+        }
 
         public Pipeline()
         {
@@ -63,17 +76,17 @@ namespace Shuttle.Core.Infrastructure
 
             foreach (var @event in implementedEvents)
             {
-                var pipelineEventName = @event.GetGenericArguments()[0].FullName;
-                var pipelineEvent = (from observeEvent in ObservedEvents
-                    where observeEvent.Key == pipelineEventName
-                    select observeEvent).SingleOrDefault();
+                var pipelineEventType = @event.GetGenericArguments()[0];
+                var pipelineEventName = pipelineEventType.FullName;
 
-                if (pipelineEvent.Key == null)
+                List<ObserverMethodInfoPair> pipelineEvent;
+                if (!ObservedEvents.TryGetValue(pipelineEventName, out pipelineEvent))
                 {
-                    ObservedEvents.Add(pipelineEventName, new List<IObserver>());
+                    ObservedEvents.Add(pipelineEventName, new List<ObserverMethodInfoPair>());
                 }
 
-                ObservedEvents[pipelineEventName].Add(observer);
+                MethodInfo methodInfo = observer.GetType().GetMethod("Execute", new[] {pipelineEventType});
+                ObservedEvents[pipelineEventName].Add(new ObserverMethodInfoPair(observer, methodInfo));
             }
             return this;
         }
@@ -168,9 +181,8 @@ namespace Shuttle.Core.Infrastructure
 
         private void RaiseEvent(IPipelineEvent @event, bool ignoreAbort = false)
         {
-            var observersForEvent = (from e in ObservedEvents
-                where e.Key == @event.GetType().FullName
-                select e.Value).SingleOrDefault();
+            List<ObserverMethodInfoPair> observersForEvent;
+            ObservedEvents.TryGetValue(@event.GetType().FullName, out observersForEvent);
 
             if (observersForEvent == null || observersForEvent.Count == 0)
             {
@@ -187,11 +199,7 @@ namespace Shuttle.Core.Infrastructure
 
                 try
                 {
-                    observer.GetType().InvokeMember("Execute",
-                        BindingFlags.FlattenHierarchy | BindingFlags.Instance |
-                        BindingFlags.InvokeMethod | BindingFlags.Public, null,
-                        observer,
-                        new object[] {@event});
+                    observer.MethodInfo.Invoke(observer.Observer, new object[] {@event});
                 }
                 catch (Exception ex)
                 {
