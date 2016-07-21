@@ -189,8 +189,9 @@ namespace Shuttle.Core.Infrastructure
                 return;
             }
 
-            foreach (var observer in observersForEvent)
+            foreach (var observerPair in observersForEvent)
             {
+                var observer = observerPair.Observer;
                 if (_log.IsVerboseEnabled)
                 {
                     _log.Verbose(string.Format(_raisingPipelineEvent, @event.Name, StageName,
@@ -199,7 +200,7 @@ namespace Shuttle.Core.Infrastructure
 
                 try
                 {
-                    observer.MethodInfo.Invoke(observer.Observer, new object[] {@event});
+                    observerPair.MethodInfo.Invoke(observer, new object[] {@event});
                 }
                 catch (Exception ex)
                 {
