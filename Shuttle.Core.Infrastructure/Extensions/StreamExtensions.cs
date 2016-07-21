@@ -92,6 +92,7 @@ namespace Shuttle.Core.Infrastructure
         public static Stream Copy(this Stream stream)
         {
             var result = new MemoryStream();
+            result.Capacity = (int) stream.Length;
 
             var originalPosition = stream.Position;
 
