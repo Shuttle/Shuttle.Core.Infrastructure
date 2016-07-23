@@ -92,20 +92,19 @@ namespace Shuttle.Core.Infrastructure
         public static Stream Copy(this Stream stream)
         {
             var result = new MemoryStream();
+            if (!stream.CanSeek)
+            {
+                throw new InvalidOperationException(
+                    string.Format(InfrastructureResources.StreamCannotSeek, "StreamExtensions.Copy"));
+            }
+
+            result.Capacity = (int) stream.Length;
 
             var originalPosition = stream.Position;
 
             try
             {
-                try
-                {
-                    stream.Seek(0, SeekOrigin.Begin);
-                }
-                catch (Exception ex)
-                {
-                    throw new InvalidOperationException(
-                        string.Format(InfrastructureResources.StreamCannotSeek, "StreamExtensions.Copy"), ex);
-                }
+                stream.Seek(0, SeekOrigin.Begin);
 
                 stream.CopyTo(result);
 
