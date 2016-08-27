@@ -80,6 +80,7 @@
     <Compile Include="Exceptions\PipelineException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
+    <Compile Include="IReusability.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="Pipeline\IPipelineEvent.cs" />
     <Compile Include="Pipeline\IPipelineStage.cs" />
