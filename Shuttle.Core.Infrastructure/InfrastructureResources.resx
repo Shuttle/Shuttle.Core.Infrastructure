@@ -133,7 +133,7 @@
     <comment>{0} = string name</comment>
   </data>
   <data name="TraceGetTypesFromAssembly" xml:space="preserve">
-    <value>Retrieving all typew from from assembly '{0}'.</value>
+    <value>Retrieving all types from from assembly '{0}'.</value>
     <comment>{0} = assembly</comment>
   </data>
   <data name="InvalidArgumentException" xml:space="preserve">

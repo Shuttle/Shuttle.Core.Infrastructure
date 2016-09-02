@@ -277,7 +277,7 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Retrieving all typew from from assembly &apos;{0}&apos;..
+        ///   Looks up a localized string similar to Retrieving all types from from assembly &apos;{0}&apos;..
         /// </summary>
         public static string TraceGetTypesFromAssembly {
             get {
