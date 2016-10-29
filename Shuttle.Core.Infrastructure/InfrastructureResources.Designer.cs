@@ -97,6 +97,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to {0} &apos;{1}&apos; has no default constructor..
+        /// </summary>
+        public static string DefaultConstructorRequired {
+            get {
+                return ResourceManager.GetString("DefaultConstructorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The string with name &apos;{0}&apos; may not be empty..
         /// </summary>
         public static string EmptyStringException {
@@ -282,6 +291,24 @@ namespace Shuttle.Core.Infrastructure {
         public static string TraceGetTypesFromAssembly {
             get {
                 return ResourceManager.GetString("TraceGetTypesFromAssembly", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The TripleDES section in the application configuration file may not have an empty value for the &apos;key&apos; attribute..
+        /// </summary>
+        public static string TripleDESKeyMissing {
+            get {
+                return ResourceManager.GetString("TripleDESKeyMissing", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to In order to use TripleDES cryptography you need to add the &apos;tripleDES&apos; section to the application configuration file.  Remember to add the section handler..
+        /// </summary>
+        public static string TripleDESSectionMissing {
+            get {
+                return ResourceManager.GetString("TripleDESSectionMissing", resourceCulture);
             }
         }
         

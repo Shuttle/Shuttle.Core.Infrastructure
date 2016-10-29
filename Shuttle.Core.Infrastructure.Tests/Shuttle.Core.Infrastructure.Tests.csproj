@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
+    <Compile Include="CompressionAlgorithmTest.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
     <Compile Include="Pipeline\PipelineFixture.cs" />
