@@ -16,5 +16,6 @@ namespace Shuttle.Core.Infrastructure
         bool Execute();
         IPipelineStage RegisterStage(string name);
         IPipelineStage GetStage(string name);
+        IPipeline RegisterObserver(IObserver observer);
     }
 }

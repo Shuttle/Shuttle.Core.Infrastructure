@@ -262,7 +262,7 @@
     <comment>{0} = enum type, {1} = value not in enum</comment>
   </data>
   <data name="TypeNotRegisteredException" xml:space="preserve">
-    <value>Not implementation type has been registered for service type '{0}'.</value>
+    <value>No implementation type has been registered for service type '{0}'.</value>
     <comment>{0} = service type full name</comment>
   </data>
 </root>
