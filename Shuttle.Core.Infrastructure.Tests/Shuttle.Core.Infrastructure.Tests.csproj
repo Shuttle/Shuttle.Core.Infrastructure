@@ -44,11 +44,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
-    <Compile Include="CompressionAlgorithmTest.cs" />
+    <Compile Include="CompressionAlgorithmFixture.cs" />
+    <Compile Include="Container\DefaultComponentContainerFixture.cs" />
+    <Compile Include="Container\DoSomethingWithDependency.cs" />
+    <Compile Include="Container\ISomeDependency.cs" />
+    <Compile Include="Container\SomeDependency.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
     <Compile Include="Pipeline\PipelineFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Container\DoSomething.cs" />
+    <Compile Include="Container\IDoSomething.cs" />
     <Compile Include="Serializer\ComplexSerializerType.cs" />
     <Compile Include="Serializer\DefaultSerializerFixture.cs" />
     <Compile Include="Serializer\SimpleSerializerType.cs" />

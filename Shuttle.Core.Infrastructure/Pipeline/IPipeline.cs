@@ -10,8 +10,7 @@ namespace Shuttle.Core.Infrastructure
         bool Aborted { get; }
         string StageName { get; }
         IPipelineEvent Event { get; }
-        IState<IPipeline> State { get; }
-        IPipeline RegisterObserver(IObserver observer);
+        IState State { get; }
         void Abort();
         void MarkExceptionHandled();
         bool Execute();

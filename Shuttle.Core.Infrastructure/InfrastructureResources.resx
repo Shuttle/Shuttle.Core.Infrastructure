@@ -249,4 +249,20 @@
   <data name="TripleDESSectionMissing" xml:space="preserve">
     <value>In order to use TripleDES cryptography you need to add the 'tripleDES' section to the application configuration file.  Remember to add the section handler.</value>
   </data>
+  <data name="DuplicateTypeRegistrationException" xml:space="preserve">
+    <value>Implementation type '{0}' has already been registered for service type '{1}'.  Cannot register implementation type '{2}'.</value>
+    <comment>{0} = implementation type already registered, {1} = service type, {2} = duplicate implementation type</comment>
+  </data>
+  <data name="DuplicatePipelineInstanceException" xml:space="preserve">
+    <value>The IComponentContainer instance returned the same pipeline instance of type '{0}'.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient.</value>
+    <comment>{0} = pipeline type</comment>
+  </data>
+  <data name="UnknownEnumValueException" xml:space="preserve">
+    <value>Enum type '{0}' does not contain a value '{1}'.</value>
+    <comment>{0} = enum type, {1} = value not in enum</comment>
+  </data>
+  <data name="TypeNotRegisteredException" xml:space="preserve">
+    <value>Not implementation type has been registered for service type '{0}'.</value>
+    <comment>{0} = service type full name</comment>
+  </data>
 </root>

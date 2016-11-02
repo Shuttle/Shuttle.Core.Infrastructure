@@ -6,7 +6,7 @@ namespace Shuttle.Core.Infrastructure
 	public class ReusableObjectPool<TReusableObject>
 		where TReusableObject : class
 	{
-		private static readonly object Padlock = new object();
+		private static readonly object _lock = new object();
 		private readonly Dictionary<Type, List<TReusableObject>> _pool = new Dictionary<Type, List<TReusableObject>>();
 		private readonly Func<Type, TReusableObject> _factoryMethod;
 
@@ -25,7 +25,7 @@ namespace Shuttle.Core.Infrastructure
 		{
 			Guard.AgainstNull(key, "key");
 
-			lock (Padlock)
+			lock (_lock)
 			{
 				if (!_pool.ContainsKey(key))
 				{
@@ -50,9 +50,21 @@ namespace Shuttle.Core.Infrastructure
 			}
 		}
 
-		public void Release(TReusableObject instance)
+	    public bool Contains(TReusableObject instance)
+	    {
+            Guard.AgainstNull(instance, "instance");
+
+	        lock (_lock)
+	        {
+	            return _pool[instance.GetType()].Find(item => item.Equals(instance)) != null;
+	        }
+	    }
+
+        public void Release(TReusableObject instance)
 		{
-			lock (Padlock)
+            Guard.AgainstNull(instance,"instance");
+
+			lock (_lock)
 			{
 				if (!_pool.ContainsKey(instance.GetType()))
 				{

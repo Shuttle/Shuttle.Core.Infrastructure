@@ -106,6 +106,24 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to The IComponentContainer instance returned the same pipeline instance of type &apos;{0}&apos;.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient..
+        /// </summary>
+        public static string DuplicatePipelineInstanceException {
+            get {
+                return ResourceManager.GetString("DuplicatePipelineInstanceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Implementation type &apos;{0}&apos; has already been registered for service type &apos;{1}&apos;.  Cannot register implementation type &apos;{2}&apos;..
+        /// </summary>
+        public static string DuplicateTypeRegistrationException {
+            get {
+                return ResourceManager.GetString("DuplicateTypeRegistrationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The string with name &apos;{0}&apos; may not be empty..
         /// </summary>
         public static string EmptyStringException {
@@ -313,11 +331,29 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Not implementation type has been registered for service type &apos;{0}&apos;..
+        /// </summary>
+        public static string TypeNotRegisteredException {
+            get {
+                return ResourceManager.GetString("TypeNotRegisteredException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled exception during event &apos;{0}&apos;: {1}.
         /// </summary>
         public static string UnhandledPipelineException {
             get {
                 return ResourceManager.GetString("UnhandledPipelineException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enum type &apos;{0}&apos; does not contain a value &apos;{1}&apos;..
+        /// </summary>
+        public static string UnknownEnumValueException {
+            get {
+                return ResourceManager.GetString("UnknownEnumValueException", resourceCulture);
             }
         }
         

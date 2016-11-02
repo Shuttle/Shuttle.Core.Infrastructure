@@ -2,14 +2,19 @@ using System;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class DefaultPipelineFactory : IPipelineFactory
-	{
-		private readonly ReusableObjectPool<object> _pool;
+    public class DefaultPipelineFactory : IPipelineFactory
+    {
+        private readonly IComponentContainer _componentContainer;
+        private readonly ReusableObjectPool<object> _pool;
 
-        public DefaultPipelineFactory()
-		{
-			_pool = new ReusableObjectPool<object>();
-		}
+        public DefaultPipelineFactory(IComponentContainer componentContainer)
+        {
+            Guard.AgainstNull(componentContainer, "componentContainer");
+
+            _componentContainer = componentContainer;
+
+            _pool = new ReusableObjectPool<object>();
+        }
 
         public void OnPipelineCreated(object sender, PipelineEventArgs args)
         {
@@ -26,39 +31,42 @@ namespace Shuttle.Core.Infrastructure
             PipelineReleased.Invoke(sender, args);
         }
 
-	    public event PipelineCreatedDelegate PipelineCreated = delegate { };
-	    public event PipelineObtainedDelegate PipelineObtained = delegate { };
-	    public event PipelineReleaseDelegate PipelineReleased = delegate { };
+        public event PipelineCreatedDelegate PipelineCreated = delegate { };
+        public event PipelineObtainedDelegate PipelineObtained = delegate { };
+        public event PipelineReleaseDelegate PipelineReleased = delegate { };
 
-	    public TPipeline GetPipeline<TPipeline>() where TPipeline : IPipeline
-		{
-			var pipeline = (TPipeline)_pool.Get(typeof (TPipeline));
+        public TPipeline GetPipeline<TPipeline>() where TPipeline : IPipeline
+        {
+            var pipeline = (TPipeline)_pool.Get(typeof(TPipeline));
 
-		    if (pipeline == null)
-		    {
+            if (pipeline == null)
+            {
                 var type = typeof(TPipeline);
 
-                type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired, "Pipeline", type.FullName));
+                pipeline = (TPipeline)_componentContainer.Resolve(type);
 
-                pipeline = (TPipeline)Activator.CreateInstance(type);
+                if (_pool.Contains(pipeline))
+                {
+                    throw new InvalidOperationException(string.Format(InfrastructureResources.DuplicatePipelineInstanceException, type.FullName));
+                }
 
                 OnPipelineCreated(this, new PipelineEventArgs(pipeline));
             }
-		    else
-		    {
+            else
+            {
                 OnPipelineObtained(this, new PipelineEventArgs(pipeline));
             }
 
             return pipeline;
-		}
+        }
 
-		public void ReleasePipeline(IPipeline pipeline)
-		{
-			Guard.AgainstNull(pipeline, "pipeline");
+        public void ReleasePipeline(IPipeline pipeline)
+        {
+            Guard.AgainstNull(pipeline, "pipeline");
 
-			_pool.Release(pipeline);
+            _pool.Release(pipeline);
 
             OnPipelineReleased(this, new PipelineEventArgs(pipeline));
         }
-	}
+    }
 }

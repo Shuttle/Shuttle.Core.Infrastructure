@@ -72,6 +72,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ComponentContainer\DuplicateTypeRegistrationException.cs" />
+    <Compile Include="ComponentContainer\TypeNotRegisteredException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />
     <Compile Include="Compression\GZipCompressionAlgorithm.cs" />
     <Compile Include="Compression\ICompressionAlgorithm.cs" />
@@ -88,7 +90,6 @@
     <Compile Include="Exceptions\PipelineException.cs" />
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Extensions\StreamExtensions.cs" />
-    <Compile Include="IDependency.cs" />
     <Compile Include="IReusability.cs" />
     <Compile Include="ISpecification.cs" />
     <Compile Include="Pipeline\DefaultPipelineFactory.cs" />
@@ -102,6 +103,8 @@
     <Compile Include="Pipeline\PipelineEventArgs.cs" />
     <Compile Include="Pipeline\PipelineEventEventArgs.cs" />
     <Compile Include="Pipeline\PipelineExceptionEventArgs.cs" />
+    <Compile Include="ComponentContainer\DefaultComponentContainer.cs" />
+    <Compile Include="ComponentContainer\IComponentContainer.cs" />
     <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />
     <Compile Include="Pipeline\IPipeline.cs" />

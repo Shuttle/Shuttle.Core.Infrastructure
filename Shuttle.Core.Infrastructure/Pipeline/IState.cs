@@ -1,16 +1,16 @@
 namespace Shuttle.Core.Infrastructure
 {
-    public interface IState<out TOwner>
+    public interface IState
     {
         void Clear();
-        TOwner Add(object value);
-        TOwner Add(string key, object value);
-        TOwner Add<TItem>(TItem value);
-        TOwner Add<TItem>(string key, TItem value);
-        TOwner Replace(object value);
-        TOwner Replace(string key, object value);
-        TOwner Replace<TItem>(TItem value);
-        TOwner Replace<TItem>(string key, TItem value);
+        void Add(object value);
+        void Add(string key, object value);
+        void Add<TItem>(TItem value);
+        void Add<TItem>(string key, TItem value);
+        void Replace(object value);
+        void Replace(string key, object value);
+        void Replace<TItem>(TItem value);
+        void Replace<TItem>(string key, TItem value);
         TItem Get<TItem>();
         TItem Get<TItem>(string key);
         bool Contains(string key);

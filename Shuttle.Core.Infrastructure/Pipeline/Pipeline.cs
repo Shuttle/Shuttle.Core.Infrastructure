@@ -43,7 +43,7 @@ namespace Shuttle.Core.Infrastructure
         public Pipeline()
         {
             Id = Guid.NewGuid();
-            State = new State<IPipeline>(this);
+            State = new State();
             _onAbortPipeline.Reset(this);
             _onPipelineException.Reset(this);
 
@@ -63,7 +63,7 @@ namespace Shuttle.Core.Infrastructure
         public string StageName { get; private set; }
         public IPipelineEvent Event { get; private set; }
 
-        public IState<IPipeline> State { get; private set; }
+        public IState State { get; private set; }
 
         public IPipeline RegisterObserver(IObserver observer)
         {
