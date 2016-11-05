@@ -7,6 +7,20 @@ namespace Shuttle.Core.Infrastructure.Tests
     public class DefaultComponentContainerFixture
     {
         [Test]
+        public void Should_be_able_to_get_different_types_per_thread()
+        {
+            var container = new DefaultComponentContainer();
+
+            container.Register(typeof(DoSomething), typeof(DoSomething), Lifestyle.Thread);
+
+            Assert.AreSame(typeof(DoSomething), container.Resolve(typeof(DoSomething)).GetType());
+
+            container.Register(typeof(DoSomethingElse), typeof(DoSomethingElse), Lifestyle.Thread);
+
+            Assert.AreSame(typeof(DoSomethingElse), container.Resolve(typeof(DoSomethingElse)).GetType());
+        }
+
+        [Test]
         public void Should_be_able_to_register_and_resolve_a_type()
         {
             var container = new DefaultComponentContainer();
@@ -18,7 +32,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             Assert.NotNull(container.Resolve(serviceType));
             Assert.AreEqual(implementationType, container.Resolve(serviceType).GetType());
-            Assert.Throws<TypeNotRegisteredException>(()=>container.Resolve(bogusType));
+            Assert.Throws<TypeResolutionException>(()=>container.Resolve(bogusType));
         }
 
         [Test]
@@ -30,11 +44,11 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             container.Register(serviceType, implementationType, Lifestyle.Singleton);
 
-            Assert.Throws<DuplicateTypeRegistrationException>(() => container.Register(serviceType, implementationType, Lifestyle.Singleton));
+            Assert.Throws<TypeRegistrationException>(() => container.Register(serviceType, implementationType, Lifestyle.Singleton));
 
             Assert.NotNull(container.Resolve(serviceType));
 
-            Assert.Throws<DuplicateTypeRegistrationException>(() => container.Register(serviceType, new DoSomething()));
+            Assert.Throws<TypeRegistrationException>(() => container.Register(serviceType, new DoSomething()));
         }
 
         [Test]
@@ -48,8 +62,8 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             Assert.NotNull(container.Resolve(serviceType));
 
-            Assert.Throws<DuplicateTypeRegistrationException>(() => container.Register(serviceType, implementationType, Lifestyle.Singleton));
-            Assert.Throws<DuplicateTypeRegistrationException>(() => container.Register(serviceType, new DoSomething()));
+            Assert.Throws<TypeRegistrationException>(() => container.Register(serviceType, implementationType, Lifestyle.Singleton));
+            Assert.Throws<TypeRegistrationException>(() => container.Register(serviceType, new DoSomething()));
         }
 
         [Test]
@@ -61,8 +75,8 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             container.Register(serviceType, implementationType, Lifestyle.Singleton);
 
-            Assert.Throws<TypeNotRegisteredException>(() => container.Resolve(serviceType));
-            Assert.Throws<TypeNotRegisteredException>(() => container.Resolve<IDoSomething>());
+            Assert.Throws<TypeResolutionException>(() => container.Resolve(serviceType));
+            Assert.Throws<TypeResolutionException>(() => container.Resolve<IDoSomething>());
 
             var someDependency = new SomeDependency();
 

@@ -72,8 +72,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="ComponentContainer\DuplicateTypeRegistrationException.cs" />
-    <Compile Include="ComponentContainer\TypeNotRegisteredException.cs" />
+    <Compile Include="ComponentContainer\ComponentContainerExtensions.cs" />
+    <Compile Include="ComponentContainer\ImplementationDefinition.cs" />
+    <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
+    <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />
     <Compile Include="Compression\GZipCompressionAlgorithm.cs" />
     <Compile Include="Compression\ICompressionAlgorithm.cs" />

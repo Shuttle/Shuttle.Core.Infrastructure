@@ -46,6 +46,7 @@
     <Compile Include="ArgumentsFixture.cs" />
     <Compile Include="CompressionAlgorithmFixture.cs" />
     <Compile Include="Container\DefaultComponentContainerFixture.cs" />
+    <Compile Include="Container\DoSomethingElse.cs" />
     <Compile Include="Container\DoSomethingWithDependency.cs" />
     <Compile Include="Container\ISomeDependency.cs" />
     <Compile Include="Container\SomeDependency.cs" />
