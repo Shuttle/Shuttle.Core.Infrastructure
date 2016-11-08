@@ -49,6 +49,7 @@
     <Compile Include="Container\DoSomethingElse.cs" />
     <Compile Include="Container\DoSomethingWithDependency.cs" />
     <Compile Include="Container\ISomeDependency.cs" />
+    <Compile Include="Container\ComponentContainerSectionFixture.cs" />
     <Compile Include="Container\SomeDependency.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
@@ -79,6 +80,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Container\files\ComponentContainer-Grouped.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Container\files\ComponentContainer.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Container\files\Empty.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

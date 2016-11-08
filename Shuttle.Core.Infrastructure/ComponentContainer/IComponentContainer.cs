@@ -12,7 +12,6 @@ namespace Shuttle.Core.Infrastructure
     public interface IComponentContainer
     {
         object Resolve(Type serviceType);
-        T Resolve<T>() where T : class;
         IComponentContainer Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
         IComponentContainer Register(Type serviceType, object instance);
     }

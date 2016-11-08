@@ -73,7 +73,10 @@
   <ItemGroup>
     <Compile Include="Arguments.cs" />
     <Compile Include="ComponentContainer\ComponentContainerExtensions.cs" />
+    <Compile Include="ComponentContainer\ComponentContainerSection.cs" />
     <Compile Include="ComponentContainer\ImplementationDefinition.cs" />
+    <Compile Include="ComponentContainer\ComponentElement.cs" />
+    <Compile Include="ComponentContainer\ComponentsElement.cs" />
     <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
     <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />
@@ -81,7 +84,7 @@
     <Compile Include="Compression\ICompressionAlgorithm.cs" />
     <Compile Include="Compression\NullCompressionAlgorithm.cs" />
     <Compile Include="Configuration\ConfigurationItem.cs" />
-    <Compile Include="Configuration\ConfigurationSection.cs" />
+    <Compile Include="Configuration\ConfigurationSectionProvider.cs" />
     <Compile Include="Encryption\IEncryptionAlgorithm.cs" />
     <Compile Include="Encryption\NullEncryptionAlgorithm.cs" />
     <Compile Include="Encryption\Section\TripleDESSection.cs" />
@@ -97,7 +100,6 @@
     <Compile Include="Pipeline\DefaultPipelineFactory.cs" />
     <Compile Include="Pipeline\IPipelineEvent.cs" />
     <Compile Include="Pipeline\IPipelineFactory.cs" />
-    <Compile Include="Pipeline\IPipelineModule.cs" />
     <Compile Include="Pipeline\IPipelineStage.cs" />
     <Compile Include="Pipeline\IRegisterEventAfter.cs" />
     <Compile Include="Pipeline\IRegisterEventBefore.cs" />
