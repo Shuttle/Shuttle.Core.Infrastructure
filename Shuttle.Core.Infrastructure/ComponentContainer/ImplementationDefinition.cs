@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace Shuttle.Core.Infrastructure
 {
@@ -11,10 +12,8 @@ namespace Shuttle.Core.Infrastructure
         private readonly object _lock = new object();
         private object _instance;
 
-        [ThreadStatic]
-        private static Dictionary<Type, object> _threadInstances;
+        private Dictionary<Type, Dictionary<int, object>> _threadInstances = new Dictionary<Type, Dictionary<int, object>>();
 
-        private readonly ConstructorInfo _constructor;
         private readonly ParameterInfo[] _constructorParameters;
 
         public Type Type { get; private set; }
@@ -30,11 +29,15 @@ namespace Shuttle.Core.Infrastructure
                     _lifestyleType.FullName, lifestyle));
             }
 
-            _constructor = type.GetConstructors().OrderByDescending(item => item.GetParameters().Length).First();
-            _constructorParameters = _constructor.GetParameters();
+            _constructorParameters = type.GetConstructors().OrderByDescending(item => item.GetParameters().Length).First().GetParameters();
 
             Type = type;
             Lifestyle = lifestyle;
+
+            if (lifestyle == Lifestyle.Thread && !_threadInstances.ContainsKey(type))
+            {
+                _threadInstances.Add(Type, new Dictionary<int, object>());
+            }
         }
 
         public ImplementationDefinition(object instance)
@@ -54,33 +57,31 @@ namespace Shuttle.Core.Infrastructure
                 switch (Lifestyle)
                 {
                     case Lifestyle.Singleton:
-                    {
-                        return _instance ?? (_instance = CreateInstance(container));
-                    }
-                    case Lifestyle.Transient:
-                    {
-                        return CreateInstance(container);
-                    }
-                    case Lifestyle.Thread:
-                    {
-                        if (!GuardedThreadInstances().ContainsKey(Type))
                         {
-                            GuardedThreadInstances().Add(Type, CreateInstance(container));
+                            return _instance ?? (_instance = CreateInstance(container));
                         }
+                    case Lifestyle.Transient:
+                        {
+                            return CreateInstance(container);
+                        }
+                    case Lifestyle.Thread:
+                        {
+                            var instances = _threadInstances[Type];
+                            var managedThreadId = Thread.CurrentThread.ManagedThreadId;
 
-                        return GuardedThreadInstances()[Type];
-                    }
+                            if (!instances.ContainsKey(managedThreadId))
+                            {
+                                instances.Add(managedThreadId, CreateInstance(container));
+                            }
+
+                            return instances[managedThreadId];
+                        }
                     default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                        {
+                            throw new InvalidOperationException();
+                        }
                 }
             }
-        }
-
-        private Dictionary<Type, object> GuardedThreadInstances()
-        {
-            return _threadInstances ?? (_threadInstances = new Dictionary<Type, object>());
         }
 
         private object CreateInstance(DefaultComponentContainer container)
