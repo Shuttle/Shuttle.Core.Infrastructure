@@ -6,13 +6,14 @@ using System.Threading;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class ImplementationDefinition
+    public class ImplementationDefinition : IDisposable
     {
-        private readonly Type _lifestyleType = typeof(Lifestyle);
+        private readonly Type _lifestyleType = typeof (Lifestyle);
         private readonly object _lock = new object();
         private object _instance;
 
-        private Dictionary<Type, Dictionary<int, object>> _threadInstances = new Dictionary<Type, Dictionary<int, object>>();
+        private readonly Dictionary<Type, Dictionary<int, object>> _threadInstances =
+            new Dictionary<Type, Dictionary<int, object>>();
 
         private readonly ParameterInfo[] _constructorParameters;
 
@@ -29,7 +30,8 @@ namespace Shuttle.Core.Infrastructure
                     _lifestyleType.FullName, lifestyle));
             }
 
-            _constructorParameters = type.GetConstructors().OrderByDescending(item => item.GetParameters().Length).First().GetParameters();
+            _constructorParameters =
+                type.GetConstructors().OrderByDescending(item => item.GetParameters().Length).First().GetParameters();
 
             Type = type;
             Lifestyle = lifestyle;
@@ -57,29 +59,29 @@ namespace Shuttle.Core.Infrastructure
                 switch (Lifestyle)
                 {
                     case Lifestyle.Singleton:
-                        {
-                            return _instance ?? (_instance = CreateInstance(container));
-                        }
+                    {
+                        return _instance ?? (_instance = CreateInstance(container));
+                    }
                     case Lifestyle.Transient:
-                        {
-                            return CreateInstance(container);
-                        }
+                    {
+                        return CreateInstance(container);
+                    }
                     case Lifestyle.Thread:
+                    {
+                        var instances = _threadInstances[Type];
+                        var managedThreadId = Thread.CurrentThread.ManagedThreadId;
+
+                        if (!instances.ContainsKey(managedThreadId))
                         {
-                            var instances = _threadInstances[Type];
-                            var managedThreadId = Thread.CurrentThread.ManagedThreadId;
-
-                            if (!instances.ContainsKey(managedThreadId))
-                            {
-                                instances.Add(managedThreadId, CreateInstance(container));
-                            }
-
-                            return instances[managedThreadId];
+                            instances.Add(managedThreadId, CreateInstance(container));
                         }
+
+                        return instances[managedThreadId];
+                    }
                     default:
-                        {
-                            throw new InvalidOperationException();
-                        }
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
             }
         }
@@ -99,6 +101,28 @@ namespace Shuttle.Core.Infrastructure
         private IEnumerable<object> ResolveConstructorParameters(DefaultComponentContainer container)
         {
             return _constructorParameters.Select(parameter => container.Resolve(parameter.ParameterType));
+        }
+
+        public void Dispose()
+        {
+            switch (Lifestyle)
+            {
+                case Lifestyle.Singleton:
+                {
+                    _instance.AttemptDispose();
+
+                    break;
+                }
+                case Lifestyle.Thread:
+                {
+                    foreach (var o in _threadInstances[Type])
+                    {
+                        o.AttemptDispose();
+                    }
+
+                    break;
+                }
+            }
         }
     }
 }

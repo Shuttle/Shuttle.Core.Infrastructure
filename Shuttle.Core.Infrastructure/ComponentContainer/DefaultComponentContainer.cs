@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class DefaultComponentContainer : IComponentContainer
+    public class DefaultComponentContainer : IComponentContainer, IDisposable
     {
         private static readonly object _lock = new object();
         private readonly Dictionary<Type, ImplementationDefinition> _map = new Dictionary<Type, ImplementationDefinition>();
@@ -70,6 +70,27 @@ namespace Shuttle.Core.Infrastructure
             }
 
             return this;
+        }
+
+        public bool IsRegistered(Type serviceType)
+        {
+            Guard.AgainstNull(serviceType, "serviceType");
+
+            lock (_lock)
+            {
+                return _map.ContainsKey(serviceType);
+            }
+        }
+
+        public void Dispose()
+        {
+            lock(_lock)
+            {
+                foreach (var implementationDefinition in _map.Values)
+                {
+                    implementationDefinition.Dispose();
+                }
+            }
         }
     }
 }
