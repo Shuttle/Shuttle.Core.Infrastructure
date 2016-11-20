@@ -33,6 +33,11 @@ namespace Shuttle.Core.Infrastructure
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(implementationType, "implementationType");
 
+            if (!serviceType.IsAssignableFrom(implementationType))
+            {
+                  throw new TypeRegistrationException(string.Format(InfrastructureResources.UnassignableTypeRegistrationException, serviceType.FullName, implementationType.FullName));
+            }
+
             lock (_lock)
             {
                 if (!_map.ContainsKey(serviceType))
@@ -54,6 +59,11 @@ namespace Shuttle.Core.Infrastructure
         {
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(instance, "instance");
+
+            if (!serviceType.IsInstanceOfType(instance))
+            {
+                throw new TypeRegistrationException(string.Format(InfrastructureResources.UnassignableTypeRegistrationException, serviceType.FullName, instance.GetType().FullName));
+            }
 
             lock (_lock)
             {
