@@ -340,6 +340,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cannot register service type &apos;{0}&apos; as the implementation type &apos;{1}&apos; is not of that type..
+        /// </summary>
+        public static string UnassignableTypeRegistrationException {
+            get {
+                return ResourceManager.GetString("UnassignableTypeRegistrationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unhandled exception during event &apos;{0}&apos;: {1}.
         /// </summary>
         public static string UnhandledPipelineException {

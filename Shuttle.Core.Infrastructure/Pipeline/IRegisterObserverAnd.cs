@@ -2,6 +2,6 @@ namespace Shuttle.Core.Infrastructure
 {
     public interface IRegisterObserverAnd
     {
-        IRegisterObserverAnd AndObserver(IObserver observer);
+        IRegisterObserverAnd AndObserver(IPipelineObserver pipelineObserver);
     }
 }

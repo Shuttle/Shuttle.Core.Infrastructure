@@ -265,4 +265,8 @@
     <value>No implementation type has been registered for service type '{0}'.</value>
     <comment>{0} = service type full name</comment>
   </data>
+  <data name="UnassignableTypeRegistrationException" xml:space="preserve">
+    <value>Cannot register service type '{0}' as the implementation type '{1}' is not of that type.</value>
+    <comment>{0} = service type full name, {1} = implementation type full name</comment>
+  </data>
 </root>

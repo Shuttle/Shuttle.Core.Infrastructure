@@ -14,5 +14,6 @@ namespace Shuttle.Core.Infrastructure
         object Resolve(Type serviceType);
         IComponentContainer Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
         IComponentContainer Register(Type serviceType, object instance);
+        bool IsRegistered(Type serviceType);
     }
 }

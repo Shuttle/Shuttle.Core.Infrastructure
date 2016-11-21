@@ -84,5 +84,22 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             Assert.AreSame(someDependency, container.Resolve<IDoSomething>().SomeDependency);
         }
+
+        [Test]
+        public void Should_be_able_to_use_complex_constructor_injection()
+        {
+            var container = new DefaultComponentContainer();
+            var serviceType = typeof(IDoSomething);
+            var implementationType = typeof(DoSomethingWithDependency);
+
+            container.Register(serviceType, implementationType, Lifestyle.Transient);
+
+            Assert.Throws<TypeResolutionException>(() => container.Resolve(serviceType));
+            Assert.Throws<TypeResolutionException>(() => container.Resolve<IDoSomething>());
+
+            container.Register<ISomeDependency, SomeDependency>(Lifestyle.Transient);
+
+            Assert.NotNull(container.Resolve<IDoSomething>().SomeDependency);
+        }
     }
 }
