@@ -7,20 +7,6 @@ namespace Shuttle.Core.Infrastructure.Tests
     public class DefaultComponentContainerFixture
     {
         [Test]
-        public void Should_be_able_to_get_different_types_per_thread()
-        {
-            var container = new DefaultComponentContainer();
-
-            container.Register(typeof(DoSomething), typeof(DoSomething), Lifestyle.Thread);
-
-            Assert.AreSame(typeof(DoSomething), container.Resolve(typeof(DoSomething)).GetType());
-
-            container.Register(typeof(DoSomethingElse), typeof(DoSomethingElse), Lifestyle.Thread);
-
-            Assert.AreSame(typeof(DoSomethingElse), container.Resolve(typeof(DoSomethingElse)).GetType());
-        }
-
-        [Test]
         public void Should_be_able_to_register_and_resolve_a_type()
         {
             var container = new DefaultComponentContainer();

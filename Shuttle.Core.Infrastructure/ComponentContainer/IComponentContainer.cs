@@ -5,8 +5,7 @@ namespace Shuttle.Core.Infrastructure
     public enum Lifestyle
     {
         Singleton = 0,
-        Transient = 1,
-        Thread = 2
+        Transient = 1
     }
 
     public interface IComponentContainer
