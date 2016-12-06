@@ -11,7 +11,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		[TestCase("./Container/files/ComponentContainer-Grouped.config")]
 		public void Should_be_able_to_load_the_configuration(string file)
 		{
-			var section = ConfigurationSectionProvider.OpenFile<ComponentContainerSection>("shuttle", "componentContainer", file);
+			var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry", file);
 
 			Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
@@ -19,7 +19,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 
 			foreach (ComponentElement componentElement in section.Components)
 			{
-				Console.WriteLine(componentElement.Type);
+				Console.WriteLine(componentElement.ServiceType);
 			}
 		}
 
@@ -27,7 +27,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		[TestCase("./Container/files/Empty.config")]
 		public void Should_be_able_to_handle_missing_element(string file)
 		{
-            var section = ConfigurationSectionProvider.OpenFile<ComponentContainerSection>("componentContainer", file);
+            var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("componentRegistry", file);
 
             Assert.IsNotNull(section);
 			Assert.IsEmpty(section.Components);

@@ -2,7 +2,7 @@
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class ComponentContainerSection : ConfigurationSection
+    public class ComponentRegistrySection : ConfigurationSection
     {
         [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
         public ComponentsElement Components

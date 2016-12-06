@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public class DefaultComponentContainer : IComponentContainer, IDisposable
+    public class DefaultComponentContainer : IComponentRegistry, IComponentResolver, IDisposable
     {
         private static readonly object _lock = new object();
         private readonly Dictionary<Type, ImplementationDefinition> _map = new Dictionary<Type, ImplementationDefinition>();
@@ -28,7 +28,7 @@ namespace Shuttle.Core.Infrastructure
             return Resolve(typeof(T)) as T;
         }
 
-        public IComponentContainer Register(Type serviceType, Type implementationType, Lifestyle lifestyle)
+        public IComponentResolver Register(Type serviceType, Type implementationType, Lifestyle lifestyle)
         {
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(implementationType, "implementationType");
@@ -55,7 +55,7 @@ namespace Shuttle.Core.Infrastructure
             return this;
         }
 
-        public IComponentContainer Register(Type serviceType, object instance)
+        public IComponentResolver Register(Type serviceType, object instance)
         {
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(instance, "instance");

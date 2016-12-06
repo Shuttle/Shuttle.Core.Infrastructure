@@ -254,7 +254,7 @@
     <comment>{0} = implementation type already registered, {1} = service type, {2} = duplicate implementation type</comment>
   </data>
   <data name="DuplicatePipelineInstanceException" xml:space="preserve">
-    <value>The IComponentContainer instance returned the same pipeline instance of type '{0}'.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient.</value>
+    <value>The IComponentResolver instance returned the same pipeline instance of type '{0}'.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient.</value>
     <comment>{0} = pipeline type</comment>
   </data>
   <data name="UnknownEnumValueException" xml:space="preserve">
