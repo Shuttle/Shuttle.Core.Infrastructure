@@ -82,16 +82,6 @@ namespace Shuttle.Core.Infrastructure
             return this;
         }
 
-        public bool IsRegistered(Type serviceType)
-        {
-            Guard.AgainstNull(serviceType, "serviceType");
-
-            lock (_lock)
-            {
-                return _map.ContainsKey(serviceType);
-            }
-        }
-
         public void Dispose()
         {
             lock(_lock)
