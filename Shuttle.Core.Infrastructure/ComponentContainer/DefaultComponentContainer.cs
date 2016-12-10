@@ -28,7 +28,7 @@ namespace Shuttle.Core.Infrastructure
             return Resolve(typeof(T)) as T;
         }
 
-        public IComponentResolver Register(Type serviceType, Type implementationType, Lifestyle lifestyle)
+        public IComponentRegistry Register(Type serviceType, Type implementationType, Lifestyle lifestyle)
         {
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(implementationType, "implementationType");
@@ -55,7 +55,7 @@ namespace Shuttle.Core.Infrastructure
             return this;
         }
 
-        public IComponentResolver Register(Type serviceType, object instance)
+        public IComponentRegistry Register(Type serviceType, object instance)
         {
             Guard.AgainstNull(serviceType, "serviceType");
             Guard.AgainstNull(instance, "instance");

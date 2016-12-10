@@ -10,8 +10,8 @@ namespace Shuttle.Core.Infrastructure
 
     public interface IComponentRegistry
     {
-        IComponentResolver Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
-        IComponentResolver Register(Type serviceType, object instance);
+        IComponentRegistry Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
+        IComponentRegistry Register(Type serviceType, object instance);
         bool IsRegistered(Type serviceType);
     }
 }
