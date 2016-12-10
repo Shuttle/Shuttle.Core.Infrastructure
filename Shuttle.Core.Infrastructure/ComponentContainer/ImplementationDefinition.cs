@@ -12,9 +12,6 @@ namespace Shuttle.Core.Infrastructure
         private readonly object _lock = new object();
         private object _instance;
 
-        private readonly Dictionary<Type, Dictionary<int, object>> _threadInstances =
-            new Dictionary<Type, Dictionary<int, object>>();
-
         private readonly ParameterInfo[] _constructorParameters;
 
         public Type Type { get; private set; }
@@ -35,11 +32,6 @@ namespace Shuttle.Core.Infrastructure
 
             Type = type;
             Lifestyle = lifestyle;
-
-            if (lifestyle == Lifestyle.Thread && !_threadInstances.ContainsKey(type))
-            {
-                _threadInstances.Add(Type, new Dictionary<int, object>());
-            }
         }
 
         public ImplementationDefinition(object instance)
@@ -65,18 +57,6 @@ namespace Shuttle.Core.Infrastructure
                     case Lifestyle.Transient:
                     {
                         return CreateInstance(container);
-                    }
-                    case Lifestyle.Thread:
-                    {
-                        var instances = _threadInstances[Type];
-                        var managedThreadId = Thread.CurrentThread.ManagedThreadId;
-
-                        if (!instances.ContainsKey(managedThreadId))
-                        {
-                            instances.Add(managedThreadId, CreateInstance(container));
-                        }
-
-                        return instances[managedThreadId];
                     }
                     default:
                     {
@@ -110,15 +90,6 @@ namespace Shuttle.Core.Infrastructure
                 case Lifestyle.Singleton:
                 {
                     _instance.AttemptDispose();
-
-                    break;
-                }
-                case Lifestyle.Thread:
-                {
-                    foreach (var o in _threadInstances[Type])
-                    {
-                        o.AttemptDispose();
-                    }
 
                     break;
                 }

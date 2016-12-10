@@ -72,8 +72,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="ComponentContainer\ComponentContainerExtensions.cs" />
-    <Compile Include="ComponentContainer\ComponentContainerSection.cs" />
+    <Compile Include="ComponentContainer\ComponentResolverExtensions.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryExtensions.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistrySection.cs" />
+    <Compile Include="ComponentContainer\IComponentRegistry.cs" />
     <Compile Include="ComponentContainer\ImplementationDefinition.cs" />
     <Compile Include="ComponentContainer\ComponentElement.cs" />
     <Compile Include="ComponentContainer\ComponentsElement.cs" />
@@ -108,7 +110,7 @@
     <Compile Include="Pipeline\PipelineEventEventArgs.cs" />
     <Compile Include="Pipeline\PipelineExceptionEventArgs.cs" />
     <Compile Include="ComponentContainer\DefaultComponentContainer.cs" />
-    <Compile Include="ComponentContainer\IComponentContainer.cs" />
+    <Compile Include="ComponentContainer\IComponentResolver.cs" />
     <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />
     <Compile Include="Pipeline\IPipeline.cs" />

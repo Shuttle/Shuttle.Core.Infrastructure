@@ -4,14 +4,14 @@ namespace Shuttle.Core.Infrastructure
 {
     public class DefaultPipelineFactory : IPipelineFactory
     {
-        private readonly IComponentContainer _componentContainer;
+        private readonly IComponentResolver _componentResolver;
         private readonly ReusableObjectPool<object> _pool;
 
-        public DefaultPipelineFactory(IComponentContainer componentContainer)
+        public DefaultPipelineFactory(IComponentResolver componentResolver)
         {
-            Guard.AgainstNull(componentContainer, "componentContainer");
+            Guard.AgainstNull(componentResolver, "componentResolver");
 
-            _componentContainer = componentContainer;
+            _componentResolver = componentResolver;
 
             _pool = new ReusableObjectPool<object>();
         }
@@ -43,7 +43,7 @@ namespace Shuttle.Core.Infrastructure
             {
                 var type = typeof(TPipeline);
 
-                pipeline = (TPipeline)_componentContainer.Resolve(type);
+                pipeline = (TPipeline)_componentResolver.Resolve(type);
 
                 if (_pool.Contains(pipeline))
                 {
