@@ -1,3 +1,5 @@
+using System;
+
 namespace Shuttle.Core.Infrastructure
 {
     public delegate void PipelineCreatedDelegate(object sender, PipelineEventArgs e);

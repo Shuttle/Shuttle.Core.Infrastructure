@@ -106,7 +106,7 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to The IComponentResolver instance returned the same pipeline instance of type &apos;{0}&apos;.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient..
+        ///   Looks up a localized string similar to The IComponentResolver implementation returned the same pipeline instance of type &apos;{0}&apos;.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient..
         /// </summary>
         public static string DuplicatePipelineInstanceException {
             get {
@@ -174,6 +174,24 @@ namespace Shuttle.Core.Infrastructure {
         public static string InvalidGuardExceptionType {
             get {
                 return ResourceManager.GetString("InvalidGuardExceptionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Required dependency of type &apos;{0}&apos; is null..
+        /// </summary>
+        public static string NullDependencyException {
+            get {
+                return ResourceManager.GetString("NullDependencyException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The IComponentResolver implementation returned null for pipeline of type &apos;{0}&apos;..
+        /// </summary>
+        public static string NullPipelineException {
+            get {
+                return ResourceManager.GetString("NullPipelineException", resourceCulture);
             }
         }
         

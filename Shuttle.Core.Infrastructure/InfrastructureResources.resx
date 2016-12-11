@@ -254,7 +254,7 @@
     <comment>{0} = implementation type already registered, {1} = service type, {2} = duplicate implementation type</comment>
   </data>
   <data name="DuplicatePipelineInstanceException" xml:space="preserve">
-    <value>The IComponentResolver instance returned the same pipeline instance of type '{0}'.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient.</value>
+    <value>The IComponentResolver implementation returned the same pipeline instance of type '{0}'.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient.</value>
     <comment>{0} = pipeline type</comment>
   </data>
   <data name="UnknownEnumValueException" xml:space="preserve">
@@ -268,5 +268,13 @@
   <data name="UnassignableTypeRegistrationException" xml:space="preserve">
     <value>Cannot register service type '{0}' as the implementation type '{1}' is not of that type.</value>
     <comment>{0} = service type full name, {1} = implementation type full name</comment>
+  </data>
+  <data name="NullPipelineException" xml:space="preserve">
+    <value>The IComponentResolver implementation returned null for pipeline of type '{0}'.</value>
+    <comment>{0} = full type name of pipeline requested</comment>
+  </data>
+  <data name="NullDependencyException" xml:space="preserve">
+    <value>Required dependency of type '{0}' is null.</value>
+    <comment>{0} = dependency full type name</comment>
   </data>
 </root>

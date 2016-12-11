@@ -4,16 +4,21 @@ namespace Shuttle.Core.Infrastructure
 {
     public class DefaultPipelineFactory : IPipelineFactory
     {
-        private readonly IComponentResolver _componentResolver;
+        private IComponentResolver _resolver;
         private readonly ReusableObjectPool<object> _pool;
 
-        public DefaultPipelineFactory(IComponentResolver componentResolver)
+        public DefaultPipelineFactory()
         {
-            Guard.AgainstNull(componentResolver, "componentResolver");
-
-            _componentResolver = componentResolver;
-
             _pool = new ReusableObjectPool<object>();
+        }
+
+        public IPipelineFactory Assign(IComponentResolver resolver)
+        {
+            Guard.AgainstNull(resolver, "resolver");
+
+            _resolver = resolver;
+
+            return this;
         }
 
         public void OnPipelineCreated(object sender, PipelineEventArgs args)
@@ -43,7 +48,12 @@ namespace Shuttle.Core.Infrastructure
             {
                 var type = typeof(TPipeline);
 
-                pipeline = (TPipeline)_componentResolver.Resolve(type);
+                pipeline = (TPipeline)GuardedComponentResolver().Resolve(type);
+
+                if (pipeline == null)
+                {
+                    throw new InvalidOperationException(string.Format(InfrastructureResources.NullPipelineException, type.FullName));
+                }
 
                 if (_pool.Contains(pipeline))
                 {
@@ -58,6 +68,16 @@ namespace Shuttle.Core.Infrastructure
             }
 
             return pipeline;
+        }
+
+        private IComponentResolver GuardedComponentResolver()
+        {
+            if (_resolver == null)
+            {
+                throw new InvalidOperationException(string.Format(InfrastructureResources.NullDependencyException, typeof(IComponentResolver).FullName));
+            }
+
+            return _resolver;
         }
 
         public void ReleasePipeline(IPipeline pipeline)
