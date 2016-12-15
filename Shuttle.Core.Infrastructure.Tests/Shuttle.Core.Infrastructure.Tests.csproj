@@ -45,7 +45,6 @@
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
     <Compile Include="CompressionAlgorithmFixture.cs" />
-    <Compile Include="Container\DefaultComponentContainerFixture.cs" />
     <Compile Include="Container\DoSomethingElse.cs" />
     <Compile Include="Container\DoSomethingWithDependency.cs" />
     <Compile Include="Container\ISomeDependency.cs" />
@@ -80,10 +79,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Container\files\ComponentContainer-Grouped.config">
+    <None Include="Container\files\ComponentResolver.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Container\files\ComponentContainer.config">
+    <None Include="Container\files\ComponentResolver-Grouped.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Container\files\ComponentRegistry-Grouped.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Container\files\ComponentRegistry.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Container\files\Empty.config">

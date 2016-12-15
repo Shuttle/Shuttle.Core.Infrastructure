@@ -7,9 +7,9 @@ namespace Shuttle.Core.Infrastructure.Tests
 	public class ComponentContainerSectionFixture
 	{
 		[Test]
-		[TestCase("./Container/files/ComponentContainer.config")]
-		[TestCase("./Container/files/ComponentContainer-Grouped.config")]
-		public void Should_be_able_to_load_the_configuration(string file)
+		[TestCase("./Container/files/ComponentRegistry.config")]
+		[TestCase("./Container/files/ComponentRegistry-Grouped.config")]
+		public void Should_be_able_to_load_the_component_registry_section(string file)
 		{
 			var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry", file);
 
@@ -17,9 +17,26 @@ namespace Shuttle.Core.Infrastructure.Tests
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
 
-			foreach (ComponentElement componentElement in section.Components)
+			foreach (ComponentRegistryElement element in section.Components)
 			{
-				Console.WriteLine(componentElement.ServiceType);
+				Console.WriteLine(element.ServiceType);
+			}
+		}
+
+		[Test]
+		[TestCase("./Container/files/ComponentResolver.config")]
+		[TestCase("./Container/files/ComponentResolver-Grouped.config")]
+		public void Should_be_able_to_load_the_configuration(string file)
+		{
+			var section = ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver", file);
+
+			Assert.IsNotNull(section);
+			Assert.IsNotNull(section.Components);
+			Assert.AreEqual(2, section.Components.Count);
+
+			foreach (ComponentResolverElement element in section.Components)
+			{
+				Console.WriteLine(element.ServiceType);
 			}
 		}
 

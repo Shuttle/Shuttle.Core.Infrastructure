@@ -25,6 +25,22 @@ namespace Shuttle.Core.Infrastructure
         /// <typeparam name="TService">The type of the service being registered.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
         /// <param name="registry">The registry instance to register the mapping against.</param>
+        /// <param name="name">The name to use that uniquely identifies the service type when resolving.</param>
+        public static void Register<TService, TImplementation>(this IComponentRegistry registry, string name)
+            where TService : class
+            where TImplementation : class
+        {
+            Guard.AgainstNull(registry, "registry");
+
+            registry.Register<TService, TImplementation>(name, Lifestyle.Singleton);
+        }
+
+        /// <summary>
+        /// Register a new service/implementation type pair as a singleton.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service being registered.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
+        /// <param name="registry">The registry instance to register the mapping against.</param>
         /// <param name="lifestyle">The lifestyle of the component.</param>
         public static void Register<TService, TImplementation>(this IComponentRegistry registry, Lifestyle lifestyle)
             where TService : class
@@ -33,6 +49,23 @@ namespace Shuttle.Core.Infrastructure
             Guard.AgainstNull(registry, "registry");
 
             registry.Register(typeof(TService), typeof(TImplementation), lifestyle);
+        }
+
+        /// <summary>
+        /// Register a new service/implementation type pair as a singleton.
+        /// </summary>
+        /// <typeparam name="TService">The type of the service being registered.</typeparam>
+        /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
+        /// <param name="registry">The registry instance to register the mapping against.</param>
+        /// <param name="name">The name to use that uniquely identifies the service type when resolving.</param>
+        /// <param name="lifestyle">The lifestyle of the component.</param>
+        public static void Register<TService, TImplementation>(this IComponentRegistry registry, string name, Lifestyle lifestyle)
+            where TService : class
+            where TImplementation : class
+        {
+            Guard.AgainstNull(registry, "registry");
+
+            registry.Register(name, typeof(TService), typeof(TImplementation), lifestyle);
         }
 
         /// <summary>
@@ -63,7 +96,7 @@ namespace Shuttle.Core.Infrastructure
                 return;
             }
 
-            foreach (ComponentElement componentElement in section.Components)
+            foreach (ComponentRegistryElement componentElement in section.Components)
             {
                 var serviceType = Type.GetType(componentElement.ServiceType, true);
                 var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType) ? Type.GetType(componentElement.ImplementationType) : serviceType;

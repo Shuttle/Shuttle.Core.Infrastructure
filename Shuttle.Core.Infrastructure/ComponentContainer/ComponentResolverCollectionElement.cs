@@ -3,11 +3,11 @@ using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class ComponentsElement : ConfigurationElementCollection
+	public class ComponentResolverCollectionElement : ConfigurationElementCollection
 	{
 		protected override ConfigurationElement CreateNewElement()
 		{
-			return new ComponentElement();
+			return new ComponentResolverElement();
 		}
 
 		protected override object GetElementKey(ConfigurationElement element)

@@ -106,6 +106,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There is already a registration named &apos;{0}&apos; for service type &apos;{1}&apos;..
+        /// </summary>
+        public static string DuplicateNamedTypeRegistrationException {
+            get {
+                return ResourceManager.GetString("DuplicateNamedTypeRegistrationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The IComponentResolver implementation returned the same pipeline instance of type &apos;{0}&apos;.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient..
         /// </summary>
         public static string DuplicatePipelineInstanceException {
@@ -115,7 +124,7 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Implementation type &apos;{0}&apos; has already been registered for service type &apos;{1}&apos;.  Cannot register implementation type &apos;{2}&apos;..
+        ///   Looks up a localized string similar to An implementation type has already been registered for service type &apos;{0}&apos;. .
         /// </summary>
         public static string DuplicateTypeRegistrationException {
             get {
@@ -174,6 +183,15 @@ namespace Shuttle.Core.Infrastructure {
         public static string InvalidGuardExceptionType {
             get {
                 return ResourceManager.GetString("InvalidGuardExceptionType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is already an unnamed registration for service type &apos;{0}&apos;..
+        /// </summary>
+        public static string InvalidNamedTypeRegistrationException {
+            get {
+                return ResourceManager.GetString("InvalidNamedTypeRegistrationException", resourceCulture);
             }
         }
         
@@ -273,6 +291,24 @@ namespace Shuttle.Core.Infrastructure {
         public static string ReassignmentException {
             get {
                 return ResourceManager.GetString("ReassignmentException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Cannot resolve type &apos;{0}&apos; since there is no single implementation..
+        /// </summary>
+        public static string ResolveException {
+            get {
+                return ResourceManager.GetString("ResolveException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There is no registration named &apos;{0}&apos; for service type &apos;{1}&apos;..
+        /// </summary>
+        public static string ResolveNameException {
+            get {
+                return ResourceManager.GetString("ResolveNameException", resourceCulture);
             }
         }
         

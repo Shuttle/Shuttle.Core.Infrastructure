@@ -11,6 +11,7 @@ namespace Shuttle.Core.Infrastructure
     public interface IComponentRegistry
     {
         IComponentRegistry Register(Type serviceType, Type implementationType, Lifestyle lifestyle);
+        IComponentRegistry Register(string name, Type serviceType, Type implementationType, Lifestyle lifestyle);
         IComponentRegistry Register(Type serviceType, object instance);
     }
 }

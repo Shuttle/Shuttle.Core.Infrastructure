@@ -72,13 +72,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ComponentContainer\ComponentResolverElement.cs" />
+    <Compile Include="ComponentContainer\ComponentResolverCollectionElement.cs" />
+    <Compile Include="ComponentContainer\ComponentResolverSection.cs" />
     <Compile Include="ComponentContainer\ComponentResolverExtensions.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryExtensions.cs" />
     <Compile Include="ComponentContainer\ComponentRegistrySection.cs" />
     <Compile Include="ComponentContainer\IComponentRegistry.cs" />
     <Compile Include="ComponentContainer\ImplementationDefinition.cs" />
-    <Compile Include="ComponentContainer\ComponentElement.cs" />
-    <Compile Include="ComponentContainer\ComponentsElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />
     <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
     <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />

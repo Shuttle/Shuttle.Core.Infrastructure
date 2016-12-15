@@ -3,8 +3,14 @@ using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class ComponentElement : ConfigurationElement
+	public class ComponentRegistryElement : ConfigurationElement
 	{
+		[ConfigurationProperty("name", IsRequired = false)]
+		public string Name
+		{
+			get { return (string) this["name"]; }
+		}
+
 		[ConfigurationProperty("serviceType", IsRequired = true)]
 		public string ServiceType
 		{
