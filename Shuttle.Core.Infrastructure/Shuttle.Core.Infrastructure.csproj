@@ -72,6 +72,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryCollectionImplementationTypeElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryCollectionsElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverCollectionElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverSection.cs" />
@@ -79,9 +82,8 @@
     <Compile Include="ComponentContainer\ComponentRegistryExtensions.cs" />
     <Compile Include="ComponentContainer\ComponentRegistrySection.cs" />
     <Compile Include="ComponentContainer\IComponentRegistry.cs" />
-    <Compile Include="ComponentContainer\ImplementationDefinition.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryElement.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryComponentElement.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistryComponentsElement.cs" />
     <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
     <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />
@@ -112,7 +114,6 @@
     <Compile Include="Pipeline\PipelineEventArgs.cs" />
     <Compile Include="Pipeline\PipelineEventEventArgs.cs" />
     <Compile Include="Pipeline\PipelineExceptionEventArgs.cs" />
-    <Compile Include="ComponentContainer\DefaultComponentContainer.cs" />
     <Compile Include="ComponentContainer\IComponentResolver.cs" />
     <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />

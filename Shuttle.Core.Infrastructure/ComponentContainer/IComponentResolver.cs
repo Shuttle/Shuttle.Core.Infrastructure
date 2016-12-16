@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace Shuttle.Core.Infrastructure
 {
@@ -7,6 +7,6 @@ namespace Shuttle.Core.Infrastructure
     {
         object Resolve(Type serviceType);
         object Resolve(string name, Type serviceType);
-        IEnumerable ResolveAll(Type serviceType);
+        IEnumerable<object> ResolveAll(Type serviceType);
     }
 }

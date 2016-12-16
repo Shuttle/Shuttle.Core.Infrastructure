@@ -1,14 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
     public class ComponentRegistrySection : ConfigurationSection
     {
-        [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
-        public ComponentRegistryCollectionElement Components
+        [ConfigurationProperty("collections", IsRequired = false, DefaultValue = null)]
+        public ComponentRegistryCollectionsElement Collections
         {
-            get { return (ComponentRegistryCollectionElement)this["components"]; }
+            get { return (ComponentRegistryCollectionsElement)this["collections"]; }
+        }
+
+        [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
+        public ComponentRegistryComponentsElement Components
+        {
+            get { return (ComponentRegistryComponentsElement)this["components"]; }
         }
 
         public static void Register(IComponentRegistry registry)
@@ -22,20 +29,29 @@ namespace Shuttle.Core.Infrastructure
                 return;
             }
 
-            foreach (ComponentRegistryElement component in section.Components)
+            foreach (ComponentRegistryComponentElement component in section.Components)
             {
                 var serviceType = Type.GetType(component.ServiceType);
                 var implementationType = string.IsNullOrEmpty(component.ImplementationType)
                     ? serviceType
                     : Type.GetType(component.ImplementationType);
 
-                if (string.IsNullOrEmpty(component.Name))
-                {
                     registry.Register(serviceType, implementationType, component.Lifestyle);
-                }
-                else
+            }
+
+            foreach (ComponentRegistryCollectionElement collection in section.Collections)
+            {
+                var serviceType = Type.GetType(collection.ServiceType);
+                var implementationTypes = new List<Type>();
+
+                foreach (ComponentRegistryCollectionImplementationTypeElement element in collection)
                 {
-                    registry.Register(component.Name, serviceType, implementationType, component.Lifestyle);
+                    implementationTypes.Add(Type.GetType(element.ImplementationType));
+                }
+
+                if (implementationTypes.Count > 0)
+                {
+                    registry.RegisterCollection(serviceType, implementationTypes, collection.Lifestyle);
                 }
             }
         }

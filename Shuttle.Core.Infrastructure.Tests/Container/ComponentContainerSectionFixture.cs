@@ -17,9 +17,19 @@ namespace Shuttle.Core.Infrastructure.Tests
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
 
-			foreach (ComponentRegistryElement element in section.Components)
+			foreach (ComponentRegistryComponentElement element in section.Components)
 			{
-				Console.WriteLine(element.ServiceType);
+				Console.WriteLine("[component] : {0}", element.ServiceType);
+			}
+
+			foreach (ComponentRegistryCollectionElement element in section.Collections)
+			{
+				Console.WriteLine("[collection] : {0}", element.ServiceType);
+
+			    foreach (ComponentRegistryCollectionImplementationTypeElement typeElement in element)
+			    {
+                    Console.WriteLine("--- {0}", typeElement.ImplementationType);
+                }
 			}
 		}
 
