@@ -313,15 +313,6 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Could not find a section named &apos;{0}&apos; in configuration file &apos;{1}&apos; that is of type &apos;{2}&apos;..
-        /// </summary>
-        public static string SectionNotFound {
-            get {
-                return ResourceManager.GetString("SectionNotFound", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to [{0}] : Stream position is not 0 but seek is not permitted..
         /// </summary>
         public static string StreamCannotSeek {

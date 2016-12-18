@@ -219,10 +219,6 @@
     <value>String duration contains invalid items '{0}'.</value>
     <comment>{0} = string containing invalid format</comment>
   </data>
-  <data name="SectionNotFound" xml:space="preserve">
-    <value>Could not find a section named '{0}' in configuration file '{1}' that is of type '{2}'.</value>
-    <comment>{0} = section name, {1} = configuration file, {2} = the section type</comment>
-  </data>
   <data name="VerboseTransactionScopeAmbient" xml:space="preserve">
     <value>TransactionScope ('{0}') using ambient transaction.</value>
     <comment>{0} = transaction scope name</comment>

@@ -41,6 +41,7 @@
     </Reference>
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Container\DoSomething.cs" />
     <Compile Include="Container\IDoSomething.cs" />
+    <Compile Include="TransactionScopeSection\TransactionScopeSectionFixture.cs" />
     <Compile Include="Serializer\ComplexSerializerType.cs" />
     <Compile Include="Serializer\DefaultSerializerFixture.cs" />
     <Compile Include="Serializer\SimpleSerializerType.cs" />
@@ -95,6 +97,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="TransactionScopeSection\files\Empty.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TransactionScopeSection\files\TransactionScope-Grouped.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="TransactionScopeSection\files\TransactionScope.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

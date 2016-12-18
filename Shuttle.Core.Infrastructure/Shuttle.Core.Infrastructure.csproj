@@ -92,6 +92,9 @@
     <Compile Include="Compression\NullCompressionAlgorithm.cs" />
     <Compile Include="Configuration\ConfigurationItem.cs" />
     <Compile Include="Configuration\ConfigurationSectionProvider.cs" />
+    <Compile Include="Configuration\ITransactionScopeConfiguration.cs" />
+    <Compile Include="Configuration\TransactionScopeConfiguration.cs" />
+    <Compile Include="Configuration\TransactionScopeSection.cs" />
     <Compile Include="Encryption\IEncryptionAlgorithm.cs" />
     <Compile Include="Encryption\NullEncryptionAlgorithm.cs" />
     <Compile Include="Encryption\Section\TripleDESSection.cs" />
