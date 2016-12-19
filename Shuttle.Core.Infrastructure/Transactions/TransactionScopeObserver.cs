@@ -3,7 +3,7 @@ using System.Transactions;
 
 namespace Shuttle.Core.Infrastructure
 {
-    internal static class Extensions
+    public static class TransactionScopeStateExtensions
     {
         public static ITransactionScope GetTransactionScope(this IState state)
         {
