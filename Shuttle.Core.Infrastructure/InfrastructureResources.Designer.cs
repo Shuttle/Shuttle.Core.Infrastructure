@@ -358,6 +358,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Call to &apos;{0}.{1}&apos; already contains an active TransactionScope..
+        /// </summary>
+        public static string TransactionAlreadyStartedException {
+            get {
+                return ResourceManager.GetString("TransactionAlreadyStartedException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to The TripleDES section in the application configuration file may not have an empty value for the &apos;key&apos; attribute..
         /// </summary>
         public static string TripleDESKeyMissing {

@@ -289,4 +289,8 @@
     <value>There is no registration named '{0}' for service type '{1}'.</value>
     <comment>{0} = name, {1} = full type name of service type</comment>
   </data>
+  <data name="TransactionAlreadyStartedException" xml:space="preserve">
+    <value>Call to '{0}.{1}' already contains an active TransactionScope.</value>
+    <comment>{0} = full type name, {1} = method name</comment>
+  </data>
 </root>

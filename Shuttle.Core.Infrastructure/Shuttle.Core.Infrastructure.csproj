@@ -178,6 +178,8 @@
     <Compile Include="Transactions\ITransactionScope.cs" />
     <Compile Include="Transactions\ITransactionScopeFactory.cs" />
     <Compile Include="Transactions\NullTransactionScope.cs" />
+    <Compile Include="Transactions\PipelineEvents.cs" />
+    <Compile Include="Transactions\TransactionScopeObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="InfrastructureResources.resx">
