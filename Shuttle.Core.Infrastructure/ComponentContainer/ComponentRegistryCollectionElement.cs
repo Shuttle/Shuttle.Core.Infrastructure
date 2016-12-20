@@ -5,10 +5,10 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentRegistryCollectionElement : ConfigurationElementCollection
     {
-		[ConfigurationProperty("serviceType", IsRequired = true)]
-		public string ServiceType
+		[ConfigurationProperty("dependencyType", IsRequired = true)]
+		public string DependencyType
 		{
-			get { return (string) this["serviceType"]; }
+			get { return (string) this["dependencyType"]; }
 		}
 
 	    [ConfigurationProperty("lifestyle", IsRequired = false, DefaultValue = "Singleton")]

@@ -35,16 +35,16 @@ namespace Shuttle.Core.Infrastructure
         /// Attempts to resolve the requested service type.  If the service type cannot be resolved null is returned.
         /// </summary>
         /// <param name="resolver">The resolver instance that contains the registered service.</param>
-        /// <param name="serviceType">>The type of the service that should be resolved.</param>
+        /// <param name="dependencyType">>The type of the service that should be resolved.</param>
         /// <returns>An instance of the type implementing the requested service type if it can be resolved; else null.</returns>
-        public static object AttemptResolve(this IComponentResolver resolver, Type serviceType)
+        public static object AttemptResolve(this IComponentResolver resolver, Type dependencyType)
         {
             Guard.AgainstNull(resolver, "resolver");
-            Guard.AgainstNull(serviceType, "serviceType");
+            Guard.AgainstNull(dependencyType, "dependencyType");
 
             try
             {
-                return resolver.Resolve(serviceType);
+                return resolver.Resolve(dependencyType);
             }
             catch
             {
@@ -56,15 +56,15 @@ namespace Shuttle.Core.Infrastructure
         /// Resolves all the given types.  These may be types that will not necessarily be injected into another class but that may require other instances from the resolver.
         /// </summary>
         /// <param name="resolver">The resolver instance that contains the registered services.</param>
-        /// <param name="serviceTypes">The list of service types that need to be resolved.</param>
-        public static IEnumerable<object> Resolve(this IComponentResolver resolver, IEnumerable<Type> serviceTypes)
+        /// <param name="dependencyTypes">The list of service types that need to be resolved.</param>
+        public static IEnumerable<object> Resolve(this IComponentResolver resolver, IEnumerable<Type> dependencyTypes)
         {
             Guard.AgainstNull(resolver, "resolver");
 
             var result = new List<object>();
-            var types = serviceTypes as IList<Type> ?? serviceTypes.ToList();
+            var types = dependencyTypes as IList<Type> ?? dependencyTypes.ToList();
 
-            if (serviceTypes == null || !types.Any())
+            if (dependencyTypes == null || !types.Any())
             {
                 return result;
             }

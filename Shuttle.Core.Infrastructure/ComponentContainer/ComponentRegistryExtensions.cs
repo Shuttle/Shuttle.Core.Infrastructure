@@ -65,10 +65,10 @@ namespace Shuttle.Core.Infrastructure
 
             foreach (ComponentRegistryComponentElement componentElement in section.Components)
             {
-                var serviceType = Type.GetType(componentElement.ServiceType, true);
-                var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType) ? Type.GetType(componentElement.ImplementationType) : serviceType;
+                var dependencyType = Type.GetType(componentElement.DependencyType, true);
+                var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType) ? Type.GetType(componentElement.ImplementationType) : dependencyType;
 
-                registry.Register(serviceType, implementationType, componentElement.Lifestyle);
+                registry.Register(dependencyType, implementationType, componentElement.Lifestyle);
             }
         }
     }

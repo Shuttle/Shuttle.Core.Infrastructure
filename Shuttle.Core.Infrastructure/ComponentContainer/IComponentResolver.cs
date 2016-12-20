@@ -5,7 +5,7 @@ namespace Shuttle.Core.Infrastructure
 {
     public interface IComponentResolver
     {
-        object Resolve(Type serviceType);
-        IEnumerable<object> ResolveAll(Type serviceType);
+        object Resolve(Type dependencyType);
+        IEnumerable<object> ResolveAll(Type dependencyType);
     }
 }

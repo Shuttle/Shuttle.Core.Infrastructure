@@ -19,12 +19,12 @@ namespace Shuttle.Core.Infrastructure.Tests
 
 			foreach (ComponentRegistryComponentElement element in section.Components)
 			{
-				Console.WriteLine("[component] : {0}", element.ServiceType);
+				Console.WriteLine("[component] : {0}", element.DependencyType);
 			}
 
 			foreach (ComponentRegistryCollectionElement element in section.Collections)
 			{
-				Console.WriteLine("[collection] : {0}", element.ServiceType);
+				Console.WriteLine("[collection] : {0}", element.DependencyType);
 
 			    foreach (ComponentRegistryCollectionImplementationTypeElement typeElement in element)
 			    {
@@ -46,7 +46,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 
 			foreach (ComponentResolverElement element in section.Components)
 			{
-				Console.WriteLine(element.ServiceType);
+				Console.WriteLine(element.DependencyType);
 			}
 		}
 

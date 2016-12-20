@@ -26,7 +26,7 @@ namespace Shuttle.Core.Infrastructure
 
             foreach (ComponentResolverElement component in section.Components)
             {
-                var type = Type.GetType(component.ServiceType);
+                var type = Type.GetType(component.DependencyType);
 
                 if (type == null)
                 {

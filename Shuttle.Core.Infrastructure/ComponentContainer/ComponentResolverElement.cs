@@ -4,10 +4,10 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentResolverElement : ConfigurationElement
     {
-        [ConfigurationProperty("serviceType", IsRequired = true)]
-        public string ServiceType
+        [ConfigurationProperty("dependencyType", IsRequired = true)]
+        public string DependencyType
         {
-            get { return (string) this["serviceType"]; }
+            get { return (string) this["dependencyType"]; }
         }
     }
 }

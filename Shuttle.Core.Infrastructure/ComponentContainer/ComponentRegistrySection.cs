@@ -31,17 +31,17 @@ namespace Shuttle.Core.Infrastructure
 
             foreach (ComponentRegistryComponentElement component in section.Components)
             {
-                var serviceType = Type.GetType(component.ServiceType);
+                var dependencyType = Type.GetType(component.DependencyType);
                 var implementationType = string.IsNullOrEmpty(component.ImplementationType)
-                    ? serviceType
+                    ? dependencyType
                     : Type.GetType(component.ImplementationType);
 
-                    registry.Register(serviceType, implementationType, component.Lifestyle);
+                    registry.Register(dependencyType, implementationType, component.Lifestyle);
             }
 
             foreach (ComponentRegistryCollectionElement collection in section.Collections)
             {
-                var serviceType = Type.GetType(collection.ServiceType);
+                var dependencyType = Type.GetType(collection.DependencyType);
                 var implementationTypes = new List<Type>();
 
                 foreach (ComponentRegistryCollectionImplementationTypeElement element in collection)
@@ -51,7 +51,7 @@ namespace Shuttle.Core.Infrastructure
 
                 if (implementationTypes.Count > 0)
                 {
-                    registry.RegisterCollection(serviceType, implementationTypes, collection.Lifestyle);
+                    registry.RegisterCollection(dependencyType, implementationTypes, collection.Lifestyle);
                 }
             }
         }
