@@ -196,6 +196,24 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Compression algorithm &apos;{0}&apos; has not been registered..
+        /// </summary>
+        public static string MissingCompressionAlgorithmException {
+            get {
+                return ResourceManager.GetString("MissingCompressionAlgorithmException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Encryption algorithm &apos;{0}&apos; has not been registered..
+        /// </summary>
+        public static string MissingEncryptionAlgorithmException {
+            get {
+                return ResourceManager.GetString("MissingEncryptionAlgorithmException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required dependency of type &apos;{0}&apos; is null..
         /// </summary>
         public static string NullDependencyException {
