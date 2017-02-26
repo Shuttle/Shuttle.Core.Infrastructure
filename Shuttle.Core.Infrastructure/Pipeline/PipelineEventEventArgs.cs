@@ -1,6 +1,8 @@
-﻿namespace Shuttle.Core.Infrastructure
+﻿using System;
+
+namespace Shuttle.Core.Infrastructure
 {
-	public class PipelineEventEventArgs
+	public class PipelineEventEventArgs : EventArgs
 	{
 		public PipelineEventEventArgs(IPipelineEvent pipelineEvent)
 		{

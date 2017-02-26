@@ -7,45 +7,45 @@ namespace Shuttle.Core.Infrastructure
         /// <summary>
         /// Register a new service/implementation type pair as a singleton.
         /// </summary>
-        /// <typeparam name="TService">The type of the service being registered.</typeparam>
+        /// <typeparam name="TDependency">The type of the service being registered.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
         /// <param name="registry">The registry instance to register the mapping against.</param>
-        public static void Register<TService, TImplementation>(this IComponentRegistry registry)
-            where TService : class
-            where TImplementation : class
+        public static void Register<TDependency, TImplementation>(this IComponentRegistry registry)
+            where TDependency : class
+            where TImplementation : class, TDependency
         {
             Guard.AgainstNull(registry, "registry");
 
-            registry.Register<TService, TImplementation>(Lifestyle.Singleton);
+            registry.Register<TDependency, TImplementation>(Lifestyle.Singleton);
         }
 
         /// <summary>
         /// Register a new service/implementation type pair as a singleton.
         /// </summary>
-        /// <typeparam name="TService">The type of the service being registered.</typeparam>
+        /// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
         /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
         /// <param name="registry">The registry instance to register the mapping against.</param>
         /// <param name="lifestyle">The lifestyle of the component.</param>
-        public static void Register<TService, TImplementation>(this IComponentRegistry registry, Lifestyle lifestyle)
-            where TService : class
-            where TImplementation : class
+        public static void Register<TDependency, TImplementation>(this IComponentRegistry registry, Lifestyle lifestyle)
+            where TDependency : class
+            where TImplementation : TDependency
         {
             Guard.AgainstNull(registry, "registry");
 
-            registry.Register(typeof(TService), typeof(TImplementation), lifestyle);
+            registry.Register(typeof(TDependency), typeof(TImplementation), lifestyle);
         }
 
         /// <summary>
         /// Register a singleton instance for the given service type.
         /// </summary>
-        /// <typeparam name="TService">The type of the service being registered.</typeparam>
+        /// <typeparam name="TDependency">The type of the service being registered.</typeparam>
         /// <param name="registry">The registry instance to register the mapping against.</param>
         /// <param name="instance">The singleton instance to be registered.</param>
-        public static void Register<TService>(this IComponentRegistry registry, TService instance)
+        public static void Register<TDependency>(this IComponentRegistry registry, TDependency instance)
         {
             Guard.AgainstNull(registry, "registry");
 
-            registry.Register(typeof(TService), instance);
+            registry.Register(typeof(TDependency), instance);
         }
 
         /// <summary>
