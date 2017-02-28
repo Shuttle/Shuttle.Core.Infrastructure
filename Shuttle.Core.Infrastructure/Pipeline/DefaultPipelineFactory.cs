@@ -36,9 +36,9 @@ namespace Shuttle.Core.Infrastructure
             PipelineReleased.Invoke(sender, args);
         }
 
-        public event PipelineCreatedDelegate PipelineCreated = delegate { };
-        public event PipelineObtainedDelegate PipelineObtained = delegate { };
-        public event PipelineReleaseDelegate PipelineReleased = delegate { };
+        public event EventHandler<PipelineEventArgs> PipelineCreated = delegate { };
+        public event EventHandler<PipelineEventArgs> PipelineObtained = delegate { };
+        public event EventHandler<PipelineEventArgs> PipelineReleased = delegate { };
 
         public TPipeline GetPipeline<TPipeline>() where TPipeline : IPipeline
         {

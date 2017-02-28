@@ -7,7 +7,7 @@ namespace Shuttle.Core.Infrastructure
 {
     public class Pipeline : IPipeline
     {
-        private readonly string _enteringPipelineStage = InfrastructureResources.EnteringPipelineStage;
+	    private readonly string _enteringPipelineStage = InfrastructureResources.EnteringPipelineStage;
 
         private readonly string _executingPipeline = InfrastructureResources.ExecutingPipeline;
 

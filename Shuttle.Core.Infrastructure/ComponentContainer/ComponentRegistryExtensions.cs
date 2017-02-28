@@ -1,75 +1,135 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 
 namespace Shuttle.Core.Infrastructure
 {
-    public static class ComponentRegistryExtensions
-    {
-        /// <summary>
-        /// Register a new service/implementation type pair as a singleton.
-        /// </summary>
-        /// <typeparam name="TDependency">The type of the service being registered.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
-        /// <param name="registry">The registry instance to register the mapping against.</param>
-        public static void Register<TDependency, TImplementation>(this IComponentRegistry registry)
-            where TDependency : class
-            where TImplementation : class, TDependency
-        {
-            Guard.AgainstNull(registry, "registry");
+	public static class ComponentRegistryExtensions
+	{
+		private static readonly List<Type> EmptyTypes = new List<Type>();
 
-            registry.Register<TDependency, TImplementation>(Lifestyle.Singleton);
-        }
+		/// <summary>
+		///     Register a new service/implementation type pair as a singleton.
+		/// </summary>
+		/// <typeparam name="TDependency">The type of the service being registered.</typeparam>
+		/// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		public static IComponentRegistry Register<TDependency, TImplementation>(this IComponentRegistry registry)
+			where TDependency : class
+			where TImplementation : class, TDependency
+		{
+			Guard.AgainstNull(registry, "registry");
 
-        /// <summary>
-        /// Register a new service/implementation type pair as a singleton.
-        /// </summary>
-        /// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
-        /// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
-        /// <param name="registry">The registry instance to register the mapping against.</param>
-        /// <param name="lifestyle">The lifestyle of the component.</param>
-        public static void Register<TDependency, TImplementation>(this IComponentRegistry registry, Lifestyle lifestyle)
-            where TDependency : class
-            where TImplementation : TDependency
-        {
-            Guard.AgainstNull(registry, "registry");
+			registry.Register<TDependency, TImplementation>(Lifestyle.Singleton);
 
-            registry.Register(typeof(TDependency), typeof(TImplementation), lifestyle);
-        }
+			return registry;
+		}
 
-        /// <summary>
-        /// Register a singleton instance for the given service type.
-        /// </summary>
-        /// <typeparam name="TDependency">The type of the service being registered.</typeparam>
-        /// <param name="registry">The registry instance to register the mapping against.</param>
-        /// <param name="instance">The singleton instance to be registered.</param>
-        public static void Register<TDependency>(this IComponentRegistry registry, TDependency instance)
-        {
-            Guard.AgainstNull(registry, "registry");
+		/// <summary>
+		///     Register a new service/implementation type pair as a singleton.
+		/// </summary>
+		/// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
+		/// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		/// <param name="lifestyle">The lifestyle of the component.</param>
+		public static IComponentRegistry Register<TDependency, TImplementation>(this IComponentRegistry registry,
+			Lifestyle lifestyle)
+			where TDependency : class
+			where TImplementation : TDependency
+		{
+			Guard.AgainstNull(registry, "registry");
 
-            registry.Register(typeof(TDependency), instance);
-        }
+			registry.Register(typeof(TDependency), typeof(TImplementation), lifestyle);
 
-        /// <summary>
-        /// Registers all components from the 'componentRegistry' section in the application configuration file.
-        /// </summary>
-        /// <param name="registry">The registry instance to register the configuration section against.</param>
-        public static void RegisterSection(this IComponentRegistry registry)
-        {
-            Guard.AgainstNull(registry, "registry");
+			return registry;
+		}
 
-            var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry");
+		/// <summary>
+		///     Register a singleton instance for the given service type.
+		/// </summary>
+		/// <typeparam name="TDependency">The type of the service being registered.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		/// <param name="instance">The singleton instance to be registered.</param>
+		public static IComponentRegistry Register<TDependency>(this IComponentRegistry registry, TDependency instance)
+		{
+			Guard.AgainstNull(registry, "registry");
 
-            if (section == null)
-            {
-                return;
-            }
+			registry.Register(typeof(TDependency), instance);
 
-            foreach (ComponentRegistryComponentElement componentElement in section.Components)
-            {
-                var dependencyType = Type.GetType(componentElement.DependencyType, true);
-                var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType) ? Type.GetType(componentElement.ImplementationType) : dependencyType;
+			return registry;
+		}
 
-                registry.Register(dependencyType, implementationType, componentElement.Lifestyle);
-            }
-        }
-    }
+		/// <summary>
+		///     Registers all components from the 'componentRegistry' section in the application configuration file.
+		/// </summary>
+		/// <param name="registry">The registry instance to register the configuration section against.</param>
+		public static IComponentRegistry RegisterSection(this IComponentRegistry registry)
+		{
+			Guard.AgainstNull(registry, "registry");
+
+			var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry");
+
+			if (section == null)
+			{
+				return registry;
+			}
+
+			foreach (ComponentRegistryComponentElement componentElement in section.Components)
+			{
+				var dependencyType = Type.GetType(componentElement.DependencyType, true);
+				var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType)
+					? Type.GetType(componentElement.ImplementationType)
+					: dependencyType;
+
+				registry.Register(dependencyType, implementationType, componentElement.Lifestyle);
+			}
+
+			return registry;
+		}
+
+		/// <summary>
+		///     Registers all types in the given assembly that implement interface `IPipelineObserver`.
+		/// </summary>
+		/// <param name="registry">The `IComponentRegistry` instance to register the types in.</param>
+		/// <param name="assembly">The `Assembly` instance that should be scanned.</param>
+		public static IComponentRegistry RegisterObservers(this IComponentRegistry registry, Assembly assembly)
+		{
+			return RegisterObservers(registry, assembly, null);
+		}
+
+		/// <summary>
+		///     Registers all types in the given assembly that implement interface `IPipelineObserver`.
+		/// </summary>
+		/// <param name="registry">The `IComponentRegistry` instance to register the types in.</param>
+		/// <param name="assembly">The `Assembly` instance that should be scanned.</param>
+		/// <param name="dontRegisterTypes">
+		///     A list of types that implement the `IPipelineObserver` that have to be ignored (not
+		///     registered).
+		/// </param>
+		public static IComponentRegistry RegisterObservers(this IComponentRegistry registry, Assembly assembly,
+			IEnumerable<Type> dontRegisterTypes)
+		{
+			Guard.AgainstNull(registry, "registry");
+			Guard.AgainstNull(assembly, "assembly");
+
+			var reflectionService = new ReflectionService();
+
+			List<Type> typesToIgnore;
+
+			typesToIgnore = dontRegisterTypes == null ? EmptyTypes : dontRegisterTypes.ToList();
+
+			foreach (var type in reflectionService.GetTypes<IPipelineObserver>(assembly))
+			{
+				if (type.IsInterface || dontRegisterTypes != null && typesToIgnore.Contains(type))
+				{
+					continue;
+				}
+
+				registry.Register(type, type, Lifestyle.Singleton);
+			}
+
+			return registry;
+		}
+	}
 }
