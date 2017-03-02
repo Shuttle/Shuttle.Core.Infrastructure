@@ -10,7 +10,7 @@ namespace Shuttle.Core.Infrastructure
 		private static readonly List<Type> EmptyTypes = new List<Type>();
 
 		/// <summary>
-		///     Register a new service/implementation type pair as a singleton.
+		///     Register a new dependency/implementation type pair as a singleton.
 		/// </summary>
 		/// <typeparam name="TDependency">The type of the service being registered.</typeparam>
 		/// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
@@ -27,7 +27,7 @@ namespace Shuttle.Core.Infrastructure
 		}
 
 		/// <summary>
-		///     Register a new service/implementation type pair as a singleton.
+		///     Register a new dependency/implementation type pair.
 		/// </summary>
 		/// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
 		/// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
@@ -41,6 +41,35 @@ namespace Shuttle.Core.Infrastructure
 			Guard.AgainstNull(registry, "registry");
 
 			registry.Register(typeof(TDependency), typeof(TImplementation), lifestyle);
+
+			return registry;
+		}
+
+		/// <summary>
+		///     Register a new dependency/implementation type pair as a singleton.
+		/// </summary>
+		/// <typeparam name="TDependencyImplementation">The type of the dependency, that is also the implementation, being registered.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		/// <param name="lifestyle">The lifestyle of the component.</param>
+		public static IComponentRegistry Register<TDependencyImplementation>(this IComponentRegistry registry)
+			where TDependencyImplementation : class
+		{
+			return registry.Register<TDependencyImplementation>(Lifestyle.Singleton);
+		}
+
+		/// <summary>
+		///     Register a new dependency/implementation type pair.
+		/// </summary>
+		/// <typeparam name="TDependencyImplementation">The type of the dependency, that is also the implementation, being registered.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		/// <param name="lifestyle">The lifestyle of the component.</param>
+		public static IComponentRegistry Register<TDependencyImplementation>(this IComponentRegistry registry,
+			Lifestyle lifestyle)
+			where TDependencyImplementation : class
+		{
+			Guard.AgainstNull(registry, "registry");
+
+			registry.Register(typeof(TDependencyImplementation), typeof(TDependencyImplementation), lifestyle);
 
 			return registry;
 		}
