@@ -115,7 +115,7 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to An implementation type has already been registered for service type &apos;{0}&apos;. .
+        ///   Looks up a localized string similar to An implementation type has already been registered for dependency type &apos;{0}&apos;. .
         /// </summary>
         public static string DuplicateTypeRegistrationException {
             get {
@@ -394,7 +394,7 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to No implementation type has been registered for service type &apos;{0}&apos;..
+        ///   Looks up a localized string similar to No implementation type has been registered for dependency type &apos;{0}&apos;..
         /// </summary>
         public static string TypeNotRegisteredException {
             get {
