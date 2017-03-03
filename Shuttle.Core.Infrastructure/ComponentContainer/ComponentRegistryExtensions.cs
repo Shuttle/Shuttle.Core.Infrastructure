@@ -162,13 +162,11 @@ namespace Shuttle.Core.Infrastructure
 
 			var reflectionService = new ReflectionService();
 
-			List<Type> typesToIgnore;
-
-			typesToIgnore = dontRegisterTypes == null ? EmptyTypes : dontRegisterTypes.ToList();
+			var typesToIgnore = dontRegisterTypes == null ? EmptyTypes : dontRegisterTypes.ToList();
 
 			foreach (var type in reflectionService.GetTypes<IPipelineObserver>(assembly))
 			{
-				if (type.IsInterface || dontRegisterTypes != null && typesToIgnore.Contains(type))
+				if (type.IsInterface || registry.IsRegistered(type) || dontRegisterTypes != null && typesToIgnore.Contains(type))
 				{
 					continue;
 				}
