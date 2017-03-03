@@ -72,6 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ComponentContainer\ComponentRegistry.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionImplementationTypeElement.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionsElement.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />

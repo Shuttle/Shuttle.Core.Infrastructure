@@ -10,9 +10,22 @@ namespace Shuttle.Core.Infrastructure
 		private static readonly List<Type> EmptyTypes = new List<Type>();
 
 		/// <summary>
+		///     Determines whether the component registry has a dependency of the given type registered.
+		/// </summary>
+		/// <typeparam name="TDependency">The type of the dependency that is being checked.</typeparam>
+		/// <param name="registry">The registry instance to register the mapping against.</param>
+		/// <returns>Returns `true` if the dependency type is registered; else `false`.</returns>
+		public static bool IsRegistered<TDependency>(this IComponentRegistry registry)
+		{
+			Guard.AgainstNull(registry, "registry");
+
+			return registry.IsRegistered(typeof(TDependency));
+		}
+
+		/// <summary>
 		///     Register a new dependency/implementation type pair as a singleton.
 		/// </summary>
-		/// <typeparam name="TDependency">The type of the service being registered.</typeparam>
+		/// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
 		/// <typeparam name="TImplementation">The type of the implementation that should be resolved.</typeparam>
 		/// <param name="registry">The registry instance to register the mapping against.</param>
 		public static IComponentRegistry Register<TDependency, TImplementation>(this IComponentRegistry registry)
@@ -48,9 +61,11 @@ namespace Shuttle.Core.Infrastructure
 		/// <summary>
 		///     Register a new dependency/implementation type pair as a singleton.
 		/// </summary>
-		/// <typeparam name="TDependencyImplementation">The type of the dependency, that is also the implementation, being registered.</typeparam>
+		/// <typeparam name="TDependencyImplementation">
+		///     The type of the dependency, that is also the implementation, being
+		///     registered.
+		/// </typeparam>
 		/// <param name="registry">The registry instance to register the mapping against.</param>
-		/// <param name="lifestyle">The lifestyle of the component.</param>
 		public static IComponentRegistry Register<TDependencyImplementation>(this IComponentRegistry registry)
 			where TDependencyImplementation : class
 		{
@@ -60,7 +75,10 @@ namespace Shuttle.Core.Infrastructure
 		/// <summary>
 		///     Register a new dependency/implementation type pair.
 		/// </summary>
-		/// <typeparam name="TDependencyImplementation">The type of the dependency, that is also the implementation, being registered.</typeparam>
+		/// <typeparam name="TDependencyImplementation">
+		///     The type of the dependency, that is also the implementation, being
+		///     registered.
+		/// </typeparam>
 		/// <param name="registry">The registry instance to register the mapping against.</param>
 		/// <param name="lifestyle">The lifestyle of the component.</param>
 		public static IComponentRegistry Register<TDependencyImplementation>(this IComponentRegistry registry,
@@ -75,9 +93,9 @@ namespace Shuttle.Core.Infrastructure
 		}
 
 		/// <summary>
-		///     Register a singleton instance for the given service type.
+		///     Register a singleton instance for the given dependency type.
 		/// </summary>
-		/// <typeparam name="TDependency">The type of the service being registered.</typeparam>
+		/// <typeparam name="TDependency">The type of the dependency being registered.</typeparam>
 		/// <param name="registry">The registry instance to register the mapping against.</param>
 		/// <param name="instance">The singleton instance to be registered.</param>
 		public static IComponentRegistry Register<TDependency>(this IComponentRegistry registry, TDependency instance)

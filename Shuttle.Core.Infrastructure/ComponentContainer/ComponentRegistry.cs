@@ -1,0 +1,48 @@
+using System;
+using System.Collections.Generic;
+
+namespace Shuttle.Core.Infrastructure
+{
+	public abstract class ComponentRegistry : IComponentRegistry
+	{
+		private readonly List<Type> _registeredTypes = new List<Type>();
+
+		public bool IsRegistered(Type type)
+		{
+			Guard.AgainstNull(type, "type");
+
+			return _registeredTypes.Contains(type);
+		}
+
+		public virtual IComponentRegistry Register(Type dependencyType, Type implementationType, Lifestyle lifestyle)
+		{
+			Guard.AgainstNull(dependencyType, "dependencyType");
+			Guard.AgainstNull(implementationType, "implementationType");
+
+			_registeredTypes.Add(dependencyType);
+
+			return this;
+		}
+
+		public virtual IComponentRegistry RegisterCollection(Type dependencyType, IEnumerable<Type> implementationTypes,
+			Lifestyle lifestyle)
+		{
+			Guard.AgainstNull(dependencyType, "dependencyType");
+			Guard.AgainstNull(implementationTypes, "implementationTypes");
+
+			_registeredTypes.Add(dependencyType);
+
+			return this;
+		}
+
+		public virtual IComponentRegistry Register(Type dependencyType, object instance)
+		{
+			Guard.AgainstNull(dependencyType, "dependencyType");
+			Guard.AgainstNull(instance, "instance");
+
+			_registeredTypes.Add(dependencyType);
+
+			return this;
+		}
+	}
+}
