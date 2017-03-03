@@ -281,10 +281,6 @@
     <value>There is already an unnamed registration for service type '{0}'.</value>
     <comment>{0} = full type name of service type</comment>
   </data>
-  <data name="DuplicateNamedTypeRegistrationException" xml:space="preserve">
-    <value>There is already a registration named '{0}' for service type '{1}'.</value>
-    <comment>{0} = name, {1} = full type name of service type</comment>
-  </data>
   <data name="ResolveNameException" xml:space="preserve">
     <value>There is no registration named '{0}' for service type '{1}'.</value>
     <comment>{0} = name, {1} = full type name of service type</comment>

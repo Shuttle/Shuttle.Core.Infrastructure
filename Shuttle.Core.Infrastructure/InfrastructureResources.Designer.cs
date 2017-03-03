@@ -106,15 +106,6 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is already a registration named &apos;{0}&apos; for service type &apos;{1}&apos;..
-        /// </summary>
-        public static string DuplicateNamedTypeRegistrationException {
-            get {
-                return ResourceManager.GetString("DuplicateNamedTypeRegistrationException", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to The IComponentResolver implementation returned the same pipeline instance of type &apos;{0}&apos;.  Since pipelines are not stateless that cannot be shared.  Please register the pipeline types as transient..
         /// </summary>
         public static string DuplicatePipelineInstanceException {
