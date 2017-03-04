@@ -14,10 +14,20 @@ namespace Shuttle.Core.Infrastructure
 			return _registeredTypes.Contains(type);
 		}
 
+		private void DependencyInvariant(Type type)
+		{
+			if (IsRegistered(type))
+			{
+				throw new TypeRegistrationException(string.Format(InfrastructureResources.DuplicateTypeRegistrationException, type.FullName));
+			}
+		}
+
 		public virtual IComponentRegistry Register(Type dependencyType, Type implementationType, Lifestyle lifestyle)
 		{
 			Guard.AgainstNull(dependencyType, "dependencyType");
 			Guard.AgainstNull(implementationType, "implementationType");
+
+			DependencyInvariant(dependencyType);
 
 			_registeredTypes.Add(dependencyType);
 
@@ -30,6 +40,8 @@ namespace Shuttle.Core.Infrastructure
 			Guard.AgainstNull(dependencyType, "dependencyType");
 			Guard.AgainstNull(implementationTypes, "implementationTypes");
 
+			DependencyInvariant(dependencyType);
+
 			_registeredTypes.Add(dependencyType);
 
 			return this;
@@ -39,6 +51,8 @@ namespace Shuttle.Core.Infrastructure
 		{
 			Guard.AgainstNull(dependencyType, "dependencyType");
 			Guard.AgainstNull(instance, "instance");
+
+			DependencyInvariant(dependencyType);
 
 			_registeredTypes.Add(dependencyType);
 
