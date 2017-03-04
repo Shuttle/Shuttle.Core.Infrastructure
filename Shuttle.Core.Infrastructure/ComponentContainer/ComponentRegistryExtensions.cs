@@ -134,47 +134,5 @@ namespace Shuttle.Core.Infrastructure
 
 			return registry;
 		}
-
-		/// <summary>
-		///     Registers all types in the given assembly that implement interface `IPipelineObserver`.
-		/// </summary>
-		/// <param name="registry">The `IComponentRegistry` instance to register the types in.</param>
-		/// <param name="assembly">The `Assembly` instance that should be scanned.</param>
-		public static IComponentRegistry RegisterObservers(this IComponentRegistry registry, Assembly assembly)
-		{
-			return RegisterObservers(registry, assembly, null);
-		}
-
-		/// <summary>
-		///     Registers all types in the given assembly that implement interface `IPipelineObserver`.
-		/// </summary>
-		/// <param name="registry">The `IComponentRegistry` instance to register the types in.</param>
-		/// <param name="assembly">The `Assembly` instance that should be scanned.</param>
-		/// <param name="dontRegisterTypes">
-		///     A list of types that implement the `IPipelineObserver` that have to be ignored (not
-		///     registered).
-		/// </param>
-		public static IComponentRegistry RegisterObservers(this IComponentRegistry registry, Assembly assembly,
-			IEnumerable<Type> dontRegisterTypes)
-		{
-			Guard.AgainstNull(registry, "registry");
-			Guard.AgainstNull(assembly, "assembly");
-
-			var reflectionService = new ReflectionService();
-
-			var typesToIgnore = dontRegisterTypes == null ? EmptyTypes : dontRegisterTypes.ToList();
-
-			foreach (var type in reflectionService.GetTypes<IPipelineObserver>(assembly))
-			{
-				if (type.IsInterface || registry.IsRegistered(type) || dontRegisterTypes != null && typesToIgnore.Contains(type))
-				{
-					continue;
-				}
-
-				registry.Register(type, type, Lifestyle.Singleton);
-			}
-
-			return registry;
-		}
 	}
 }
