@@ -115,31 +115,7 @@ namespace Shuttle.Core.Infrastructure
         {
             var result = new List<Type>();
 
-            var assemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
-
-            foreach (
-                var assembly in
-                    GetAssembliesRecursive(AppDomain.CurrentDomain.BaseDirectory)
-                        .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-            {
-                assemblies.Add(assembly);
-            }
-
-            var privateBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
-
-            if (!privateBinPath.Equals(AppDomain.CurrentDomain.BaseDirectory))
-            {
-                foreach (
-                    var assembly in
-                        GetAssembliesRecursive(privateBinPath)
-                            .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-                {
-                    assemblies.Add(assembly);
-                }
-            }
-
-            assemblies.ForEach(assembly => result.AddRange(GetTypes(type, assembly)));
+			AppDomain.CurrentDomain.GetAssemblies().ToList().ForEach(assembly => result.AddRange(GetTypes(type, assembly)));
 
             return result;
         }
