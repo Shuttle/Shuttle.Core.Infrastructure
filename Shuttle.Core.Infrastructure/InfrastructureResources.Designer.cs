@@ -205,6 +205,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not get type &apos;{0}&apos;.  Ensure that you have a fully qualified type: &apos;FullName, Assembly&apos;..
+        /// </summary>
+        public static string MissingTypeException {
+            get {
+                return ResourceManager.GetString("MissingTypeException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Required dependency of type &apos;{0}&apos; is null..
         /// </summary>
         public static string NullDependencyException {

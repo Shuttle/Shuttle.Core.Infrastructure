@@ -297,4 +297,8 @@
     <value>Encryption algorithm '{0}' has not been registered.</value>
     <comment>{0} = algorithm name</comment>
   </data>
+  <data name="MissingTypeException" xml:space="preserve">
+    <value>Could not get type '{0}'.  Ensure that you have a fully qualified type: 'FullName, Assembly'.</value>
+    <comment>{0} = type that could not be found</comment>
+  </data>
 </root>

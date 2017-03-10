@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -8,105 +7,34 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ReflectionService : IReflectionService
     {
-        private readonly ILog _log;
+	    private readonly IEnumerable<string> _ignoreAssemblies;
+	    private readonly ILog _log;
 
-        public ReflectionService()
-        {
-            _log = Log.For(this);
-        }
+	    public static IEnumerable<string> DefaultIgnoredAssemblies()
+	    {
+		    return new List<string>
+		    {
+			    "System",
+			    "System.Configuration",
+			    "System.Core",
+			    "System.Runtime.Serialization",
+			    "System.Transactions",
+			    "System.Xml"
+		    };
+	    }
 
-        public Assembly GetAssembly(string assembly)
-        {
-            Assembly scanAssembly;
+	    public ReflectionService()
+			: this(DefaultIgnoredAssemblies())
+	    {
+	    }
 
-            try
-            {
-                switch (Path.GetExtension(assembly))
-                {
-                    case ".dll":
-                    case ".exe":
-                    {
-                        scanAssembly = Path.GetDirectoryName(assembly) == AppDomain.CurrentDomain.BaseDirectory
-                            ? Assembly.Load(Path.GetFileNameWithoutExtension(assembly))
-                            : Assembly.LoadFile(assembly);
-                        break;
-                    }
+	    public ReflectionService(IEnumerable<string> ignoreAssemblies)
+	    {
+		    _ignoreAssemblies = ignoreAssemblies ?? new List<string>();
+		    _log = Log.For(this);
+	    }
 
-                    default:
-                    {
-                        scanAssembly = Assembly.Load(assembly);
-
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                _log.Warning(string.Format(InfrastructureResources.AssemblyLoadException, assembly, ex.Message));
-
-                return null;
-            }
-
-            return scanAssembly;
-        }
-
-        public IEnumerable<Assembly> GetAssemblies(string folder)
-        {
-            var result = new List<Assembly>();
-
-            if (Directory.Exists(folder))
-            {
-                result.AddRange(
-                    Directory.GetFiles(folder, "*.exe").Select(GetAssembly).Where(assembly => assembly != null));
-                result.AddRange(
-                    Directory.GetFiles(folder, "*.dll").Select(GetAssembly).Where(assembly => assembly != null));
-            }
-
-            return result;
-        }
-
-        public IEnumerable<Assembly> GetAssembliesRecursive()
-        {
-            var assemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
-
-            foreach (
-                var assembly in
-                    GetAssembliesRecursive(AppDomain.CurrentDomain.BaseDirectory)
-                        .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-            {
-                assemblies.Add(assembly);
-            }
-
-            var privateBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-                AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
-
-            if (!privateBinPath.Equals(AppDomain.CurrentDomain.BaseDirectory))
-            {
-                foreach (
-                    var assembly in
-                        GetAssembliesRecursive(privateBinPath)
-                            .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-                {
-                    assemblies.Add(assembly);
-                }
-            }
-
-            return assemblies;
-        }
-
-        public IEnumerable<Assembly> GetAssembliesRecursive(string folder)
-        {
-            var result = new List<Assembly>(GetAssemblies(folder));
-
-            foreach (var directory in Directory.GetDirectories(folder))
-            {
-                result.AddRange(GetAssembliesRecursive(directory));
-            }
-
-            return result;
-        }
-
-        public IEnumerable<Type> GetTypes<T>()
+	    public IEnumerable<Type> GetTypes<T>()
         {
             return GetTypes(typeof (T));
         }
@@ -163,38 +91,6 @@ namespace Shuttle.Core.Infrastructure
             }
 
             return types;
-        }
-
-        public Type GetType(Func<Type, bool> condition)
-        {
-            Guard.AgainstNull(condition, "condition");
-
-            return
-                GetAssembliesRecursive()
-                    .Select(assembly => GetType(assembly, condition))
-                    .FirstOrDefault(type => type != null);
-        }
-
-        public Type GetType(Assembly assembly, Func<Type, bool> condition)
-        {
-            Guard.AgainstNull(assembly, "assembly");
-            Guard.AgainstNull(condition, "condition");
-
-            return GetTypes(assembly).FirstOrDefault(condition.Invoke);
-        }
-
-        public IEnumerable<T> CreateInstances<T>(IEnumerable<Type> types)
-        {
-            var result = new List<T>();
-
-            foreach (var type in types)
-            {
-                type.AssertDefaultConstructor();
-
-                result.Add((T) Activator.CreateInstance(type));
-            }
-
-            return result;
         }
     }
 }

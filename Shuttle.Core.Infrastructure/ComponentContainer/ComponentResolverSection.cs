@@ -17,7 +17,7 @@ namespace Shuttle.Core.Infrastructure
             Guard.AgainstNull(resolver, "resolver");
 
             var result = new List<object>();
-            var section = ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver");
+            var section = ConfigurationSectionProvider.Open<ComponentResolverSection>("shuttle", "componentResolver");
 
             if (section == null)
             {
@@ -30,7 +30,7 @@ namespace Shuttle.Core.Infrastructure
 
                 if (type == null)
                 {
-                    throw new ConfigurationErrorsException();
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.DependencyType));
                 }
 
                 result.Add(resolver.ResolveAll(type));

@@ -85,6 +85,8 @@
     <Compile Include="ComponentContainer\IComponentRegistry.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryComponentElement.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryComponentsElement.cs" />
+    <Compile Include="ComponentContainer\IComponentResolverBootstrap.cs" />
+    <Compile Include="ComponentContainer\IComponentRegistryBootstrap.cs" />
     <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
     <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />

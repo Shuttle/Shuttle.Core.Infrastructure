@@ -108,31 +108,23 @@ namespace Shuttle.Core.Infrastructure
 		}
 
 		/// <summary>
-		///     Registers all components from the 'componentRegistry' section in the application configuration file.
+		/// Creates an instance of all types implementing the `IComponentRegistryBootstrap` interface and calls the `Register` method.
 		/// </summary>
-		/// <param name="registry">The registry instance to register the configuration section against.</param>
-		public static IComponentRegistry RegisterSection(this IComponentRegistry registry)
+		/// <param name="registry">The `IComponentRegistry` instance to pass to the `Register` method of the boostrapper.</param>
+		public static void RegistryBoostrap(this IComponentRegistry registry)
 		{
 			Guard.AgainstNull(registry, "registry");
 
-			var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry");
+			var reflectionService = new ReflectionService();
 
-			if (section == null)
+			foreach (var type in reflectionService.GetTypes<IComponentRegistryBootstrap>())
 			{
-				return registry;
+				type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired, "IComponentRegistryBootstrap", type.FullName));
+
+				((IComponentRegistryBootstrap)Activator.CreateInstance(type)).Register(registry);
 			}
 
-			foreach (ComponentRegistryComponentElement componentElement in section.Components)
-			{
-				var dependencyType = Type.GetType(componentElement.DependencyType, true);
-				var implementationType = !string.IsNullOrEmpty(componentElement.ImplementationType)
-					? Type.GetType(componentElement.ImplementationType)
-					: dependencyType;
-
-				registry.Register(dependencyType, implementationType, componentElement.Lifestyle);
-			}
-
-			return registry;
+			ComponentRegistrySection.Register(registry);
 		}
 	}
 }

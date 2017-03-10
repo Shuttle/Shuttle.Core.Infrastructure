@@ -87,5 +87,25 @@ namespace Shuttle.Core.Infrastructure
             return resolver.ResolveAll(typeof (T)).Cast<T>().ToList();
         }
 
-    }
+
+		/// <summary>
+		/// Creates an instance of all types implementing the `IComponentResolverBootstrap` interface and calls the `Resolve` method.
+		/// </summary>
+		/// <param name="resolver">The `IComponentResolver` instace to pass to the `Resolve` method of the boostrapper.</param>
+		public static void ResolverBoostrap(this IComponentResolver resolver)
+		{
+			Guard.AgainstNull(resolver, "resolver");
+
+			var reflectionService = new ReflectionService();
+
+			foreach (var type in reflectionService.GetTypes<IComponentResolverBootstrap>())
+			{
+				type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired, "IComponentResolverBootstrap", type.FullName));
+
+				((IComponentResolverBootstrap)Activator.CreateInstance(type)).Resolve(resolver);
+			}
+
+			ComponentResolverSection.Resolve(resolver);
+		}
+	}
 }
