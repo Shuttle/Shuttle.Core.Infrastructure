@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using NUnit.Framework;
 
 namespace Shuttle.Core.Infrastructure.Tests
@@ -6,12 +7,24 @@ namespace Shuttle.Core.Infrastructure.Tests
 	[TestFixture]
 	public class ComponentContainerSectionFixture
 	{
-		[Test]
-		[TestCase("./Container/files/ComponentRegistry.config")]
-		[TestCase("./Container/files/ComponentRegistry-Grouped.config")]
+	    private ComponentRegistrySection GetRegistrySection(string file)
+	    {
+	        return ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry",
+	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format(@".\Container\files\{0}", file)));
+	    }
+
+	    private ComponentResolverSection GetResolverSection(string file)
+	    {
+	        return ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver",
+	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format(@".\Container\files\{0}", file)));
+	    }
+
+	    [Test]
+		[TestCase("ComponentRegistry.config")]
+		[TestCase("ComponentRegistry-Grouped.config")]
 		public void Should_be_able_to_load_the_component_registry_section(string file)
 		{
-			var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry", file);
+			var section = GetRegistrySection(file);
 
 			Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
@@ -34,13 +47,13 @@ namespace Shuttle.Core.Infrastructure.Tests
 		}
 
 		[Test]
-		[TestCase("./Container/files/ComponentResolver.config")]
-		[TestCase("./Container/files/ComponentResolver-Grouped.config")]
+		[TestCase("ComponentResolver.config")]
+		[TestCase("ComponentResolver-Grouped.config")]
 		public void Should_be_able_to_load_the_configuration(string file)
 		{
-			var section = ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver", file);
+            var section = GetResolverSection(file);
 
-			Assert.IsNotNull(section);
+            Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
 
@@ -51,10 +64,10 @@ namespace Shuttle.Core.Infrastructure.Tests
 		}
 
 		[Test]
-		[TestCase("./Container/files/Empty.config")]
+		[TestCase("Empty.config")]
 		public void Should_be_able_to_handle_missing_element(string file)
 		{
-            var section = ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("componentRegistry", file);
+            var section = GetRegistrySection(file);
 
             Assert.IsNotNull(section);
 			Assert.IsEmpty(section.Components);

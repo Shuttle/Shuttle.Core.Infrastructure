@@ -19,14 +19,14 @@ namespace Shuttle.Core.Infrastructure
 		{
 			Guard.AgainstNull(assembly, "assembly");
 
-			return !assembly.IsDynamic 
+			return !assembly.IsDynamic
 				? new Uri(Uri.UnescapeDataString(new UriBuilder(assembly.CodeBase).Path)).LocalPath
 				: string.Empty;
 		}
 
 		public Assembly GetAssembly(string assemblyPath)
 		{
-			var result = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => AssemblyPath(assembly).Equals(assemblyPath));
+			var result = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => AssemblyPath(assembly).Equals(assemblyPath, StringComparison.InvariantCultureIgnoreCase));
 
 			if (result != null)
 			{
@@ -93,13 +93,13 @@ namespace Shuttle.Core.Infrastructure
 			return result;
 		}
 
-		public IEnumerable<Assembly> GetAssembliesRecursive()
+		public IEnumerable<Assembly> GetAssemblies()
 		{
 			var assemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
 
 			foreach (
 				var assembly in
-					GetAssembliesRecursive(AppDomain.CurrentDomain.BaseDirectory)
+					GetAssemblies(AppDomain.CurrentDomain.BaseDirectory)
 						.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
 			{
 				assemblies.Add(assembly);
@@ -112,7 +112,7 @@ namespace Shuttle.Core.Infrastructure
 			{
 				foreach (
 					var assembly in
-						GetAssembliesRecursive(privateBinPath)
+						GetAssemblies(privateBinPath)
 							.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
 				{
 					assemblies.Add(assembly);
@@ -120,18 +120,6 @@ namespace Shuttle.Core.Infrastructure
 			}
 
 			return assemblies;
-		}
-
-		public IEnumerable<Assembly> GetAssembliesRecursive(string folder)
-		{
-			var result = new List<Assembly>(GetAssemblies(folder));
-
-			foreach (var directory in Directory.GetDirectories(folder))
-			{
-				result.AddRange(GetAssembliesRecursive(directory));
-			}
-
-			return result;
 		}
 
 		public IEnumerable<Type> GetTypes<T>()
@@ -143,31 +131,13 @@ namespace Shuttle.Core.Infrastructure
 		{
 			var result = new List<Type>();
 
-			var assemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
-
-			foreach (
-				var assembly in
-					GetAssembliesRecursive(AppDomain.CurrentDomain.BaseDirectory)
-						.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
+			foreach (var assembly in GetAssemblies())
 			{
-				assemblies.Add(assembly);
+				GetTypes(type, assembly)
+					.Where(candidate => result.Find(existing => existing == candidate) == null)
+					.ToList()
+					.ForEach(add => result.Add(add));
 			}
-
-			var privateBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-				AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
-
-			if (!privateBinPath.Equals(AppDomain.CurrentDomain.BaseDirectory))
-			{
-				foreach (
-					var assembly in
-						GetAssembliesRecursive(privateBinPath)
-							.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-				{
-					assemblies.Add(assembly);
-				}
-			}
-
-			assemblies.ForEach(assembly => result.AddRange(GetTypes(type, assembly)));
 
 			return result;
 		}

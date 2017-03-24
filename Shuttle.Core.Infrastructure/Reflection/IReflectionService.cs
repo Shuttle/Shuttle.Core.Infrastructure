@@ -9,8 +9,7 @@ namespace Shuttle.Core.Infrastructure
 	    string AssemblyPath(Assembly assembly);
 		Assembly GetAssembly(string assemblyPath);
 		IEnumerable<Assembly> GetAssemblies(string folder);
-		IEnumerable<Assembly> GetAssembliesRecursive();
-		IEnumerable<Assembly> GetAssembliesRecursive(string folder);
+		IEnumerable<Assembly> GetAssemblies();
 		IEnumerable<Type> GetTypes<T>();
 		IEnumerable<Type> GetTypes(Type type);
 		IEnumerable<Type> GetTypes(Assembly assembly);
