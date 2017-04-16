@@ -35,7 +35,7 @@ namespace Shuttle.Core.Infrastructure
 
 			try
 			{
-				switch (Path.GetExtension(assemblyPath))
+				switch ((Path.GetExtension(assemblyPath) ?? string.Empty).ToLowerInvariant())
 				{
 					case ".dll":
 					case ".exe":
@@ -93,33 +93,54 @@ namespace Shuttle.Core.Infrastructure
 			return result;
 		}
 
-		public IEnumerable<Assembly> GetAssemblies()
+        private IEnumerable<Assembly> GetAssembliesRecursive(string folder)
+        {
+            var result = new List<Assembly>(GetAssemblies(folder));
+
+            foreach (var directory in Directory.GetDirectories(folder))
+            {
+                result.AddRange(GetAssembliesRecursive(directory));
+            }
+
+            return result;
+        }
+
+        public IEnumerable<Assembly> GetAssemblies()
 		{
 			var assemblies = new List<Assembly>(AppDomain.CurrentDomain.GetAssemblies());
 
-			foreach (
-				var assembly in
-					GetAssemblies(AppDomain.CurrentDomain.BaseDirectory)
-						.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-			{
-				assemblies.Add(assembly);
-			}
+            _log.Debug(string.Format(InfrastructureResources.DebugGetAssemblies, AppDomain.CurrentDomain.ShadowCopyFiles));
 
-			var privateBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
-				AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
+            if (AppDomain.CurrentDomain.ShadowCopyFiles)
+		    {
+                assemblies.AddRange(GetAssembliesRecursive(AppDomain.CurrentDomain.DynamicDirectory)); 
 
-			if (!privateBinPath.Equals(AppDomain.CurrentDomain.BaseDirectory))
-			{
-				foreach (
-					var assembly in
-						GetAssemblies(privateBinPath)
-							.Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
-				{
-					assemblies.Add(assembly);
-				}
-			}
+                return assemblies;
+		    }
 
-			return assemblies;
+		    foreach (
+		        var assembly in
+		        GetAssemblies(AppDomain.CurrentDomain.BaseDirectory)
+		            .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
+		    {
+		        assemblies.Add(assembly);
+		    }
+
+		    var privateBinPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+		        AppDomain.CurrentDomain.RelativeSearchPath ?? string.Empty);
+
+		    if (!privateBinPath.Equals(AppDomain.CurrentDomain.BaseDirectory))
+		    {
+		        foreach (
+		            var assembly in
+		            GetAssemblies(privateBinPath)
+		                .Where(assembly => assemblies.Find(candidate => candidate.Equals(assembly)) == null))
+		        {
+		            assemblies.Add(assembly);
+		        }
+		    }
+
+		    return assemblies;
 		}
 
 		public IEnumerable<Type> GetTypes<T>()

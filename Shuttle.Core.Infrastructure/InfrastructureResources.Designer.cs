@@ -97,6 +97,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GetAssemblies() called with ShadowCopyFiles = &apos;{0}&apos;..
+        /// </summary>
+        public static string DebugGetAssemblies {
+            get {
+                return ResourceManager.GetString("DebugGetAssemblies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} &apos;{1}&apos; has no default constructor..
         /// </summary>
         public static string DefaultConstructorRequired {
