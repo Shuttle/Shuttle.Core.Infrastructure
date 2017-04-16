@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ArgumentsFixture.cs" />
     <Compile Include="CompressionAlgorithmFixture.cs" />
+    <Compile Include="ConfigurationSectionProviderFixture.cs" />
     <Compile Include="Container\BootstrapFixture.cs" />
     <Compile Include="Container\ComponentRegistryFixture.cs" />
     <Compile Include="Container\DoSomethingElse.cs" />
@@ -84,7 +85,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Container\files\ComponentResolver.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
