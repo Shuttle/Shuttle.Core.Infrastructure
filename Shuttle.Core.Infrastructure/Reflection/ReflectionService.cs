@@ -15,16 +15,7 @@ namespace Shuttle.Core.Infrastructure
 			_log = Log.For(this);
 		}
 
-		public string AssemblyPath(Assembly assembly)
-		{
-			Guard.AgainstNull(assembly, "assembly");
-
-			return !assembly.IsDynamic
-				? new Uri(Uri.UnescapeDataString(new UriBuilder(assembly.CodeBase).Path)).LocalPath
-				: string.Empty;
-		}
-
-		public Assembly GetAssembly(string assemblyPath)
+	    public Assembly GetAssembly(string assemblyPath)
 		{
 			var result = AppDomain.CurrentDomain.GetAssemblies().FirstOrDefault(assembly => AssemblyPath(assembly).Equals(assemblyPath, StringComparison.InvariantCultureIgnoreCase));
 
@@ -111,9 +102,9 @@ namespace Shuttle.Core.Infrastructure
 
             _log.Debug(string.Format(InfrastructureResources.DebugGetAssemblies, AppDomain.CurrentDomain.ShadowCopyFiles));
 
-            if (AppDomain.CurrentDomain.ShadowCopyFiles)
+            if (AppDomain.CurrentDomain.ShadowCopyFiles && !string.IsNullOrEmpty(AppDomain.CurrentDomain.DynamicDirectory))
 		    {
-                assemblies.AddRange(GetAssembliesRecursive(AppDomain.CurrentDomain.DynamicDirectory)); 
+		        assemblies.AddRange(GetAssembliesRecursive(AppDomain.CurrentDomain.DynamicDirectory)); 
 
                 return assemblies;
 		    }
@@ -207,5 +198,14 @@ namespace Shuttle.Core.Infrastructure
 
 			return types;
 		}
-	}
+
+	    public string AssemblyPath(Assembly assembly)
+	    {
+            Guard.AgainstNull(assembly, "assembly");
+
+            return !assembly.IsDynamic
+                ? new Uri(Uri.UnescapeDataString(new UriBuilder(assembly.CodeBase).Path)).LocalPath
+                : string.Empty;
+        }
+    }
 }

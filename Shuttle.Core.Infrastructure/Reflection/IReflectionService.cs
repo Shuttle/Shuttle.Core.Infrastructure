@@ -6,8 +6,8 @@ namespace Shuttle.Core.Infrastructure
 {
     public interface IReflectionService
     {
-	    string AssemblyPath(Assembly assembly);
-		Assembly GetAssembly(string assemblyPath);
+        string AssemblyPath(Assembly assembly);
+        Assembly GetAssembly(string assemblyPath);
 		IEnumerable<Assembly> GetAssemblies(string folder);
 		IEnumerable<Assembly> GetAssemblies();
 		IEnumerable<Type> GetTypes<T>();

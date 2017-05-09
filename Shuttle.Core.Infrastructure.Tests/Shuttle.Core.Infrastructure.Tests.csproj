@@ -60,7 +60,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Container\DoSomething.cs" />
     <Compile Include="Container\IDoSomething.cs" />
-    <Compile Include="ReflectionServiceFixture.cs" />
     <Compile Include="TransactionScopeSection\TransactionScopeSectionFixture.cs" />
     <Compile Include="Serializer\ComplexSerializerType.cs" />
     <Compile Include="Serializer\DefaultSerializerFixture.cs" />
