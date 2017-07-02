@@ -8,7 +8,7 @@ namespace Shuttle.Core.Infrastructure
 	    public bool Enabled { get; private set; }
 	    public IsolationLevel IsolationLevel { get; private set;  }
 	    public TimeSpan Timeout { get; private set; }
-	    private readonly ITransactionScope _nullServiceBusTransactionScope = new NullTransactionScope();
+	    private readonly ITransactionScope _nullTransactionScope = new NullTransactionScope();
 
 	    public DefaultTransactionScopeFactory(bool enabled, IsolationLevel isolationIsolationLevel, TimeSpan timeout)
 	    {
@@ -24,7 +24,7 @@ namespace Shuttle.Core.Infrastructure
 
 	    public ITransactionScope Create(string name, IsolationLevel isolationLevel, TimeSpan timeout)
 	    {
-            return Enabled ? new DefaultTransactionScope(name, IsolationLevel, Timeout) : _nullServiceBusTransactionScope;
+            return Enabled ? new DefaultTransactionScope(name, IsolationLevel, Timeout) : _nullTransactionScope;
         }
 
 	    public ITransactionScope Create()
