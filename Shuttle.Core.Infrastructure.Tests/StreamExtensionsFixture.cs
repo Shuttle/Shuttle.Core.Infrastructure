@@ -34,7 +34,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 
             Assert.AreEqual(5, copy.Length);
             Assert.AreEqual(0, copy.Position);
-            Assert.AreEqual(0, copy.Position);
+            Assert.AreEqual(5, stream.Position);
         }
     }
 }
