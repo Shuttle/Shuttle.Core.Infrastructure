@@ -72,10 +72,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
+    <Compile Include="ComponentContainer\BootstrapAssemblyExtensions.cs" />
+    <Compile Include="ComponentContainer\BootstrapAssemblyScan.cs" />
     <Compile Include="ComponentContainer\ComponentRegistry.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionImplementationTypeElement.cs" />
+    <Compile Include="ComponentContainer\BootstrapAssemblyCollectionsElement.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionsElement.cs" />
     <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />
+    <Compile Include="ComponentContainer\BootstrapAssemblyElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverCollectionElement.cs" />
     <Compile Include="ComponentContainer\ComponentResolverSection.cs" />

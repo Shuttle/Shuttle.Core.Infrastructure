@@ -6,11 +6,14 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentResolverSection : ConfigurationSection
     {
+        [ConfigurationProperty("bootstrapAssemblyScan", IsRequired = false, DefaultValue = BootstrapAssemblyScan.Shuttle)]
+        public BootstrapAssemblyScan BootstrapAssemblyScan => (BootstrapAssemblyScan)this["bootstrapAssemblyScan"];
+
         [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
-        public ComponentResolverCollectionElement Components
-        {
-            get { return (ComponentResolverCollectionElement)this["components"]; }
-        }
+        public ComponentResolverCollectionElement Components => (ComponentResolverCollectionElement) this["components"];
+
+        [ConfigurationProperty("bootstrapAssemblies", IsRequired = false, DefaultValue = null)]
+        public BootstrapAssemblyCollectionsElement BootstrapAssemblies => (BootstrapAssemblyCollectionsElement) this["bootstrapAssemblies"];
 
         public static IEnumerable<object> Resolve(IComponentResolver resolver)
         {
@@ -30,7 +33,8 @@ namespace Shuttle.Core.Infrastructure
 
                 if (type == null)
                 {
-                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.DependencyType));
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
+                        component.DependencyType));
                 }
 
                 result.Add(resolver.ResolveAll(type));

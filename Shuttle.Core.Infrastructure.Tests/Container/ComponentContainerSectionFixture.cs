@@ -29,19 +29,20 @@ namespace Shuttle.Core.Infrastructure.Tests
 			Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
+			Assert.AreEqual(BootstrapAssemblyScan.None, section.BootstrapAssemblyScan);
 
 			foreach (ComponentRegistryComponentElement element in section.Components)
 			{
-				Console.WriteLine("[component] : {0}", element.DependencyType);
+				Console.WriteLine(@"[collection] : {0}", element.DependencyType);
 			}
 
 			foreach (ComponentRegistryCollectionElement element in section.Collections)
 			{
-				Console.WriteLine("[collection] : {0}", element.DependencyType);
+				Console.WriteLine(@"[collection] : {0}", element.DependencyType);
 
 			    foreach (ComponentRegistryCollectionImplementationTypeElement typeElement in element)
 			    {
-                    Console.WriteLine("--- {0}", typeElement.ImplementationType);
+                    Console.WriteLine(@"[collection] : {0}", typeElement.ImplementationType);
                 }
 			}
 		}
@@ -56,8 +57,9 @@ namespace Shuttle.Core.Infrastructure.Tests
             Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
+		    Assert.AreEqual(BootstrapAssemblyScan.None, section.BootstrapAssemblyScan);
 
-			foreach (ComponentResolverElement element in section.Components)
+            foreach (ComponentResolverElement element in section.Components)
 			{
 				Console.WriteLine(element.DependencyType);
 			}

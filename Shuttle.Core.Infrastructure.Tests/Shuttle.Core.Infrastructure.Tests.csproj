@@ -109,6 +109,7 @@
     </None>
     <None Include="TransactionScopeSection\files\TransactionScope.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup />

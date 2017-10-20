@@ -16,21 +16,21 @@ namespace Shuttle.Core.Infrastructure.Tests
 
         public void Execute(MockPipelineEvent1 pipelineEvent)
         {
-            Console.WriteLine("MockAuthenticateObserver.Execute() called for event '{0}'.", pipelineEvent.Name);
+            Console.WriteLine(@"[collection] : {0}", pipelineEvent.Name);
 
             _callSequence += "1";
         }
 
         public void Execute(MockPipelineEvent2 pipelineEvent)
         {
-            Console.WriteLine("MockAuthenticateObserver.Execute() called for event '{0}'.", pipelineEvent.Name);
+            Console.WriteLine(@"[collection] : {0}", pipelineEvent.Name);
 
             _callSequence += "2";
         }
 
         public void Execute(MockPipelineEvent3 pipelineEvent)
         {
-            Console.WriteLine("MockAuthenticateObserver.Execute() called for event '{0}'.", pipelineEvent.Name);
+            Console.WriteLine(@"[collection] : {0}", pipelineEvent.Name);
 
             _callSequence += "3";
         }

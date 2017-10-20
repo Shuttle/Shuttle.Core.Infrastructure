@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace Shuttle.Core.Infrastructure
 {
     public static class ComponentResolverExtensions
     {
         /// <summary>
-        /// Resolves the requested service type.  If the service type cannot be resolved an exception is thrown.
+        ///     Resolves the requested service type.  If the service type cannot be resolved an exception is thrown.
         /// </summary>
         /// <typeparam name="T">The type of the service that should be resolved.</typeparam>
         /// <param name="resolver">The resolver instance that contains the registered service.</param>
@@ -17,22 +17,22 @@ namespace Shuttle.Core.Infrastructure
         {
             Guard.AgainstNull(resolver, "resolver");
 
-            return (T)resolver.Resolve(typeof(T));
+            return (T) resolver.Resolve(typeof(T));
         }
 
         /// <summary>
-        /// Attempts to resolve the requested service type.  If the service type cannot be resolved null is returned.
+        ///     Attempts to resolve the requested service type.  If the service type cannot be resolved null is returned.
         /// </summary>
         /// <typeparam name="T">The type of the service that should be resolved.</typeparam>
         /// <param name="resolver">The resolver instance that contains the registered service.</param>
         /// <returns>An instance of the type implementing the requested service type if it can be resolved; else null.</returns>
         public static T AttemptResolve<T>(this IComponentResolver resolver) where T : class
         {
-            return (T)AttemptResolve(resolver, typeof(T));
+            return (T) AttemptResolve(resolver, typeof(T));
         }
 
         /// <summary>
-        /// Attempts to resolve the requested service type.  If the service type cannot be resolved null is returned.
+        ///     Attempts to resolve the requested service type.  If the service type cannot be resolved null is returned.
         /// </summary>
         /// <param name="resolver">The resolver instance that contains the registered service.</param>
         /// <param name="dependencyType">>The type of the service that should be resolved.</param>
@@ -53,7 +53,8 @@ namespace Shuttle.Core.Infrastructure
         }
 
         /// <summary>
-        /// Resolves all the given types.  These may be types that will not necessarily be injected into another class but that may require other instances from the resolver.
+        ///     Resolves all the given types.  These may be types that will not necessarily be injected into another class but that
+        ///     may require other instances from the resolver.
         /// </summary>
         /// <param name="resolver">The resolver instance that contains the registered services.</param>
         /// <param name="dependencyTypes">The list of service types that need to be resolved.</param>
@@ -75,7 +76,7 @@ namespace Shuttle.Core.Infrastructure
         }
 
         /// <summary>
-        /// Resolves all registered instance of the requested service type.
+        ///     Resolves all registered instance of the requested service type.
         /// </summary>
         /// <typeparam name="T">The type of the services that should be resolved.</typeparam>
         /// <param name="resolver">The resolver instance that contains the registered service.</param>
@@ -84,28 +85,37 @@ namespace Shuttle.Core.Infrastructure
         {
             Guard.AgainstNull(resolver, "resolver");
 
-            return resolver.ResolveAll(typeof (T)).Cast<T>().ToList();
+            return resolver.ResolveAll(typeof(T)).Cast<T>().ToList();
         }
 
 
-		/// <summary>
-		/// Creates an instance of all types implementing the `IComponentResolverBootstrap` interface and calls the `Resolve` method.
-		/// </summary>
-		/// <param name="resolver">The `IComponentResolver` instace to pass to the `Resolve` method of the boostrapper.</param>
-		public static void ResolverBoostrap(this IComponentResolver resolver)
-		{
-			Guard.AgainstNull(resolver, "resolver");
+        /// <summary>
+        ///     Creates an instance of all types implementing the `IComponentResolverBootstrap` interface and calls the `Resolve`
+        ///     method.
+        /// </summary>
+        /// <param name="resolver">The `IComponentResolver` instace to pass to the `Resolve` method of the boostrapper.</param>
+        public static void ResolverBoostrap(this IComponentResolver resolver)
+        {
+            Guard.AgainstNull(resolver, "resolver");
 
-			var reflectionService = new ReflectionService();
+            var section = ConfigurationSectionProvider.Open<ComponentResolverSection>("shuttle", "componentResolver");
 
-			foreach (var type in reflectionService.GetTypes<IComponentResolverBootstrap>())
-			{
-				type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired, "IComponentResolverBootstrap", type.FullName));
+            var bootstrapAssemblyScan = section?.BootstrapAssemblyScan ?? BootstrapAssemblyScan.Shuttle;
+            var bootstrapAssemblies = section?.BootstrapAssemblies ?? new BootstrapAssemblyCollectionsElement();
+            var reflectionService = new ReflectionService();
 
-				((IComponentResolverBootstrap)Activator.CreateInstance(type)).Resolve(resolver);
-			}
+            foreach (var assembly in bootstrapAssemblies.GetAssemblies(bootstrapAssemblyScan))
+            {
+                foreach (var type in reflectionService.GetTypes<IComponentResolverBootstrap>(assembly))
+                {
+                    type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired,
+                        "IComponentResolverBootstrap", type.FullName));
 
-			ComponentResolverSection.Resolve(resolver);
-		}
-	}
+                    ((IComponentResolverBootstrap) Activator.CreateInstance(type)).Resolve(resolver);
+                }
+            }
+
+            ComponentResolverSection.Resolve(resolver);
+        }
+    }
 }

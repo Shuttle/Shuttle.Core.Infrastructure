@@ -4,78 +4,83 @@ using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class ComponentRegistrySection : ConfigurationSection
-	{
-		[ConfigurationProperty("collections", IsRequired = false, DefaultValue = null)]
-		public ComponentRegistryCollectionsElement Collections
-		{
-			get { return (ComponentRegistryCollectionsElement)this["collections"]; }
-		}
+    public class ComponentRegistrySection : ConfigurationSection
+    {
+        [ConfigurationProperty("bootstrapAssemblyScan", IsRequired = false, DefaultValue = BootstrapAssemblyScan.Shuttle)]
+        public BootstrapAssemblyScan BootstrapAssemblyScan => (BootstrapAssemblyScan)this["bootstrapAssemblyScan"];
 
-		[ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
-		public ComponentRegistryComponentsElement Components
-		{
-			get { return (ComponentRegistryComponentsElement)this["components"]; }
-		}
+        [ConfigurationProperty("collections", IsRequired = false, DefaultValue = null)]
+        public ComponentRegistryCollectionsElement Collections => (ComponentRegistryCollectionsElement) this[
+            "collections"];
 
-		public static void Register(IComponentRegistry registry)
-		{
-			Guard.AgainstNull(registry, "registry");
+        [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
+        public ComponentRegistryComponentsElement Components => (ComponentRegistryComponentsElement) this["components"];
 
-			var section = ConfigurationSectionProvider.Open<ComponentRegistrySection>("shuttle", "componentRegistry");
+        [ConfigurationProperty("bootstrapAssemblies", IsRequired = false, DefaultValue = null)]
+        public BootstrapAssemblyCollectionsElement BootstrapAssemblies => (BootstrapAssemblyCollectionsElement)this["bootstrapAssemblies"];
 
-			if (section == null)
-			{
-				return;
-			}
+        public static void Register(IComponentRegistry registry)
+        {
+            Guard.AgainstNull(registry, "registry");
 
-			foreach (ComponentRegistryComponentElement component in section.Components)
-			{
-				var dependencyType = Type.GetType(component.DependencyType);
-				var implementationType = string.IsNullOrEmpty(component.ImplementationType)
-					? dependencyType
-					: Type.GetType(component.ImplementationType);
+            var section = ConfigurationSectionProvider.Open<ComponentRegistrySection>("shuttle", "componentRegistry");
 
-				if (dependencyType == null)
-				{
-					throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.DependencyType));
-				}
+            if (section == null)
+            {
+                return;
+            }
 
-				if (implementationType == null)
-				{
-					throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.ImplementationType));
-				}
+            foreach (ComponentRegistryComponentElement component in section.Components)
+            {
+                var dependencyType = Type.GetType(component.DependencyType);
+                var implementationType = string.IsNullOrEmpty(component.ImplementationType)
+                    ? dependencyType
+                    : Type.GetType(component.ImplementationType);
 
-				registry.Register(dependencyType, implementationType, component.Lifestyle);
-			}
+                if (dependencyType == null)
+                {
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
+                        component.DependencyType));
+                }
 
-			foreach (ComponentRegistryCollectionElement collection in section.Collections)
-			{
-				var dependencyType = Type.GetType(collection.DependencyType);
-				var implementationTypes = new List<Type>();
+                if (implementationType == null)
+                {
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
+                        component.ImplementationType));
+                }
 
-				if (dependencyType == null)
-				{
-					throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, collection.DependencyType));
-				}
+                registry.Register(dependencyType, implementationType, component.Lifestyle);
+            }
 
-				foreach (ComponentRegistryCollectionImplementationTypeElement element in collection)
-				{
-					var implementationType = Type.GetType(element.ImplementationType);
+            foreach (ComponentRegistryCollectionElement collection in section.Collections)
+            {
+                var dependencyType = Type.GetType(collection.DependencyType);
+                var implementationTypes = new List<Type>();
 
-					if (implementationType == null)
-					{
-						throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, element.ImplementationType));
-					}
+                if (dependencyType == null)
+                {
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
+                        collection.DependencyType));
+                }
 
-					implementationTypes.Add(implementationType);
-				}
+                foreach (ComponentRegistryCollectionImplementationTypeElement element in collection)
+                {
+                    var implementationType = Type.GetType(element.ImplementationType);
 
-				if (implementationTypes.Count > 0)
-				{
-					registry.RegisterCollection(dependencyType, implementationTypes, collection.Lifestyle);
-				}
-			}
-		}
-	}
+                    if (implementationType == null)
+                    {
+                        throw new ConfigurationErrorsException(string.Format(
+                            InfrastructureResources.MissingTypeException, element.ImplementationType));
+                    }
+
+                    implementationTypes.Add(implementationType);
+                }
+
+                if (implementationTypes.Count > 0)
+                {
+                    registry.RegisterCollection(dependencyType, implementationTypes, collection.Lifestyle);
+                }
+            }
+        }
+    }
 }
