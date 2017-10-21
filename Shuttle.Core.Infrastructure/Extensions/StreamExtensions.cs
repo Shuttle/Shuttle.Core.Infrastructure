@@ -36,7 +36,7 @@ namespace Shuttle.Core.Infrastructure
                     continue;
                 }
 
-                var temp = new byte[readBuffer.Length*2];
+                var temp = new byte[readBuffer.Length * 2];
 
                 Buffer.BlockCopy(readBuffer, 0, temp, 0, readBuffer.Length);
                 Buffer.SetByte(temp, totalBytesRead, (byte) nextByte);

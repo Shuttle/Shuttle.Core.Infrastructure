@@ -1,19 +1,17 @@
 namespace Shuttle.Core.Infrastructure
 {
-	public class NullTransactionScope : ITransactionScope
-	{
-	    private const string NullTransactionScopeName = "[null transaction scope]";
+    public class NullTransactionScope : ITransactionScope
+    {
+        private const string NullTransactionScopeName = "[null transaction scope]";
 
-        public string Name {
-	        get { return NullTransactionScopeName; }
-	    }
+        public string Name => NullTransactionScopeName;
 
-	    public void Complete()
-		{
-		}
+        public void Complete()
+        {
+        }
 
-		public void Dispose()
-		{
-		}
-	}
+        public void Dispose()
+        {
+        }
+    }
 }

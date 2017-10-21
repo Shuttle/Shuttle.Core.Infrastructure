@@ -70,6 +70,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Could not find an assembly with name &apos;{0}&apos;..
+        /// </summary>
+        public static string AssemblyNameNotFound {
+            get {
+                return ResourceManager.GetString("AssemblyNameNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Configuration item &apos;{0}&apos; is specified but empty.  Using the specified default &apos;{1}&apos;..
         /// </summary>
         public static string ConfigurationItemEmptyUsingDefault {
@@ -97,6 +106,15 @@ namespace Shuttle.Core.Infrastructure {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to GetAssemblies() called with ShadowCopyFiles = &apos;{0}&apos;..
+        /// </summary>
+        public static string DebugGetAssemblies {
+            get {
+                return ResourceManager.GetString("DebugGetAssemblies", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to {0} &apos;{1}&apos; has no default constructor..
         /// </summary>
         public static string DefaultConstructorRequired {
@@ -120,6 +138,15 @@ namespace Shuttle.Core.Infrastructure {
         public static string DuplicateTypeRegistrationException {
             get {
                 return ResourceManager.GetString("DuplicateTypeRegistrationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No implementation types has been specified for the collection dependency of type &apos;{0}&apos;...
+        /// </summary>
+        public static string EmptyCollectionImplementationTypes {
+            get {
+                return ResourceManager.GetString("EmptyCollectionImplementationTypes", resourceCulture);
             }
         }
         

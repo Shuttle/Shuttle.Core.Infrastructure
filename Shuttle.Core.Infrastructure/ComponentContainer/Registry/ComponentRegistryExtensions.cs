@@ -223,20 +223,29 @@ namespace Shuttle.Core.Infrastructure
         ///     Creates an instance of all types implementing the `IComponentRegistryBootstrap` interface and calls the `Register`
         ///     method.
         /// </summary>
-        /// <param name="registry">The `IComponentRegistry` instance to pass to the `Register` method of the boostrapper.</param>
+        /// <param name="registry">The `IComponentRegistry` instance to pass register the components in.</param>
         public static void RegistryBoostrap(this IComponentRegistry registry)
+        {
+            RegistryBoostrap(registry, ComponentRegistrySection.Configuration(), BootstrapSection.Configuration());
+        }
+
+        /// <summary>
+        ///     Creates an instance of all types implementing the `IComponentRegistryBootstrap` interface and calls the `Register`
+        ///     method.
+        /// </summary>
+        /// <param name="registry">The `IComponentRegistry` instance to pass register the components in.</param>
+        /// <param name="registryConfiguration">The `IComponentRegistryConfiguration` instance that contains the registry configuration.</param>
+        /// <param name="bootstrapConfiguration">The `IBootstrapConfiguration` instance that contains the bootstrapping configuration.</param>
+        public static void RegistryBoostrap(this IComponentRegistry registry,
+            IComponentRegistryConfiguration registryConfiguration, IBootstrapConfiguration bootstrapConfiguration)
         {
             Guard.AgainstNull(registry, "registry");
 
             var completed = new List<Type>();
 
-            var section = ConfigurationSectionProvider.Open<ComponentRegistrySection>("shuttle", "componentRegistry");
-
-            var bootstrapAssemblyScan = section?.BootstrapAssemblyScan ?? BootstrapAssemblyScan.Shuttle;
-            var bootstrapAssemblies = section?.BootstrapAssemblies ?? new BootstrapAssemblyCollectionsElement();
             var reflectionService = new ReflectionService();
 
-            foreach (var assembly in bootstrapAssemblies.GetAssemblies(bootstrapAssemblyScan))
+            foreach (var assembly in bootstrapConfiguration.Assemblies)
             {
                 foreach (var type in reflectionService.GetTypes<IComponentRegistryBootstrap>(assembly))
                 {
@@ -254,7 +263,16 @@ namespace Shuttle.Core.Infrastructure
                 }
             }
 
-            ComponentRegistrySection.Register(registry);
+            foreach (var component in registryConfiguration.Components)
+            {
+                registry.Register(component.DependencyType, component.ImplementationType, component.Lifestyle);
+            }
+
+            foreach (var collection in registryConfiguration.Collections)
+            {
+                registry.RegisterCollection(collection.DependencyType, collection.ImplementationTypes,
+                    collection.Lifestyle);
+            }
         }
     }
 }

@@ -98,50 +98,26 @@ namespace Shuttle.Core.Infrastructure
         {
         }
 
-        public LogLevel LogLevel
-        {
-            get { return LogLevel.Off; }
-        }
+        public LogLevel LogLevel => LogLevel.Off;
 
         public bool IsEnabled(LogLevel level)
         {
             return false;
         }
 
-        public bool IsVerboseEnabled
-        {
-            get { return false; }
-        }
+        public bool IsVerboseEnabled => false;
 
-        public bool IsTraceEnabled
-        {
-            get { return false; }
-        }
+        public bool IsTraceEnabled => false;
 
-        public bool IsDebugEnabled
-        {
-            get { return false; }
-        }
+        public bool IsDebugEnabled => false;
 
-        public bool IsInformationEnabled
-        {
-            get { return false; }
-        }
+        public bool IsInformationEnabled => false;
 
-        public bool IsWarningEnabled
-        {
-            get { return false; }
-        }
+        public bool IsWarningEnabled => false;
 
-        public bool IsErrorEnabled
-        {
-            get { return false; }
-        }
+        public bool IsErrorEnabled => false;
 
-        public bool IsFatalEnabled
-        {
-            get { return false; }
-        }
+        public bool IsFatalEnabled => false;
 
         public ILog For(Type type)
         {

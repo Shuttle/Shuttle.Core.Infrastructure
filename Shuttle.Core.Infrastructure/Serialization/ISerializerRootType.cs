@@ -2,8 +2,8 @@
 
 namespace Shuttle.Core.Infrastructure
 {
-	public interface ISerializerRootType
-	{
-		void AddSerializerType(Type root, Type contained);
-	}
+    public interface ISerializerRootType
+    {
+        void AddSerializerType(Type root, Type contained);
+    }
 }

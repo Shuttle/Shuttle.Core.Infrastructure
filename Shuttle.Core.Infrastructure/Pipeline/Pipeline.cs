@@ -7,7 +7,7 @@ namespace Shuttle.Core.Infrastructure
 {
     public class Pipeline : IPipeline
     {
-	    private readonly string _enteringPipelineStage = InfrastructureResources.EnteringPipelineStage;
+        private readonly string _enteringPipelineStage = InfrastructureResources.EnteringPipelineStage;
 
         private readonly string _executingPipeline = InfrastructureResources.ExecutingPipeline;
 
@@ -27,19 +27,6 @@ namespace Shuttle.Core.Infrastructure
         protected readonly List<IPipelineObserver> Observers = new List<IPipelineObserver>();
         protected readonly List<IPipelineStage> Stages = new List<IPipelineStage>();
 
-        protected struct ObserverMethodInfoPair
-        {
-            public IPipelineObserver PipelineObserver { get; private set; }
-
-            public MethodInfo MethodInfo { get; private set; }
-
-            public ObserverMethodInfoPair(IPipelineObserver pipelineObserver, MethodInfo methodInfo)
-            {
-                PipelineObserver = pipelineObserver;
-                MethodInfo = methodInfo;
-            }
-        }
-
         public Pipeline()
         {
             Id = Guid.NewGuid();
@@ -56,14 +43,14 @@ namespace Shuttle.Core.Infrastructure
             _log = Log.For(this);
         }
 
-        public Guid Id { get; private set; }
+        public Guid Id { get; }
         public bool ExceptionHandled { get; internal set; }
         public Exception Exception { get; internal set; }
         public bool Aborted { get; internal set; }
         public string StageName { get; private set; }
         public IPipelineEvent Event { get; private set; }
 
-        public IState State { get; private set; }
+        public IState State { get; }
 
         public IPipeline RegisterObserver(IPipelineObserver pipelineObserver)
         {
@@ -71,7 +58,7 @@ namespace Shuttle.Core.Infrastructure
             var observerInterfaces = pipelineObserver.GetType().GetInterfaces();
 
             var implementedEvents = from i in observerInterfaces
-                where i.IsAssignableTo(typeof (IPipelineObserver<>))
+                where i.IsAssignableTo(typeof(IPipelineObserver<>))
                 select i;
 
             foreach (var @event in implementedEvents)
@@ -85,7 +72,7 @@ namespace Shuttle.Core.Infrastructure
                     ObservedEvents.Add(pipelineEventName, new List<ObserverMethodInfoPair>());
                 }
 
-                MethodInfo methodInfo = pipelineObserver.GetType().GetMethod("Execute", new[] {pipelineEventType});
+                var methodInfo = pipelineObserver.GetType().GetMethod("Execute", new[] {pipelineEventType});
                 ObservedEvents[pipelineEventName].Add(new ObserverMethodInfoPair(pipelineObserver, methodInfo));
             }
             return this;
@@ -179,6 +166,25 @@ namespace Shuttle.Core.Infrastructure
             return result;
         }
 
+        public IPipelineStage RegisterStage(string name)
+        {
+            var stage = new PipelineStage(name);
+
+            Stages.Add(stage);
+
+            return stage;
+        }
+
+        public IPipelineStage GetStage(string name)
+        {
+            var result = Stages.Find(stage => stage.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
+
+            Guard.Against<IndexOutOfRangeException>(result == null,
+                string.Format(InfrastructureResources.PipelineStageNotFound, name));
+
+            return result;
+        }
+
         private void RaiseEvent(IPipelineEvent @event, bool ignoreAbort = false)
         {
             List<ObserverMethodInfoPair> observersForEvent;
@@ -204,7 +210,8 @@ namespace Shuttle.Core.Infrastructure
                 }
                 catch (Exception ex)
                 {
-                    throw new PipelineException(string.Format(_raisingPipelineEvent, @event.Name, StageName, observer.GetType().FullName), ex);
+                    throw new PipelineException(
+                        string.Format(_raisingPipelineEvent, @event.Name, StageName, observer.GetType().FullName), ex);
                 }
                 if (Aborted && !ignoreAbort)
                 {
@@ -213,23 +220,17 @@ namespace Shuttle.Core.Infrastructure
             }
         }
 
-        public IPipelineStage RegisterStage(string name)
+        protected struct ObserverMethodInfoPair
         {
-            var stage = new PipelineStage(name);
+            public IPipelineObserver PipelineObserver { get; }
 
-            Stages.Add(stage);
+            public MethodInfo MethodInfo { get; }
 
-            return stage;
-        }
-
-        public IPipelineStage GetStage(string name)
-        {
-            var result = Stages.Find(stage => stage.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
-
-            Guard.Against<IndexOutOfRangeException>(result == null,
-                string.Format(InfrastructureResources.PipelineStageNotFound, name));
-
-            return result;
+            public ObserverMethodInfoPair(IPipelineObserver pipelineObserver, MethodInfo methodInfo)
+            {
+                PipelineObserver = pipelineObserver;
+                MethodInfo = methodInfo;
+            }
         }
     }
 }

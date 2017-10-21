@@ -58,6 +58,10 @@
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <DefineConstants>$(DefineConstants);NET461FULL</DefineConstants>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Framework)' == 'net462-full'">
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <DefineConstants>$(DefineConstants);NET462FULL</DefineConstants>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -72,25 +76,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="ComponentContainer\BootstrapAssemblyExtensions.cs" />
-    <Compile Include="ComponentContainer\BootstrapAssemblyScan.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistry.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryCollectionImplementationTypeElement.cs" />
-    <Compile Include="ComponentContainer\BootstrapAssemblyCollectionsElement.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryCollectionsElement.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryCollectionElement.cs" />
-    <Compile Include="ComponentContainer\BootstrapAssemblyElement.cs" />
-    <Compile Include="ComponentContainer\ComponentResolverElement.cs" />
-    <Compile Include="ComponentContainer\ComponentResolverCollectionElement.cs" />
-    <Compile Include="ComponentContainer\ComponentResolverSection.cs" />
-    <Compile Include="ComponentContainer\ComponentResolverExtensions.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryExtensions.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistrySection.cs" />
-    <Compile Include="ComponentContainer\IComponentRegistry.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryComponentElement.cs" />
-    <Compile Include="ComponentContainer\ComponentRegistryComponentsElement.cs" />
-    <Compile Include="ComponentContainer\IComponentResolverBootstrap.cs" />
-    <Compile Include="ComponentContainer\IComponentRegistryBootstrap.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyExtensions.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapScan.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapConfiguration.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapSection.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\IBootstrapConfiguration.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistry.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionImplementationTypeElement.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyCollectionElement.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionsElement.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionElement.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyElement.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryConfiguration.cs" />
+    <Compile Include="ComponentContainer\Registry\IComponentRegistryConfiguration.cs" />
+    <Compile Include="ComponentContainer\Resolver\ComponentResolverConfiguration.cs" />
+    <Compile Include="ComponentContainer\Resolver\ComponentResolverElement.cs" />
+    <Compile Include="ComponentContainer\Resolver\ComponentResolverCollectionElement.cs" />
+    <Compile Include="ComponentContainer\Resolver\ComponentResolverSection.cs" />
+    <Compile Include="ComponentContainer\Resolver\ComponentResolverExtensions.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryExtensions.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistrySection.cs" />
+    <Compile Include="ComponentContainer\Registry\IComponentRegistry.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryComponentElement.cs" />
+    <Compile Include="ComponentContainer\Registry\ComponentRegistryComponentsElement.cs" />
+    <Compile Include="ComponentContainer\Resolver\IComponentResolverBootstrap.cs" />
+    <Compile Include="ComponentContainer\Registry\IComponentRegistryBootstrap.cs" />
+    <Compile Include="ComponentContainer\Resolver\IComponentResolverConfiguration.cs" />
     <Compile Include="ComponentContainer\TypeRegistrationException.cs" />
     <Compile Include="ComponentContainer\TypeResolutionException.cs" />
     <Compile Include="Compression\DeflateCompressionAlgorithm.cs" />
@@ -124,7 +135,7 @@
     <Compile Include="Pipeline\PipelineEventArgs.cs" />
     <Compile Include="Pipeline\PipelineEventEventArgs.cs" />
     <Compile Include="Pipeline\PipelineExceptionEventArgs.cs" />
-    <Compile Include="ComponentContainer\IComponentResolver.cs" />
+    <Compile Include="ComponentContainer\Resolver\IComponentResolver.cs" />
     <Compile Include="Threading\IThreadState.cs" />
     <Compile Include="Pipeline\IExecuteEventThen.cs" />
     <Compile Include="Pipeline\IPipeline.cs" />
@@ -153,7 +164,7 @@
     <Compile Include="Threading\IThreadActivityConfiguration.cs" />
     <Compile Include="Threading\ProcessorThread.cs" />
     <Compile Include="Threading\ProcessorThreadPool.cs" />
-    <Compile Include="Threading\StringDurationArrayConverter.cs" />
+    <Compile Include="StringDurationArrayConverter.cs" />
     <Compile Include="Threading\ThreadActivity.cs" />
     <Compile Include="Threading\ThreadCountZeroException.cs" />
     <Compile Include="ThreadSleep.cs" />

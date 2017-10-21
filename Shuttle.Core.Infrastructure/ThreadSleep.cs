@@ -27,18 +27,18 @@ namespace Shuttle.Core.Infrastructure
             }
 
             var end = DateTime.UtcNow.AddMilliseconds(ms);
-            
+
             // sleep time should be:
             // - as large as possible to reduce burden on the os and improve accuracy
             // - less than the max step size to keep the thread responsive to thread state
 
-            var remaining = (int)(end - DateTime.UtcNow).TotalMilliseconds;
+            var remaining = (int) (end - DateTime.UtcNow).TotalMilliseconds;
 
             while (state.Active && remaining > 0)
             {
                 var sleep = remaining < step ? remaining : step;
                 Thread.Sleep(sleep);
-                remaining = (int)(end - DateTime.UtcNow).TotalMilliseconds;
+                remaining = (int) (end - DateTime.UtcNow).TotalMilliseconds;
             }
         }
     }

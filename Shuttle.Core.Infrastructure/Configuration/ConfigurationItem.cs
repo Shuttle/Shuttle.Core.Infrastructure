@@ -58,7 +58,7 @@ namespace Shuttle.Core.Infrastructure
 
             var item =
                 new ConfigurationItem<T>(
-                    (T) Convert.ChangeType(setting, Nullable.GetUnderlyingType(typeof (T)) ?? typeof (T)));
+                    (T) Convert.ChangeType(setting, Nullable.GetUnderlyingType(typeof(T)) ?? typeof(T)));
 
             Log.Information(string.Format("[ConfigurationItem] {0} : {1}", key,
                 ProtectedValue(key, Convert.ToString(item.GetValue()))));

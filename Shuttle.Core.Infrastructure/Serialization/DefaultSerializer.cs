@@ -8,127 +8,130 @@ using System.Xml.Serialization;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class DefaultSerializer : ISerializer, ISerializerRootType
-	{
-		private static readonly object Padlock = new object();
-		private readonly XmlSerializerNamespaces _namespaces = new XmlSerializerNamespaces();
+    public class DefaultSerializer : ISerializer, ISerializerRootType
+    {
+        private static readonly object Padlock = new object();
+        private readonly XmlSerializerNamespaces _namespaces = new XmlSerializerNamespaces();
 
-		private readonly XmlWriterSettings _xmlSettings;
-		private readonly Dictionary<Type, XmlAttributeOverrides> _overrides = new Dictionary<Type, XmlAttributeOverrides>();
+        private readonly Dictionary<Type, XmlAttributeOverrides> _overrides =
+            new Dictionary<Type, XmlAttributeOverrides>();
 
-		private readonly Dictionary<Type, XmlSerializer> _serializers = new Dictionary<Type, XmlSerializer>();
+        private readonly Dictionary<Type, XmlSerializer> _serializers = new Dictionary<Type, XmlSerializer>();
 
-		public DefaultSerializer()
-		{
-			_xmlSettings = new XmlWriterSettings
-			{
-				Encoding = Encoding.UTF8,
-				OmitXmlDeclaration = true,
-				Indent = true
-			};
+        private readonly XmlWriterSettings _xmlSettings;
 
-			_namespaces.Add(string.Empty, string.Empty);
-		}
+        public DefaultSerializer()
+        {
+            _xmlSettings = new XmlWriterSettings
+            {
+                Encoding = Encoding.UTF8,
+                OmitXmlDeclaration = true,
+                Indent = true
+            };
 
-		public Stream Serialize(object instance)
-		{
-			Guard.AgainstNull(instance, "instance");
+            _namespaces.Add(string.Empty, string.Empty);
+        }
 
-			var messageType = instance.GetType();
-			var serializer = GetSerializer(messageType);
+        public Stream Serialize(object instance)
+        {
+            Guard.AgainstNull(instance, "instance");
 
-			var xml = new StringBuilder();
+            var messageType = instance.GetType();
+            var serializer = GetSerializer(messageType);
 
-			using (var writer = XmlWriter.Create(xml, _xmlSettings))
-			{
-				serializer.Serialize(writer, instance, _namespaces);
+            var xml = new StringBuilder();
 
-				writer.Flush();
-			}
+            using (var writer = XmlWriter.Create(xml, _xmlSettings))
+            {
+                serializer.Serialize(writer, instance, _namespaces);
 
-			return new MemoryStream(Encoding.UTF8.GetBytes(xml.ToString()));
-		}
+                writer.Flush();
+            }
 
-		public object Deserialize(Type type, Stream stream)
-		{
-			Guard.AgainstNull(type, "type");
-			Guard.AgainstNull(stream, "stream");
+            return new MemoryStream(Encoding.UTF8.GetBytes(xml.ToString()));
+        }
 
-			using (var copy = stream.Copy())
-			using (var reader = XmlDictionaryReader.CreateTextReader(copy, Encoding.UTF8,
-				new XmlDictionaryReaderQuotas
-				{
-					MaxArrayLength = int.MaxValue,
-					MaxStringContentLength = int.MaxValue,
-					MaxNameTableCharCount = int.MaxValue
-				}, null))
-			{
-				return GetSerializer(type).Deserialize(reader);
-			}
-		}
+        public object Deserialize(Type type, Stream stream)
+        {
+            Guard.AgainstNull(type, "type");
+            Guard.AgainstNull(stream, "stream");
 
-		public void AddSerializerType(Type root, Type contained)
-		{
-			Guard.AgainstNull(root, "type");
-			Guard.AgainstNull(contained, "contained");
+            using (var copy = stream.Copy())
+            using (var reader = XmlDictionaryReader.CreateTextReader(copy, Encoding.UTF8,
+                new XmlDictionaryReaderQuotas
+                {
+                    MaxArrayLength = int.MaxValue,
+                    MaxStringContentLength = int.MaxValue,
+                    MaxNameTableCharCount = int.MaxValue
+                }, null))
+            {
+                return GetSerializer(type).Deserialize(reader);
+            }
+        }
 
-			if (HasSerializerType(root, contained))
-			{
-				return;
-			}
+        public void AddSerializerType(Type root, Type contained)
+        {
+            Guard.AgainstNull(root, "type");
+            Guard.AgainstNull(contained, "contained");
 
-			lock (Padlock)
-			{
-				if (HasSerializerType(root, contained))
-				{
-					return;
-				}
+            if (HasSerializerType(root, contained))
+            {
+                return;
+            }
 
-				if (!_overrides.ContainsKey(root))
-				{
-					_overrides.Add(root, new XmlAttributeOverrides());
-				}
+            lock (Padlock)
+            {
+                if (HasSerializerType(root, contained))
+                {
+                    return;
+                }
 
-				var overrides = _overrides[root];
+                if (!_overrides.ContainsKey(root))
+                {
+                    _overrides.Add(root, new XmlAttributeOverrides());
+                }
 
-				overrides.Add(contained, new XmlAttributes { XmlRoot = new XmlRootAttribute { Namespace = contained.Namespace } });
+                var overrides = _overrides[root];
 
-				foreach (var nested in root.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
-				{
-					if (!HasSerializerType(root, nested))
-					{
-						AddSerializerType(root, nested);
-					}
-				}
+                overrides.Add(contained,
+                    new XmlAttributes {XmlRoot = new XmlRootAttribute {Namespace = contained.Namespace}});
 
-				_serializers.Clear();
-			}
-		}
+                foreach (var nested in root.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic))
+                {
+                    if (!HasSerializerType(root, nested))
+                    {
+                        AddSerializerType(root, nested);
+                    }
+                }
 
-		private bool HasSerializerType(Type root, Type contained)
-		{
-			lock (Padlock)
-			{
-				return _overrides.ContainsKey(root) && _overrides[root][contained] != null;
-			}
-		}
+                _serializers.Clear();
+            }
+        }
 
-		private XmlSerializer GetSerializer(Type type)
-		{
-			lock (Padlock)
-			{
-				if (!_overrides.ContainsKey(type))
-				{
-					_overrides.Add(type, new XmlAttributeOverrides());
-				}
+        private bool HasSerializerType(Type root, Type contained)
+        {
+            lock (Padlock)
+            {
+                return _overrides.ContainsKey(root) && _overrides[root][contained] != null;
+            }
+        }
 
-				if (!_serializers.ContainsKey(type))
-				{
-					_serializers.Add(type, new XmlSerializer(type, _overrides[type]));
-				}
+        private XmlSerializer GetSerializer(Type type)
+        {
+            lock (Padlock)
+            {
+                if (!_overrides.ContainsKey(type))
+                {
+                    _overrides.Add(type, new XmlAttributeOverrides());
+                }
 
-				return _serializers[type];
-			}
-		}
-	}
+                if (!_serializers.ContainsKey(type))
+                {
+                    _serializers.Add(type, new XmlSerializer(type, _overrides[type]));
+                }
+
+                return _serializers[type];
+            }
+        }
+    }
 }

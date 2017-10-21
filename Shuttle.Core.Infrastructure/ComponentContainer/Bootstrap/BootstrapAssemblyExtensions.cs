@@ -5,26 +5,27 @@ namespace Shuttle.Core.Infrastructure
 {
     public static class BootstrapAssemblyElementExtensions
     {
-        public static IEnumerable<Assembly> GetAssemblies(this BootstrapAssemblyCollectionsElement bootstrapAssemblies, BootstrapAssemblyScan bootstrapAssemblyScan)
+        public static IEnumerable<Assembly> GetAssemblies(this BootstrapAssemblyCollectionElement bootstrapAssemblies,
+            BootstrapScan bootstrapScan)
         {
             var assemblies = new List<Assembly>();
 
             var reflectionService = new ReflectionService();
 
-            switch (bootstrapAssemblyScan)
+            switch (bootstrapScan)
             {
-                case BootstrapAssemblyScan.All:
-                    {
-                        assemblies.AddRange(reflectionService.GetAssemblies());
+                case BootstrapScan.All:
+                {
+                    assemblies.AddRange(reflectionService.GetAssemblies());
 
-                        break;
-                    }
-                case BootstrapAssemblyScan.Shuttle:
-                    {
-                        assemblies.AddRange(reflectionService.GetMatchingAssemblies("^Shuttle\\."));
+                    break;
+                }
+                case BootstrapScan.Shuttle:
+                {
+                    assemblies.AddRange(reflectionService.GetMatchingAssemblies("^Shuttle\\."));
 
-                        break;
-                    }
+                    break;
+                }
             }
 
             foreach (BootstrapAssemblyElement bootstrapAssembly in bootstrapAssemblies)

@@ -301,4 +301,16 @@
     <value>Could not get type '{0}'.  Ensure that you have a fully qualified type: 'FullName, Assembly'.</value>
     <comment>{0} = type that could not be found</comment>
   </data>
+  <data name="DebugGetAssemblies" xml:space="preserve">
+    <value>GetAssemblies() called with ShadowCopyFiles = '{0}'.</value>
+    <comment>{0} = value of ShadowCopyFiles</comment>
+  </data>
+  <data name="EmptyCollectionImplementationTypes" xml:space="preserve">
+    <value>No implementation types has been specified for the collection dependency of type '{0}'..</value>
+    <comment>{0} = dependency type full name</comment>
+  </data>
+  <data name="AssemblyNameNotFound" xml:space="preserve">
+    <value>Could not find an assembly with name '{0}'.</value>
+    <comment>{0} = assembly name to locate</comment>
+  </data>
 </root>

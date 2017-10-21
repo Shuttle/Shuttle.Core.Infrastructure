@@ -13,12 +13,9 @@ namespace Shuttle.Core.Infrastructure
             Name = name;
         }
 
-        public string Name { get; private set; }
+        public string Name { get; }
 
-        public IEnumerable<IPipelineEvent> Events
-        {
-            get { return new ReadOnlyCollection<IPipelineEvent>(PipelineEvents); }
-        }
+        public IEnumerable<IPipelineEvent> Events => new ReadOnlyCollection<IPipelineEvent>(PipelineEvents);
 
         public IPipelineStage WithEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
@@ -36,13 +33,14 @@ namespace Shuttle.Core.Infrastructure
 
         public IRegisterEventBefore BeforeEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
-            var eventName = typeof (TPipelineEvent).FullName;
+            var eventName = typeof(TPipelineEvent).FullName;
             var pipelineEvent = PipelineEvents.Find(e => e.Name.Equals(eventName));
 
             if (pipelineEvent == null)
             {
-                throw new InvalidOperationException(string.Format(InfrastructureResources.PipelineStageEventNotRegistered,
-                    Name, eventName));
+                throw new InvalidOperationException(
+                    string.Format(InfrastructureResources.PipelineStageEventNotRegistered,
+                        Name, eventName));
             }
 
             return new RegisterEventBefore(PipelineEvents, pipelineEvent);
@@ -50,13 +48,14 @@ namespace Shuttle.Core.Infrastructure
 
         public IRegisterEventAfter AfterEvent<TPipelineEvent>() where TPipelineEvent : IPipelineEvent, new()
         {
-            var eventName = typeof (TPipelineEvent).FullName;
+            var eventName = typeof(TPipelineEvent).FullName;
             var pipelineEvent = PipelineEvents.Find(e => e.Name.Equals(eventName));
 
             if (pipelineEvent == null)
             {
-                throw new InvalidOperationException(string.Format(InfrastructureResources.PipelineStageEventNotRegistered,
-                    Name, eventName));
+                throw new InvalidOperationException(
+                    string.Format(InfrastructureResources.PipelineStageEventNotRegistered,
+                        Name, eventName));
             }
 
             return new RegisterEventAfter(this, PipelineEvents, pipelineEvent);

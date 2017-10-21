@@ -96,18 +96,16 @@ namespace Shuttle.Core.Infrastructure
             }
         }
 
-        public string[] CommandLine { get; private set; }
+        public string[] CommandLine { get; }
 
-        public string this[string name]
-        {
-            get { return (parameters[name]); }
-        }
+        public string this[string name] => parameters[name];
 
         public T Get<T>(string name)
         {
             if (!parameters.ContainsKey(name.ToLower()))
             {
-                throw new InvalidOperationException(string.Format(InfrastructureResources.InvalidArgumentException, name));
+                throw new InvalidOperationException(
+                    string.Format(InfrastructureResources.InvalidArgumentException, name));
             }
 
             return ChangeType<T>(name);
@@ -115,7 +113,7 @@ namespace Shuttle.Core.Infrastructure
 
         private T ChangeType<T>(string name)
         {
-            return (T) Convert.ChangeType(parameters[name.ToLower()], typeof (T));
+            return (T) Convert.ChangeType(parameters[name.ToLower()], typeof(T));
         }
 
         public T Get<T>(string name, T @default)

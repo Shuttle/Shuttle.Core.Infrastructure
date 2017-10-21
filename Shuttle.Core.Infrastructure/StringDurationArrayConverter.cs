@@ -10,16 +10,18 @@ namespace Shuttle.Core.Infrastructure
     public class StringDurationArrayConverter : TypeConverter
     {
         private static readonly Regex Expression = new Regex(@"(?<duration>\d+)(?<type>ms|[smhd])(\*(?<repeat>\d+))*",
-                                                             RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
+            Guard.AgainstNull(value, nameof(value));
+
             if (value.GetType() != typeof(string))
             {
-                return new[] { TimeSpan.FromMinutes(30) };
+                return new[] {TimeSpan.FromMinutes(30)};
             }
 
-            var values = ((string)value).Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries);
+            var values = ((string) value).Split(new[] {';', ','}, StringSplitOptions.RemoveEmptyEntries);
 
             var result = new List<TimeSpan>();
 
@@ -27,11 +29,12 @@ namespace Shuttle.Core.Infrastructure
             {
                 var match = Expression.Match(values[i]);
                 int duration;
-                var repeat = 0;
+                int repeat;
 
                 if (!match.Success || !int.TryParse(match.Groups["duration"].Value, out duration))
                 {
-                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.StringDurationFormatError, value));
+                    throw new ConfigurationErrorsException(
+                        string.Format(InfrastructureResources.StringDurationFormatError, value));
                 }
 
                 var repeatValue = match.Groups["repeat"].Value;
@@ -40,7 +43,8 @@ namespace Shuttle.Core.Infrastructure
                 {
                     if (!int.TryParse(repeatValue, out repeat))
                     {
-                        throw new ConfigurationErrorsException(string.Format(InfrastructureResources.StringDurationFormatError, value));
+                        throw new ConfigurationErrorsException(
+                            string.Format(InfrastructureResources.StringDurationFormatError, value));
                     }
                 }
                 else
@@ -94,7 +98,7 @@ namespace Shuttle.Core.Infrastructure
         }
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value,
-                                         Type destinationType)
+            Type destinationType)
         {
             throw new NotImplementedException();
         }

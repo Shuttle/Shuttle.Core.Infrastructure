@@ -16,12 +16,12 @@ namespace Shuttle.Core.Infrastructure
 
             try
             {
-                exception = (TException) Activator.CreateInstance(typeof (TException), message);
+                exception = (TException) Activator.CreateInstance(typeof(TException), message);
             }
             catch (Exception ex)
             {
                 throw new InvalidOperationException(string.Format(InfrastructureResources.InvalidGuardExceptionType,
-                    typeof (TException).FullName, ex.AllMessages()));
+                    typeof(TException).FullName, ex.AllMessages()));
             }
 
             throw exception;
@@ -47,8 +47,10 @@ namespace Shuttle.Core.Infrastructure
             AgainstNull(value, name);
 
             if (value.Length == 0)
+            {
                 throw new EmptyStringException(string.Format(CultureInfo.CurrentCulture,
                     InfrastructureResources.EmptyStringException, name));
+            }
         }
 
         public static void AgainstReassignment(object variable, string name)

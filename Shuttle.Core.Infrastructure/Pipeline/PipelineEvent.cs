@@ -4,10 +4,7 @@
     {
         public IPipeline Pipeline { get; private set; }
 
-        public string Name
-        {
-            get { return GetType().FullName; }
-        }
+        public string Name => GetType().FullName;
 
         public IPipelineEvent Reset(IPipeline pipeline)
         {

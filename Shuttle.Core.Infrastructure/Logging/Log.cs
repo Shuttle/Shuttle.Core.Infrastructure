@@ -6,40 +6,19 @@ namespace Shuttle.Core.Infrastructure
     {
         private static ILog _log;
 
-        public static bool IsVerboseEnabled
-        {
-            get { return GuardedLog().IsVerboseEnabled; }
-        }
+        public static bool IsVerboseEnabled => GuardedLog().IsVerboseEnabled;
 
-        public static bool IsTraceEnabled
-        {
-            get { return GuardedLog().IsTraceEnabled; }
-        }
+        public static bool IsTraceEnabled => GuardedLog().IsTraceEnabled;
 
-        public static bool IsDebugEnabled
-        {
-            get { return GuardedLog().IsDebugEnabled; }
-        }
+        public static bool IsDebugEnabled => GuardedLog().IsDebugEnabled;
 
-        public static bool IsInformationEnabled
-        {
-            get { return GuardedLog().IsInformationEnabled; }
-        }
+        public static bool IsInformationEnabled => GuardedLog().IsInformationEnabled;
 
-        public static bool IsWarningEnabled
-        {
-            get { return GuardedLog().IsWarningEnabled; }
-        }
+        public static bool IsWarningEnabled => GuardedLog().IsWarningEnabled;
 
-        public static bool IsErrorEnabled
-        {
-            get { return GuardedLog().IsErrorEnabled; }
-        }
+        public static bool IsErrorEnabled => GuardedLog().IsErrorEnabled;
 
-        public static bool IsFatalEnabled
-        {
-            get { return GuardedLog().IsFatalEnabled; }
-        }
+        public static bool IsFatalEnabled => GuardedLog().IsFatalEnabled;
 
         public static void Assign(ILog instance)
         {

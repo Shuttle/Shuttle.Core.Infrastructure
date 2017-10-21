@@ -5,15 +5,12 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentRegistryCollectionElement : ConfigurationElementCollection
     {
-		[ConfigurationProperty("dependencyType", IsRequired = true)]
-		public string DependencyType
-		{
-			get { return (string) this["dependencyType"]; }
-		}
+        [ConfigurationProperty("dependencyType", IsRequired = true)]
+        public string DependencyType => (string) this["dependencyType"];
 
-	    [ConfigurationProperty("lifestyle", IsRequired = false, DefaultValue = "Singleton")]
-	    public Lifestyle Lifestyle
-	    {
+        [ConfigurationProperty("lifestyle", IsRequired = false, DefaultValue = "Singleton")]
+        public Lifestyle Lifestyle
+        {
             get
             {
                 Lifestyle result;

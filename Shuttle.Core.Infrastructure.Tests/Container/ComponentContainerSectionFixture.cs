@@ -10,13 +10,13 @@ namespace Shuttle.Core.Infrastructure.Tests
 	    private ComponentRegistrySection GetRegistrySection(string file)
 	    {
 	        return ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry",
-	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format(@".\Container\files\{0}", file)));
+	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@".\Container\files\{file}"));
 	    }
 
 	    private ComponentResolverSection GetResolverSection(string file)
 	    {
 	        return ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver",
-	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, string.Format(@".\Container\files\{0}", file)));
+	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@".\Container\files\{file}"));
 	    }
 
 	    [Test]
@@ -29,7 +29,6 @@ namespace Shuttle.Core.Infrastructure.Tests
 			Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
-			Assert.AreEqual(BootstrapAssemblyScan.None, section.BootstrapAssemblyScan);
 
 			foreach (ComponentRegistryComponentElement element in section.Components)
 			{
@@ -57,7 +56,6 @@ namespace Shuttle.Core.Infrastructure.Tests
             Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
 			Assert.AreEqual(2, section.Components.Count);
-		    Assert.AreEqual(BootstrapAssemblyScan.None, section.BootstrapAssemblyScan);
 
             foreach (ComponentResolverElement element in section.Components)
 			{

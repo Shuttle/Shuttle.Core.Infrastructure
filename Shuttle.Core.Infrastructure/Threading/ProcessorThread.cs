@@ -4,12 +4,12 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ProcessorThread : IThreadState
     {
+        private static readonly int ThreadJoinTimeoutInterval =
+            ConfigurationItem<int>.ReadSetting("ThreadJoinTimeoutInterval", 1000).GetValue();
+
         private readonly ILog _log;
         private readonly string _name;
         private readonly IProcessor _processor;
-
-        private static readonly int ThreadJoinTimeoutInterval =
-            ConfigurationItem<int>.ReadSetting("ThreadJoinTimeoutInterval", 1000).GetValue();
 
         private volatile bool _active;
 
@@ -23,10 +23,7 @@ namespace Shuttle.Core.Infrastructure
             _log = Log.For(this);
         }
 
-        public bool Active
-        {
-            get { return _active; }
-        }
+        public bool Active => _active;
 
         public void Start()
         {

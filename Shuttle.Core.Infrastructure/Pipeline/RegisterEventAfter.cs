@@ -8,7 +8,8 @@ namespace Shuttle.Core.Infrastructure
         private readonly IPipelineEvent _pipelineEvent;
         private readonly IPipelineStage _pipelineStage;
 
-        public RegisterEventAfter(IPipelineStage pipelineStage, List<IPipelineEvent> eventsToExecute, IPipelineEvent pipelineEvent)
+        public RegisterEventAfter(IPipelineStage pipelineStage, List<IPipelineEvent> eventsToExecute,
+            IPipelineEvent pipelineEvent)
         {
             _pipelineStage = pipelineStage;
             _eventsToExecute = eventsToExecute;

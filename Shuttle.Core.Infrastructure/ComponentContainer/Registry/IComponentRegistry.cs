@@ -11,9 +11,12 @@ namespace Shuttle.Core.Infrastructure
 
     public interface IComponentRegistry
     {
-	    bool IsRegistered(Type type);
+        bool IsRegistered(Type type);
         IComponentRegistry Register(Type dependencyType, Type implementationType, Lifestyle lifestyle);
-        IComponentRegistry RegisterCollection(Type dependencyType, IEnumerable<Type> implementationTypes, Lifestyle lifestyle);
+
+        IComponentRegistry RegisterCollection(Type dependencyType, IEnumerable<Type> implementationTypes,
+            Lifestyle lifestyle);
+
         IComponentRegistry Register(Type dependencyType, object instance);
     }
 }

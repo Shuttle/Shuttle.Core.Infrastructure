@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
-using System.Reflection;
 
 namespace Shuttle.Core.Infrastructure
 {
@@ -17,7 +17,7 @@ namespace Shuttle.Core.Infrastructure
         {
             Guard.AgainstNull(resolver, "resolver");
 
-            return (T) resolver.Resolve(typeof(T));
+            return (T)resolver.Resolve(typeof(T));
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace Shuttle.Core.Infrastructure
         /// <returns>An instance of the type implementing the requested service type if it can be resolved; else null.</returns>
         public static T AttemptResolve<T>(this IComponentResolver resolver) where T : class
         {
-            return (T) AttemptResolve(resolver, typeof(T));
+            return (T)AttemptResolve(resolver, typeof(T));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Shuttle.Core.Infrastructure
             var result = new List<object>();
             var types = dependencyTypes as IList<Type> ?? dependencyTypes.ToList();
 
-            if (dependencyTypes == null || !types.Any())
+            if (!types.Any())
             {
                 return result;
             }
@@ -93,29 +93,41 @@ namespace Shuttle.Core.Infrastructure
         ///     Creates an instance of all types implementing the `IComponentResolverBootstrap` interface and calls the `Resolve`
         ///     method.
         /// </summary>
-        /// <param name="resolver">The `IComponentResolver` instace to pass to the `Resolve` method of the boostrapper.</param>
+        /// <param name="resolver">The `IComponentResolver` instance to resolve dependencies from.</param>
         public static void ResolverBoostrap(this IComponentResolver resolver)
         {
+            ResolverBoostrap(resolver, ComponentResolverSection.Configuration(), BootstrapSection.Configuration());
+        }
+
+        /// <summary>
+        ///     Creates an instance of all types implementing the `IComponentResolverBootstrap` interface and calls the `Resolve`
+        ///     method.
+        /// </summary>
+        /// <param name="resolver">The `IComponentResolver` instance to resolve dependencies from.</param>
+        /// <param name="resolverConfiguration">The `IComponentResolverConfiguration` instance that contains the registry configuration.</param>
+        /// <param name="bootstrapConfiguration">The `IBootstrapConfiguration` instance that contains the bootstrapping configuration.</param>
+        public static void ResolverBoostrap(IComponentResolver resolver, IComponentResolverConfiguration resolverConfiguration, IBootstrapConfiguration bootstrapConfiguration)
+        {
             Guard.AgainstNull(resolver, "resolver");
+            Guard.AgainstNull(resolverConfiguration, nameof(resolverConfiguration));
 
-            var section = ConfigurationSectionProvider.Open<ComponentResolverSection>("shuttle", "componentResolver");
-
-            var bootstrapAssemblyScan = section?.BootstrapAssemblyScan ?? BootstrapAssemblyScan.Shuttle;
-            var bootstrapAssemblies = section?.BootstrapAssemblies ?? new BootstrapAssemblyCollectionsElement();
             var reflectionService = new ReflectionService();
 
-            foreach (var assembly in bootstrapAssemblies.GetAssemblies(bootstrapAssemblyScan))
+            foreach (var assembly in bootstrapConfiguration.Assemblies)
             {
                 foreach (var type in reflectionService.GetTypes<IComponentResolverBootstrap>(assembly))
                 {
                     type.AssertDefaultConstructor(string.Format(InfrastructureResources.DefaultConstructorRequired,
                         "IComponentResolverBootstrap", type.FullName));
 
-                    ((IComponentResolverBootstrap) Activator.CreateInstance(type)).Resolve(resolver);
+                    ((IComponentResolverBootstrap)Activator.CreateInstance(type)).Resolve(resolver);
                 }
             }
 
-            ComponentResolverSection.Resolve(resolver);
+            foreach (var component in resolverConfiguration.Components)
+            {
+                resolver.Resolve(component.DependencyType);
+            }
         }
     }
 }

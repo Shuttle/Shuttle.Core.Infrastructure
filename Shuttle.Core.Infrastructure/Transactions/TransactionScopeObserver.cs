@@ -93,23 +93,6 @@ namespace Shuttle.Core.Infrastructure
             state.SetTransactionScope(null);
         }
 
-        public void Execute(OnStartTransactionScope pipelineEvent)
-        {
-            var state = pipelineEvent.Pipeline.State;
-            var scope = state.GetTransactionScope();
-
-            if (scope != null)
-            {
-                throw new TransactionException(
-                    (string.Format(InfrastructureResources.TransactionAlreadyStartedException, GetType().FullName,
-                        MethodBase.GetCurrentMethod().Name)));
-            }
-
-            scope = _transactionScopeFactory.Create();
-
-            state.SetTransactionScope(scope);
-        }
-
         public void Execute(OnPipelineException pipelineEvent)
         {
             var state = pipelineEvent.Pipeline.State;
@@ -128,6 +111,23 @@ namespace Shuttle.Core.Infrastructure
             scope.Dispose();
 
             state.SetTransactionScope(null);
+        }
+
+        public void Execute(OnStartTransactionScope pipelineEvent)
+        {
+            var state = pipelineEvent.Pipeline.State;
+            var scope = state.GetTransactionScope();
+
+            if (scope != null)
+            {
+                throw new TransactionException(
+                    string.Format(InfrastructureResources.TransactionAlreadyStartedException, GetType().FullName,
+                        MethodBase.GetCurrentMethod().Name));
+            }
+
+            scope = _transactionScopeFactory.Create();
+
+            state.SetTransactionScope(scope);
         }
     }
 }

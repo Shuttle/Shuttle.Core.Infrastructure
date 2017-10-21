@@ -6,9 +6,6 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentRegistrySection : ConfigurationSection
     {
-        [ConfigurationProperty("bootstrapAssemblyScan", IsRequired = false, DefaultValue = BootstrapAssemblyScan.Shuttle)]
-        public BootstrapAssemblyScan BootstrapAssemblyScan => (BootstrapAssemblyScan)this["bootstrapAssemblyScan"];
-
         [ConfigurationProperty("collections", IsRequired = false, DefaultValue = null)]
         public ComponentRegistryCollectionsElement Collections => (ComponentRegistryCollectionsElement) this[
             "collections"];
@@ -16,40 +13,37 @@ namespace Shuttle.Core.Infrastructure
         [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
         public ComponentRegistryComponentsElement Components => (ComponentRegistryComponentsElement) this["components"];
 
-        [ConfigurationProperty("bootstrapAssemblies", IsRequired = false, DefaultValue = null)]
-        public BootstrapAssemblyCollectionsElement BootstrapAssemblies => (BootstrapAssemblyCollectionsElement)this["bootstrapAssemblies"];
-
-        public static void Register(IComponentRegistry registry)
+        public static IComponentRegistryConfiguration Configuration()
         {
-            Guard.AgainstNull(registry, "registry");
+            var result = new ComponentRegistryConfiguration();
 
             var section = ConfigurationSectionProvider.Open<ComponentRegistrySection>("shuttle", "componentRegistry");
 
             if (section == null)
             {
-                return;
+                return result;
             }
 
             foreach (ComponentRegistryComponentElement component in section.Components)
             {
                 var dependencyType = Type.GetType(component.DependencyType);
+
+                if (dependencyType == null)
+                {
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.DependencyType));
+                }
+
                 var implementationType = string.IsNullOrEmpty(component.ImplementationType)
                     ? dependencyType
                     : Type.GetType(component.ImplementationType);
 
-                if (dependencyType == null)
-                {
-                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
-                        component.DependencyType));
-                }
-
                 if (implementationType == null)
                 {
-                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException,
-                        component.ImplementationType));
+                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.MissingTypeException, component.ImplementationType));
                 }
 
-                registry.Register(dependencyType, implementationType, component.Lifestyle);
+                result.AddComponent(
+                    new ComponentRegistryConfiguration.Component(dependencyType, implementationType, component.Lifestyle));
             }
 
             foreach (ComponentRegistryCollectionElement collection in section.Collections)
@@ -76,11 +70,11 @@ namespace Shuttle.Core.Infrastructure
                     implementationTypes.Add(implementationType);
                 }
 
-                if (implementationTypes.Count > 0)
-                {
-                    registry.RegisterCollection(dependencyType, implementationTypes, collection.Lifestyle);
-                }
+                result.AddCollection(
+                    new ComponentRegistryConfiguration.Collection(dependencyType, implementationTypes, collection.Lifestyle));
             }
+
+            return result;
         }
     }
 }

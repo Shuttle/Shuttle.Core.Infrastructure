@@ -27,7 +27,7 @@ namespace Shuttle.Core.Infrastructure
 
         public void Add<TItem>(TItem value)
         {
-            _state.Add(typeof (TItem).FullName, value);
+            _state.Add(typeof(TItem).FullName, value);
         }
 
         public void Add<TItem>(string key, TItem value)
@@ -57,7 +57,7 @@ namespace Shuttle.Core.Infrastructure
 
         public void Replace<TItem>(TItem value)
         {
-            var key = typeof (TItem).FullName;
+            var key = typeof(TItem).FullName;
 
             _state.Remove(key);
             _state.Add(key, value);
@@ -73,7 +73,7 @@ namespace Shuttle.Core.Infrastructure
 
         public TItem Get<TItem>()
         {
-            return Get<TItem>(typeof (TItem).FullName);
+            return Get<TItem>(typeof(TItem).FullName);
         }
 
         public TItem Get<TItem>(string key)

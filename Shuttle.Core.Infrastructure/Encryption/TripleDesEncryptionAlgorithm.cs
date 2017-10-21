@@ -4,116 +4,113 @@ using System.Security.Cryptography;
 
 namespace Shuttle.Core.Infrastructure
 {
-	public class TripleDesEncryptionAlgorithm : IEncryptionAlgorithm
-	{
-		private string key;
-		private TripleDESCryptoServiceProvider _provider;
+    public class TripleDesEncryptionAlgorithm : IEncryptionAlgorithm
+    {
+        private TripleDESCryptoServiceProvider _provider;
+        private string key;
 
-		public TripleDesEncryptionAlgorithm(string key)
-		{
-			Guard.AgainstNullOrEmptyString(key, "key");
+        public TripleDesEncryptionAlgorithm(string key)
+        {
+            Guard.AgainstNullOrEmptyString(key, "key");
 
-			this.key = key;
-		}
+            this.key = key;
+        }
 
-		public TripleDesEncryptionAlgorithm()
-		{
-			ReadConfiguration();
-		}
+        public TripleDesEncryptionAlgorithm()
+        {
+            ReadConfiguration();
+        }
 
-		private void ReadConfiguration()
-		{
-			var section = ConfigurationSectionProvider.Open<TripleDESSection>("shuttle", "tripleDES");
+        public string Name => "3DES";
 
-			if (section == null)
-			{
-				throw new ConfigurationErrorsException(InfrastructureResources.TripleDESSectionMissing);
-			}
+        public byte[] Encrypt(byte[] bytes)
+        {
+            Guard.AgainstNull(bytes, "stream");
 
-			key = section.Key;
+            return TripleDESEncrypt(bytes);
+        }
 
-			if (string.IsNullOrEmpty(key))
-			{
-				throw new ConfigurationErrorsException(InfrastructureResources.TripleDESKeyMissing);
-			}
+        public byte[] Decrypt(byte[] bytes)
+        {
+            Guard.AgainstNull(bytes, "stream");
 
-			_provider = new TripleDESCryptoServiceProvider
-			{
-				IV = new byte[8],
-				Key =
-					new PasswordDeriveBytes(key, new byte[0]).CryptDeriveKey("RC2", "MD5", 128, new byte[8])
-			};
-		}
+            return TripleDESDecrypt(bytes);
+        }
 
-		public string Name
-		{
-			get { return "3DES"; }
-		}
+        private void ReadConfiguration()
+        {
+            var section = ConfigurationSectionProvider.Open<TripleDESSection>("shuttle", "tripleDES");
 
-		public byte[] Encrypt(byte[] bytes)
-		{
-			Guard.AgainstNull(bytes, "stream");
+            if (section == null)
+            {
+                throw new ConfigurationErrorsException(InfrastructureResources.TripleDESSectionMissing);
+            }
 
-			return TripleDESEncrypt(bytes);
-		}
+            key = section.Key;
 
-		public byte[] Decrypt(byte[] bytes)
-		{
-			Guard.AgainstNull(bytes, "stream");
+            if (string.IsNullOrEmpty(key))
+            {
+                throw new ConfigurationErrorsException(InfrastructureResources.TripleDESKeyMissing);
+            }
 
-			return TripleDESDecrypt(bytes);
-		}
+            _provider = new TripleDESCryptoServiceProvider
+            {
+                IV = new byte[8],
+                Key =
+                    new PasswordDeriveBytes(key, new byte[0]).CryptDeriveKey("RC2", "MD5", 128, new byte[8])
+            };
+        }
 
-		private byte[] TripleDESEncrypt(byte[] plain)
-		{
-			return GetEncryptedBytes(plain.Length, plain);
-		}
+        private byte[] TripleDESEncrypt(byte[] plain)
+        {
+            return GetEncryptedBytes(plain.Length, plain);
+        }
 
-		private byte[] GetEncryptedBytes(int plainLength, byte[] plainBytes)
-		{
-			byte[] encryptedBytes;
+        private byte[] GetEncryptedBytes(int plainLength, byte[] plainBytes)
+        {
+            byte[] encryptedBytes;
 
-			using (var ms = new MemoryStream((plainLength*2) - 1))
-			using (var cs = new CryptoStream(ms, _provider.CreateEncryptor(), CryptoStreamMode.Write))
-			{
-				cs.Write(plainBytes, 0, plainBytes.Length);
+            using (var ms = new MemoryStream(plainLength * 2 - 1))
+            using (var cs = new CryptoStream(ms, _provider.CreateEncryptor(), CryptoStreamMode.Write))
+            {
+                cs.Write(plainBytes, 0, plainBytes.Length);
 
-				cs.FlushFinalBlock();
+                cs.FlushFinalBlock();
 
-				encryptedBytes = new byte[(int) ms.Length];
+                encryptedBytes = new byte[(int) ms.Length];
 
-				ms.Position = 0;
+                ms.Position = 0;
 
-				ms.Read(encryptedBytes, 0, (int) ms.Length);
-			}
+                ms.Read(encryptedBytes, 0, (int) ms.Length);
+            }
 
-			return encryptedBytes;
-		}
+            return encryptedBytes;
+        }
 
-		private byte[] TripleDESDecrypt(byte[] encrypted)
-		{
-			return GetPlainBytes(encrypted.Length, encrypted);
-		}
+        private byte[] TripleDESDecrypt(byte[] encrypted)
+        {
+            return GetPlainBytes(encrypted.Length, encrypted);
+        }
 
-		private byte[] GetPlainBytes(int secureLength, byte[] encryptedBytes)
-		{
-			byte[] plainBytes;
+        private byte[] GetPlainBytes(int secureLength, byte[] encryptedBytes)
+        {
+            byte[] plainBytes;
 
-			using (var ms = new MemoryStream(secureLength))
-			using (var cs = new CryptoStream(ms, _provider.CreateDecryptor(), CryptoStreamMode.Write))
-			{
-				cs.Write(encryptedBytes, 0, encryptedBytes.Length);
+            using (var ms = new MemoryStream(secureLength))
+            using (var cs = new CryptoStream(ms, _provider.CreateDecryptor(), CryptoStreamMode.Write))
+            {
+                cs.Write(encryptedBytes, 0, encryptedBytes.Length);
 
-				cs.FlushFinalBlock();
+                cs.FlushFinalBlock();
 
-				plainBytes = new byte[(int) ms.Length];
+                plainBytes = new byte[(int) ms.Length];
 
-				ms.Position = 0;
+                ms.Position = 0;
 
-				ms.Read(plainBytes, 0, (int) ms.Length);
-			}
+                ms.Read(plainBytes, 0, (int) ms.Length);
+            }
 
-			return plainBytes;
-		}
-	}
+            return plainBytes;
+        }
+    }
 }

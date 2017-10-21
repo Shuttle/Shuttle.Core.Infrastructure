@@ -185,40 +185,19 @@ namespace Shuttle.Core.Infrastructure
             return LogLevel <= level;
         }
 
-        public virtual bool IsVerboseEnabled
-        {
-            get { return LogLevel < LogLevel.Trace; }
-        }
+        public virtual bool IsVerboseEnabled => LogLevel < LogLevel.Trace;
 
-        public virtual bool IsTraceEnabled
-        {
-            get { return LogLevel < LogLevel.Debug; }
-        }
+        public virtual bool IsTraceEnabled => LogLevel < LogLevel.Debug;
 
-        public virtual bool IsDebugEnabled
-        {
-            get { return LogLevel < LogLevel.Information; }
-        }
+        public virtual bool IsDebugEnabled => LogLevel < LogLevel.Information;
 
-        public virtual bool IsInformationEnabled
-        {
-            get { return LogLevel < LogLevel.Warning; }
-        }
+        public virtual bool IsInformationEnabled => LogLevel < LogLevel.Warning;
 
-        public virtual bool IsWarningEnabled
-        {
-            get { return LogLevel < LogLevel.Error; }
-        }
+        public virtual bool IsWarningEnabled => LogLevel < LogLevel.Error;
 
-        public virtual bool IsErrorEnabled
-        {
-            get { return LogLevel < LogLevel.Fatal; }
-        }
+        public virtual bool IsErrorEnabled => LogLevel < LogLevel.Fatal;
 
-        public virtual bool IsFatalEnabled
-        {
-            get { return true; }
-        }
+        public virtual bool IsFatalEnabled => true;
 
         public abstract ILog For(Type type);
         public abstract ILog For(object instance);

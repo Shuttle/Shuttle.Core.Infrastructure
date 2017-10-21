@@ -64,12 +64,13 @@ namespace Shuttle.Core.Infrastructure
 
             return type.GetInterfaces()
                 .Where(i => i.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
-                .Select(i => i).FirstOrDefault();
+                .Select(i => i)
+                .FirstOrDefault();
         }
 
         public static IEnumerable<Type> InterfacesAssignableTo<T>(this Type type)
         {
-            return type.InterfacesAssignableTo(typeof (T));
+            return type.InterfacesAssignableTo(typeof(T));
         }
 
         public static IEnumerable<Type> InterfacesAssignableTo(this Type type, Type interfaceType)
@@ -115,7 +116,8 @@ namespace Shuttle.Core.Infrastructure
         private static bool IsAssignableToGenericType(Type type, Type generic)
         {
             return
-                type.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition().IsAssignableFrom(generic));
+                type.GetInterfaces()
+                    .Any(i => i.IsGenericType && i.GetGenericTypeDefinition().IsAssignableFrom(generic));
         }
 
         public static Type GetGenericArguments(this Type type, Type generic)

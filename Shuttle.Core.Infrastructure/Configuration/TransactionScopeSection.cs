@@ -6,17 +6,14 @@ namespace Shuttle.Core.Infrastructure
 {
     public class TransactionScopeSection : ConfigurationSection
     {
+        private const int DefaultTimeoutSeconds = 30;
+        private const IsolationLevel DefaultIsolationLevel = IsolationLevel.ReadCommitted;
         private static bool _initialized;
         private static readonly object Padlock = new object();
         private static TransactionScopeSection _section;
-        private const int DefaultTimeoutSeconds = 30;
-        private const IsolationLevel DefaultIsolationLevel = IsolationLevel.ReadCommitted;
 
         [ConfigurationProperty("enabled", IsRequired = false, DefaultValue = true)]
-        public bool Enabled
-        {
-            get { return (bool)this["enabled"]; }
-        }
+        public bool Enabled => (bool) this["enabled"];
 
         [ConfigurationProperty("isolationLevel", IsRequired = false, DefaultValue = DefaultIsolationLevel)]
         public IsolationLevel IsolationLevel
@@ -32,7 +29,7 @@ namespace Shuttle.Core.Infrastructure
 
                 try
                 {
-                    return (IsolationLevel)Enum.Parse(typeof(IsolationLevel), value.ToString());
+                    return (IsolationLevel) Enum.Parse(typeof(IsolationLevel), value.ToString());
                 }
                 catch
                 {
@@ -65,7 +62,8 @@ namespace Shuttle.Core.Infrastructure
             {
                 if (!_initialized)
                 {
-                    _section = ConfigurationSectionProvider.Open<TransactionScopeSection>("shuttle", "transactionScope");
+                    _section =
+                        ConfigurationSectionProvider.Open<TransactionScopeSection>("shuttle", "transactionScope");
 
                     _initialized = true;
                 }
