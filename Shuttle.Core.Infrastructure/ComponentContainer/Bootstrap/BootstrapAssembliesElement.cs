@@ -3,9 +3,7 @@ using System.Configuration;
 
 namespace Shuttle.Core.Infrastructure
 {
-    [ConfigurationCollection(typeof(BootstrapAssemblyElement), AddItemName = "collection",
-        CollectionType = ConfigurationElementCollectionType.BasicMap)]
-    public class BootstrapAssemblyCollectionElement : ConfigurationElementCollection
+    public class BootstrapAssembliesElement : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()
         {

@@ -1,4 +1,7 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Reflection;
 
 namespace Shuttle.Core.Infrastructure
 {
@@ -8,32 +11,58 @@ namespace Shuttle.Core.Infrastructure
         public BootstrapScan Scan => (BootstrapScan)this["scan"];
 
         [ConfigurationProperty("assemblies", IsRequired = false, DefaultValue = null)]
-        public BootstrapAssemblyCollectionElement Assemblies => (BootstrapAssemblyCollectionElement)this["assemblies"];
+        public BootstrapAssembliesElement Assemblies => (BootstrapAssembliesElement)this["assemblies"];
 
         public static IBootstrapConfiguration Configuration()
         {
             var result = new BootstrapConfiguration();
             var section = ConfigurationSectionProvider.Open<BootstrapSection>("shuttle", "bootstrap");
 
-            if (section == null)
-            {
-                return result;
-            }
-
             var reflectionService = new ReflectionService();
 
-            result.Scan = section.Scan;
-
-            foreach (BootstrapAssemblyElement assemblyElement in section.Assemblies)
+            if (section != null)
             {
-                var assembly = reflectionService.FindAssemblyNamed(assemblyElement.Name);
+                result.Scan = section.Scan;
 
-                if (assembly == null)
+                foreach (BootstrapAssemblyElement assemblyElement in section.Assemblies)
                 {
-                    throw new ConfigurationErrorsException(string.Format(InfrastructureResources.AssemblyNameNotFound, assemblyElement.Name));
-                }
+                    var assembly = reflectionService.FindAssemblyNamed(assemblyElement.Name);
 
-                result.AddAssembly(assembly);
+                    if (assembly == null)
+                    {
+                        throw new ConfigurationErrorsException(string.Format(InfrastructureResources.AssemblyNameNotFound, assemblyElement.Name));
+                    }
+
+                    result.AddAssembly(assembly);
+                }
+            }
+
+            if (result.Scan != BootstrapScan.None)
+            {
+                foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+                {
+                    result.AddAssembly(assembly);
+                }
+            }
+
+            switch (result.Scan)
+            {
+                case BootstrapScan.All:
+                {
+                    foreach (var assembly in reflectionService.GetAssemblies())
+                    {
+                        result.AddAssembly(assembly);
+                    }
+                    break;
+                }
+                case BootstrapScan.Shuttle:
+                {
+                    foreach (var assembly in reflectionService.GetAssemblies("^Shuttle\\."))
+                    {
+                        result.AddAssembly(assembly);
+                    }
+                    break;
+                }
             }
 
             return result;

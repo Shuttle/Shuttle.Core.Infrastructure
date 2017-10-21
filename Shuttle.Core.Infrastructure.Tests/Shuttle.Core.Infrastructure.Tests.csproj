@@ -48,11 +48,13 @@
     <Compile Include="CompressionAlgorithmFixture.cs" />
     <Compile Include="ConfigurationSectionProviderFixture.cs" />
     <Compile Include="Container\BootstrapFixture.cs" />
+    <Compile Include="Container\BootstrapSectionFixture.cs" />
+    <Compile Include="Container\ComponentRegistrySectionFixture.cs" />
     <Compile Include="Container\ComponentRegistryFixture.cs" />
     <Compile Include="Container\DoSomethingElse.cs" />
     <Compile Include="Container\DoSomethingWithDependency.cs" />
     <Compile Include="Container\ISomeDependency.cs" />
-    <Compile Include="Container\ComponentContainerSectionFixture.cs" />
+    <Compile Include="Container\ComponentResolverSectionFixture.cs" />
     <Compile Include="Container\SomeDependency.cs" />
     <Compile Include="Pipeline\MockAuthenticateObserver.cs" />
     <Compile Include="Pipeline\MockPipelineEvent1.cs" />
@@ -86,6 +88,12 @@
   <ItemGroup>
     <None Include="App.config">
       <SubType>Designer</SubType>
+    </None>
+    <None Include="Container\files\Bootstrap-Grouped.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Container\files\Bootstrap.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Container\files\ComponentResolver.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

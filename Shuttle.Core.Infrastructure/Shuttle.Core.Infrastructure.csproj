@@ -76,14 +76,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Arguments.cs" />
-    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyExtensions.cs" />
     <Compile Include="ComponentContainer\Bootstrap\BootstrapScan.cs" />
     <Compile Include="ComponentContainer\Bootstrap\BootstrapConfiguration.cs" />
     <Compile Include="ComponentContainer\Bootstrap\BootstrapSection.cs" />
     <Compile Include="ComponentContainer\Bootstrap\IBootstrapConfiguration.cs" />
     <Compile Include="ComponentContainer\Registry\ComponentRegistry.cs" />
     <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionImplementationTypeElement.cs" />
-    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyCollectionElement.cs" />
+    <Compile Include="ComponentContainer\Bootstrap\BootstrapAssembliesElement.cs" />
     <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionsElement.cs" />
     <Compile Include="ComponentContainer\Registry\ComponentRegistryCollectionElement.cs" />
     <Compile Include="ComponentContainer\Bootstrap\BootstrapAssemblyElement.cs" />

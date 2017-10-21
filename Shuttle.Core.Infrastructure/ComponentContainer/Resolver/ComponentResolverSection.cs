@@ -5,16 +5,8 @@ namespace Shuttle.Core.Infrastructure
 {
     public class ComponentResolverSection : ConfigurationSection
     {
-        [ConfigurationProperty("bootstrapAssemblyScan", IsRequired = false,
-            DefaultValue = BootstrapScan.Shuttle)]
-        public BootstrapScan BootstrapScan => (BootstrapScan) this["bootstrapAssemblyScan"];
-
         [ConfigurationProperty("components", IsRequired = false, DefaultValue = null)]
         public ComponentResolverCollectionElement Components => (ComponentResolverCollectionElement) this["components"];
-
-        [ConfigurationProperty("bootstrapAssemblies", IsRequired = false, DefaultValue = null)]
-        public BootstrapAssemblyCollectionElement BootstrapAssemblies => (BootstrapAssemblyCollectionElement) this[
-            "bootstrapAssemblies"];
 
         public static IComponentResolverConfiguration Configuration()
         {

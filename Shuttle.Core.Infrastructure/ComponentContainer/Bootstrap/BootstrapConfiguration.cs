@@ -6,7 +6,7 @@ namespace Shuttle.Core.Infrastructure
 {
     public class BootstrapConfiguration : IBootstrapConfiguration
     {
-        private readonly IList<Assembly> _assemblies = new List<Assembly>();
+        private readonly List<Assembly> _assemblies = new List<Assembly>();
 
         public BootstrapConfiguration()
         {
@@ -20,7 +20,19 @@ namespace Shuttle.Core.Infrastructure
         {
             Guard.AgainstNull(assembly, nameof(assembly));
 
+            if (Contains(assembly))
+            {
+                return;
+            }
+
             _assemblies.Add(assembly);
+        }
+
+        public bool Contains(Assembly assembly)
+        {
+            Guard.AgainstNull(assembly, nameof(assembly));
+
+            return _assemblies.Find(item => item == assembly) != null;
         }
     }
 }

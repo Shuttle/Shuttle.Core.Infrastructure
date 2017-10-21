@@ -5,17 +5,11 @@ using NUnit.Framework;
 namespace Shuttle.Core.Infrastructure.Tests
 {
 	[TestFixture]
-	public class ComponentContainerSectionFixture
-	{
-	    private ComponentRegistrySection GetRegistrySection(string file)
+	public class ComponentRegistrySectionFixture
+    {
+	    private ComponentRegistrySection GetSection(string file)
 	    {
 	        return ConfigurationSectionProvider.OpenFile<ComponentRegistrySection>("shuttle", "componentRegistry",
-	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@".\Container\files\{file}"));
-	    }
-
-	    private ComponentResolverSection GetResolverSection(string file)
-	    {
-	        return ConfigurationSectionProvider.OpenFile<ComponentResolverSection>("shuttle", "componentResolver",
 	            Path.Combine(AppDomain.CurrentDomain.BaseDirectory, $@".\Container\files\{file}"));
 	    }
 
@@ -24,7 +18,7 @@ namespace Shuttle.Core.Infrastructure.Tests
 		[TestCase("ComponentRegistry-Grouped.config")]
 		public void Should_be_able_to_load_the_component_registry_section(string file)
 		{
-			var section = GetRegistrySection(file);
+			var section = GetSection(file);
 
 			Assert.IsNotNull(section);
 			Assert.IsNotNull(section.Components);
@@ -47,30 +41,14 @@ namespace Shuttle.Core.Infrastructure.Tests
 		}
 
 		[Test]
-		[TestCase("ComponentResolver.config")]
-		[TestCase("ComponentResolver-Grouped.config")]
-		public void Should_be_able_to_load_the_configuration(string file)
-		{
-            var section = GetResolverSection(file);
-
-            Assert.IsNotNull(section);
-			Assert.IsNotNull(section.Components);
-			Assert.AreEqual(2, section.Components.Count);
-
-            foreach (ComponentResolverElement element in section.Components)
-			{
-				Console.WriteLine(element.DependencyType);
-			}
-		}
-
-		[Test]
 		[TestCase("Empty.config")]
 		public void Should_be_able_to_handle_missing_element(string file)
 		{
-            var section = GetRegistrySection(file);
+            var section = GetSection(file);
 
             Assert.IsNotNull(section);
-			Assert.IsEmpty(section.Components);
+            Assert.IsEmpty(section.Collections);
+            Assert.IsEmpty(section.Components);
 		}
 	}
 }

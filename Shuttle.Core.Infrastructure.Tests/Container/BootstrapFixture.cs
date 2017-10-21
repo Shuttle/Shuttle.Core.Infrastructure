@@ -27,11 +27,15 @@ namespace Shuttle.Core.Infrastructure.Tests
 		public void Register(IComponentRegistry registry)
 		{
 			_bootstrapRegisterCalled = true;
+
+		    registry.Register(typeof(ISomeDependency), typeof(SomeDependency), Lifestyle.Singleton);
 		}
 
 		public void Resolve(IComponentResolver resolver)
 		{
 			_bootstrapResolveCalled = true;
+
+		    resolver.ResolveAll(typeof(ISomeDependency));
 		}
 	}
 }
