@@ -57,7 +57,7 @@ namespace Shuttle.Core.Infrastructure
                 }
                 case BootstrapScan.Shuttle:
                 {
-                    foreach (var assembly in reflectionService.GetAssemblies("^Shuttle\\."))
+                    foreach (var assembly in reflectionService.GetMatchingAssemblies("^Shuttle\\."))
                     {
                         result.AddAssembly(assembly);
                     }
